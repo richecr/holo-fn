@@ -1,5 +1,3 @@
-// src/maybe/Maybe.ts
-
 export interface Maybe<T> {
   isJust(): boolean;
   isNothing(): boolean;

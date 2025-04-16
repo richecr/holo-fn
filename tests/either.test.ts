@@ -1,5 +1,3 @@
-// tests/either.test.ts
-
 import { Left, Right, tryCatch } from "../src/either";
 
 describe("Either", () => {

@@ -1,5 +1,3 @@
-// src/either/Either.ts
-
 export interface Either<L, R> {
   isLeft(): boolean;
   isRight(): boolean;
