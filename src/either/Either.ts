@@ -83,3 +83,27 @@ export const tryCatch = <L = unknown, R = unknown>(
     return new Left<L, R>(onError ? onError(e) : (e as L));
   }
 };
+
+export const fromPromise = async <L, R>(
+  promise: Promise<R>,
+  onError?: (e: unknown) => L
+): Promise<Either<L, R>> => {
+  try {
+    const data = await promise;
+    return new Right<L, R>(data);
+  } catch (e) {
+    return new Left<L, R>(onError ? onError(e) : (e as L));
+  }
+};
+
+export const fromAsync = async <L, R>(
+  fn: () => Promise<R>,
+  onError?: (e: unknown) => L
+): Promise<Either<L, R>> => {
+  try {
+    const data = await fn();
+    return new Right<L, R>(data);
+  } catch (e) {
+    return new Left<L, R>(onError ? onError(e) : (e as L));
+  }
+};

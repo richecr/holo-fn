@@ -1,4 +1,4 @@
-import { Left, Right, tryCatch } from "../src/either";
+import { fromAsync, fromPromise, Left, Right, tryCatch } from "../src/either";
 
 describe("Either", () => {
   it("Right.map applies function to value", () => {
@@ -117,5 +117,66 @@ describe("Either", () => {
         right: () => "",
       })
     ).toBe("unexpected");
+  });
+});
+
+describe("Either fromPromise", () => {
+  it("should resolve a Promise and return a Right with the result", async () => {
+    const result = await fromPromise(Promise.resolve(10), (e) => `Error: ${e}`);
+    expect(result.isRight()).toBe(true);
+    expect(result.unwrapOr(0)).toBe(10);
+  });
+
+  it("should reject a Promise and return a Left with the error", async () => {
+    const result = await fromPromise(
+      Promise.reject<string>("Network Error"),
+      (e) => `Error: ${e}`
+    );
+    expect(result.isLeft()).toBe(true);
+    result.mapLeft((e) => expect(e).toBe("Error: Network Error"));
+  });
+
+  it("should map the error in Left when using mapLeft", async () => {
+    const result = (await fromPromise(Promise.reject("Network Error"))).mapLeft(
+      (error) => `Mapped Error: ${error}`
+    );
+
+    expect(result.isLeft()).toBe(true);
+    result.mapLeft((error) =>
+      expect(error).toBe("Mapped Error: Network Error")
+    );
+  });
+});
+
+describe("Either fromAsync", () => {
+  it("should resolve an async function and return a Right with the result", async () => {
+    const result = await fromAsync(
+      async () => 20,
+      (e) => `Error: ${e}`
+    );
+    expect(result.isRight()).toBe(true);
+    expect(result.unwrapOr(0)).toBe(20);
+  });
+
+  it("should reject an async function and return a Left with the error", async () => {
+    const result = await fromAsync<string, unknown>(
+      async () => {
+        throw new Error("API Error");
+      },
+      (e) => `Error: ${(e as Error).message}`
+    );
+    expect(result.isLeft()).toBe(true);
+    result.mapLeft((e) => expect(e).toBe("Error: API Error"));
+  });
+
+  it("should map the error in Left when using mapLeft", async () => {
+    const result = (
+      await fromAsync(async () => {
+        throw "API Error";
+      })
+    ).mapLeft((error) => `Mapped Error: ${error}`);
+
+    expect(result.isLeft()).toBe(true);
+    result.mapLeft((error) => expect(error).toBe("Mapped Error: API Error"));
   });
 });
