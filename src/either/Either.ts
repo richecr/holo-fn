@@ -3,9 +3,10 @@ export interface Either<L, R> {
   isRight(): boolean;
 
   map<U>(fn: (value: R) => U): Either<L, U>;
+  mapLeft<M>(fn: (err: L) => M): Either<M, R>;
   chain<U>(fn: (value: R) => Either<L, U>): Either<L, U>;
-  getOrElse(defaultValue: R): R;
-  fold<T>(onLeft: (left: L) => T, onRight: (right: R) => T): T;
+  unwrapOr(defaultValue: R): R;
+  match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T;
 }
 
 export class Right<L, R> implements Either<L, R> {
@@ -23,16 +24,20 @@ export class Right<L, R> implements Either<L, R> {
     return new Right<L, U>(fn(this.value));
   }
 
+  mapLeft<M>(_fn: (err: L) => M): Either<M, R> {
+    return new Right<M, R>(this.value);
+  }
+
   chain<U>(fn: (value: R) => Either<L, U>): Either<L, U> {
     return fn(this.value);
   }
 
-  getOrElse(_: R): R {
+  unwrapOr(_: R): R {
     return this.value;
   }
 
-  fold<T>(_: (left: L) => T, onRight: (right: R) => T): T {
-    return onRight(this.value);
+  match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T {
+    return cases.right(this.value);
   }
 }
 
@@ -51,16 +56,20 @@ export class Left<L, R> implements Either<L, R> {
     return new Left<L, U>(this.value);
   }
 
+  mapLeft<M>(fn: (err: L) => M): Either<M, R> {
+    return new Left<M, R>(fn(this.value));
+  }
+
   chain<U>(_: (value: R) => Either<L, U>): Either<L, U> {
     return new Left<L, U>(this.value);
   }
 
-  getOrElse(defaultValue: R): R {
+  unwrapOr(defaultValue: R): R {
     return defaultValue;
   }
 
-  fold<T>(onLeft: (left: L) => T, _: (right: R) => T): T {
-    return onLeft(this.value);
+  match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T {
+    return cases.left(this.value);
   }
 }
 

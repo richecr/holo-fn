@@ -4,8 +4,8 @@ export interface Maybe<T> {
 
   map<U>(fn: (value: T) => U): Maybe<U>;
   chain<U>(fn: (value: T) => Maybe<U>): Maybe<U>;
-  getOrElse(defaultValue: T): T;
-  match<U>(cases: { Just: (value: T) => U; Nothing: () => U }): U;
+  unwrapOr(defaultValue: T): T;
+  match<U>(cases: { just: (value: T) => U; nothing: () => U }): U;
 }
 
 export class Just<T> implements Maybe<T> {
@@ -27,12 +27,12 @@ export class Just<T> implements Maybe<T> {
     return fn(this.value);
   }
 
-  getOrElse(_: T): T {
+  unwrapOr(_: T): T {
     return this.value;
   }
 
-  match<U>(cases: { Just: (value: T) => U; Nothing: () => U }): U {
-    return cases.Just(this.value);
+  match<U>(cases: { just: (value: T) => U; nothing: () => U }): U {
+    return cases.just(this.value);
   }
 }
 
@@ -53,12 +53,12 @@ export class Nothing<T> implements Maybe<T> {
     return new Nothing<U>();
   }
 
-  getOrElse(defaultValue: T): T {
+  unwrapOr(defaultValue: T): T {
     return defaultValue;
   }
 
-  match<U>(cases: { Just: (value: T) => U; Nothing: () => U }): U {
-    return cases.Nothing();
+  match<U>(cases: { just: (value: T) => U; nothing: () => U }): U {
+    return cases.nothing();
   }
 }
 

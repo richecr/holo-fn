@@ -1,4 +1,9 @@
 # 🧠 holo-fn
+![npm](https://img.shields.io/npm/v/holo-fn?style=flat-square)
+![types](https://img.shields.io/npm/types/holo-fn?style=flat-square)
+![license](https://img.shields.io/npm/l/holo-fn?style=flat-square)
+![tests](https://img.shields.io/badge/tests-passing-green?style=flat-square)
+![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=flat-square)
 
 **A minimal functional library for TypeScript** featuring **monads** like `Maybe`, `Either` and `Result`. Built for composability and Rambda compatibility.
 
@@ -44,7 +49,7 @@ const name = fromNullable('Rich')
 - `getOrElse(defaultValue: T): T`
 - `isJust(): boolean`
 - `isNothing(): boolean`
-- `match({ Just, Nothing })`
+- `match({ just, nothing })`
 
 #### Helpers
 
@@ -79,7 +84,9 @@ const result = new Right<number, number>(10)
 - `getOrElse(defaultValue: R): R`
 - `isRight(): boolean`
 - `isLeft(): boolean`
-- `fold(leftFn, rightFn): T`
+- `match({ left, right }): T`
+
+---
 
 #### Helpers
 
@@ -96,6 +103,69 @@ const parsed = tryCatch(() => JSON.parse(input), e => 'Invalid JSON')
 
 - Returns `Right<R>` if `fn()` succeeds
 - Returns `Left<L>` if it throws, using `onError` if provided
+
+---
+
+### `Result<T, E>`
+
+```ts
+import { Ok, Err, fromThrowable, fromPromise, fromAsync } from 'holo-fn/result'
+
+const result = new Ok<number, string>(10)
+  .map(n => n + 1)
+  .unwrapOr(0) // 11
+```
+
+#### Methods
+
+- `map(fn: (value: T) => U): Result<U, E>`
+- `mapErr(fn: (err: E) => F): Result<T, F>`
+- `andThen(fn: (value: T) => Result<U, E>): Result<U, E>`
+- `unwrapOr(defaultValue: T): T`
+- `isOk(): boolean`
+- `isErr(): boolean`
+- `match({ ok, err }): U`
+
+---
+
+#### 🧰 Helpers
+
+##### `fromThrowable(fn, onError?)`
+
+Wraps a synchronous function in a `Result`.
+
+```ts
+const result = fromThrowable(() => JSON.parse(input), e => 'Invalid JSON')
+```
+
+- Returns `Ok<T>` if `fn()` succeeds
+- Returns `Err<E>` if it throws, using `onError` if provided
+
+---
+
+##### `fromPromise(promise, onError?)`
+
+Wraps a `Promise<T>` into a `Promise<Result<T, E>>`.
+
+```ts
+const result = await fromPromise(fetch('/api'), e => 'Network error')
+```
+
+- Resolves to `Ok<T>` on success
+- Resolves to `Err<E>` on failure
+
+---
+
+##### `fromAsync(fn, onError?)`
+
+Same as `fromPromise`, but lazy — receives a function returning a Promise.
+
+```ts
+const result = await fromAsync(() => fetch('/api'), e => 'Request failed')
+```
+
+- Allows deferred execution
+- Handles exceptions from `async () => ...`
 
 ---
 
