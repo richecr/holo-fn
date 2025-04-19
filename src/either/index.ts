@@ -4,3 +4,8 @@ export { Right } from "./Either";
 export { tryCatch } from "./Either";
 export { fromPromise } from "./Either";
 export { fromAsync } from "./Either";
+export { mapE } from "./Either";
+export { mapLeftE } from "./Either";
+export { chainE } from "./Either";
+export { unwrapOrE } from "./Either";
+export { matchE } from "./Either";

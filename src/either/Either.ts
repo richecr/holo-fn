@@ -9,7 +9,7 @@ export interface Either<L, R> {
   match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T;
 }
 
-export class Right<L, R> implements Either<L, R> {
+export class Right<R, L = unknown> implements Either<L, R> {
   constructor(private readonly value: R) {}
 
   isLeft(): boolean {
@@ -21,11 +21,11 @@ export class Right<L, R> implements Either<L, R> {
   }
 
   map<U>(fn: (value: R) => U): Either<L, U> {
-    return new Right<L, U>(fn(this.value));
+    return new Right(fn(this.value));
   }
 
   mapLeft<M>(_fn: (err: L) => M): Either<M, R> {
-    return new Right<M, R>(this.value);
+    return new Right(this.value);
   }
 
   chain<U>(fn: (value: R) => Either<L, U>): Either<L, U> {
@@ -41,7 +41,7 @@ export class Right<L, R> implements Either<L, R> {
   }
 }
 
-export class Left<L, R> implements Either<L, R> {
+export class Left<L, R = unknown> implements Either<L, R> {
   constructor(private readonly value: L) {}
 
   isLeft(): boolean {
@@ -53,11 +53,11 @@ export class Left<L, R> implements Either<L, R> {
   }
 
   map<U>(_: (value: R) => U): Either<L, U> {
-    return new Left<L, U>(this.value);
+    return new Left(this.value);
   }
 
   mapLeft<M>(fn: (err: L) => M): Either<M, R> {
-    return new Left<M, R>(fn(this.value));
+    return new Left(fn(this.value));
   }
 
   chain<U>(_: (value: R) => Either<L, U>): Either<L, U> {
@@ -78,7 +78,7 @@ export const tryCatch = <L = unknown, R = unknown>(
   onError?: (e: unknown) => L
 ): Either<L, R> => {
   try {
-    return new Right<L, R>(fn());
+    return new Right<R, L>(fn());
   } catch (e) {
     return new Left<L, R>(onError ? onError(e) : (e as L));
   }
@@ -90,7 +90,7 @@ export const fromPromise = async <L, R>(
 ): Promise<Either<L, R>> => {
   try {
     const data = await promise;
-    return new Right<L, R>(data);
+    return new Right<R, L>(data);
   } catch (e) {
     return new Left<L, R>(onError ? onError(e) : (e as L));
   }
@@ -102,8 +102,39 @@ export const fromAsync = async <L, R>(
 ): Promise<Either<L, R>> => {
   try {
     const data = await fn();
-    return new Right<L, R>(data);
+    return new Right<R, L>(data);
   } catch (e) {
     return new Left<L, R>(onError ? onError(e) : (e as L));
   }
+};
+
+
+export const mapE = <L, R, U>(
+  fn: (value: R) => U
+) => (either: Either<L, R>): Either<L, U> => {
+  return either.map(fn);
+};
+
+export const mapLeftE = <L, M, R>(
+  fn: (err: L) => M
+) => (either: Either<L, R>): Either<M, R> => {
+  return either.mapLeft(fn);
+};
+
+export const chainE = <L, R, U>(
+  fn: (value: R) => Either<L, U>
+) => (either: Either<L, R>): Either<L, U> => {
+  return either.chain(fn);
+};
+
+export const unwrapOrE = <L, R>(
+  defaultValue: R
+) => (either: Either<L, R>): R => {
+  return either.unwrapOr(defaultValue);
+};
+
+export const matchE = <L, R, T>(
+  cases: { left: (left: L) => T; right: (right: R) => T }
+) => (either: Either<L, R>): T => {
+  return either.match(cases);
 };

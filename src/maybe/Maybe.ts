@@ -65,3 +65,25 @@ export class Nothing<T> implements Maybe<T> {
 export const fromNullable = <T>(value: T | null | undefined): Maybe<T> => {
   return value == null ? new Nothing<T>() : new Just<T>(value);
 };
+
+export const mapM = <T, U>(
+  fn: (value: T) => U
+) => (maybe: Maybe<T>): Maybe<U> => {
+  return maybe.map(fn);
+};
+
+export const chainM = <T, U>(
+  fn: (value: T) => Maybe<U>
+) => (maybe: Maybe<T>): Maybe<U> => {
+  return maybe.chain(fn);
+};
+
+export const unwrapOrM = <T>(defaultValue: T) => (maybe: Maybe<T>): T => {
+  return maybe.unwrapOr(defaultValue);
+};
+
+export const matchM = <T, U>(
+  cases: { just: (value: T) => U; nothing: () => U }
+) => (maybe: Maybe<T>): U => {
+  return maybe.match(cases);
+};

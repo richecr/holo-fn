@@ -4,3 +4,8 @@ export { Err } from "./Result";
 export { fromThrowable } from "./Result";
 export { fromPromise } from "./Result";
 export { fromAsync } from "./Result";
+export { mapR } from "./Result";
+export { mapErrR } from "./Result";
+export { chainR } from "./Result";
+export { unwrapOrR } from "./Result";
+export { matchR } from "./Result";

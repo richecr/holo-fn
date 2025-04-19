@@ -1,8 +1,9 @@
-import { fromAsync, fromPromise, Left, Right, tryCatch } from "../src/either";
+import { pipe } from "rambda";
+import { chainE, fromAsync, fromPromise, Left, mapE, mapLeftE, matchE, Right, tryCatch, unwrapOrE } from "../src/either";
 
 describe("Either", () => {
   it("Right.map applies function to value", () => {
-    const result = new Right<string, number>(10).map((n) => n * 2);
+    const result = new Right(10).map((n) => n * 2);
     expect(result.unwrapOr(0)).toBe(20);
   });
 
@@ -18,7 +19,7 @@ describe("Either", () => {
   });
 
   it("should do nothing when mapping Left on Right", () => {
-    const result = new Right<string, number>(42)
+    const result = new Right(42)
       .mapLeft((msg) => `Error: ${msg}`)
       .match({
         left: () => -1,
@@ -34,7 +35,7 @@ describe("Either", () => {
   });
 
   it("Right.chain unwraps and applies", () => {
-    const result = new Right<string, number>(5).chain((n) => new Right(n + 3));
+    const result = new Right(5).chain((n) => new Right(n + 3));
     expect(result.unwrapOr(0)).toBe(8);
   });
 
@@ -46,17 +47,17 @@ describe("Either", () => {
   });
 
   it("Right.unwrapOr returns the value", () => {
-    const result = new Right<string, number>(42);
+    const result = new Right(42);
     expect(result.unwrapOr(0)).toBe(42);
   });
 
   it("Left.unwrapOr returns default value", () => {
-    const result = new Left<string, number>("fail");
+    const result = new Left("fail");
     expect(result.unwrapOr(123)).toBe(123);
   });
 
   it("Right.match calls onRight", () => {
-    const result = new Right<string, number>(7).match({
+    const result = new Right(7).match({
       left: () => "error",
       right: (n) => `value is ${n}`,
     });
@@ -178,5 +179,119 @@ describe("Either fromAsync", () => {
 
     expect(result.isLeft()).toBe(true);
     result.mapLeft((error) => expect(error).toBe("Mapped Error: API Error"));
+  });
+});
+
+describe("Either - Curried Helpers", () => {
+  it("should apply curried map function to Right", () => {
+    const result = pipe(
+      new Right(10),
+      mapE((n) => n * 2),
+      unwrapOrE(0)
+    );
+    expect(result).toBe(20);
+  });
+
+  it("should not apply map to Left (curried)", () => {
+    const result = pipe(
+      new Left<string, number>("Error"),
+      mapE((n) => n * 2),
+      unwrapOrE(0)
+    );
+    expect(result).toBe(0);
+  });
+
+  it("should chain Right values with curried chain", () => {
+    const result = pipe(
+      new Right(2),
+      chainE((x) => new Right(x * 10)),
+      unwrapOrE(0)
+    );
+    expect(result).toBe(20);
+  });
+
+  it("should return Left when chaining from Left (curried)", () => {
+    const result = pipe(
+      new Left<string, number>("Error"),
+      chainE((x) => new Right(x * 10)),
+      unwrapOrE(0)
+    );
+    expect(result).toBe(0);
+  });
+
+  it("should unwrapOr with default value using curried unwrapOr", () => {
+    const result = pipe(
+      new Right(10),
+      unwrapOrE(42)
+    );
+    expect(result).toBe(10);
+  });
+
+  it("should return default value for Left using curried unwrapOr", () => {
+    const result = pipe(
+      new Left<string, number>("Error"),
+      unwrapOrE(42)
+    );
+    expect(result).toBe(42);
+  });
+
+  it("should apply curried mapLeft function to Left", () => {
+    const result = pipe(
+      new Left("error"),
+      mapLeftE((err) => `Mapped Error: ${err}`)
+    );
+
+    expect(result.unwrapOr("default")).toBe("default");
+    expect(result.match({ left: (e) => e, right: () => "" })).toBe("Mapped Error: error");
+  });
+
+  it("should do nothing when mapping Left on Right", () => {
+    const result = pipe(
+      new Right(42),
+      mapLeftE((err) => `Mapped Error: ${err}`)
+    );
+
+    expect(result.unwrapOr(0)).toBe(42); // Should remain the same
+  });
+
+  it("should apply mapLeft to Left with custom error mapping", () => {
+    const result = pipe(
+      new Left("Something went wrong"),
+      mapLeftE((err) => `Error: ${err}`)
+    );
+
+    expect(result.unwrapOr("fallback")).toBe("fallback");
+    expect(result.match({ left: (e) => e, right: () => "" })).toBe("Error: Something went wrong");
+  });
+
+  it("should not apply mapLeft to Right", () => {
+    const result = pipe(
+      new Right(100),
+      mapLeftE((err) => `Error: ${err}`)
+    );
+
+    expect(result.unwrapOr(0)).toBe(100);  // No transformation should occur
+  });
+
+  it("should match Right with curried match", () => {
+    const result = pipe(
+      new Right(7),
+      matchE({
+        left: () => "error",
+        right: (n) => `value is ${n}`,
+      })
+    );
+    expect(result).toBe("value is 7");
+  });
+
+  it("should match Left with curried match", () => {
+    const result = pipe(
+      new Left<string, number>("Bad Request"),
+      matchE({
+        left: (e) => `error: ${e}`,
+        right: () => "success",
+      })
+    );
+    expect(result).toBe("error: Bad Request");
   });
 });

@@ -1,4 +1,5 @@
-import { Ok, Err, fromThrowable, fromPromise, fromAsync } from "../src/result";
+import { pipe } from "rambda";
+import { Ok, Err, fromThrowable, fromPromise, fromAsync, matchR, mapR, unwrapOrR, chainR, mapErrR } from "../src/result";
 
 describe("Result", () => {
   it("Ok.map should apply the function", () => {
@@ -70,7 +71,7 @@ describe("Result", () => {
   });
 });
 
-describe("fromThrowable", () => {
+describe("Result fromThrowable", () => {
   it("fromThrowable should return Ok when function succeeds", () => {
     const result = fromThrowable(() => JSON.parse('{"a": 1}'));
     expect(result.isOk()).toBe(true);
@@ -99,7 +100,7 @@ describe("fromThrowable", () => {
   });
 });
 
-describe("fromPromise", () => {
+describe("Result fromPromise", () => {
   it("should resolve to Ok on success", async () => {
     const promise = Promise.resolve(42);
     const result = await fromPromise(promise);
@@ -124,7 +125,7 @@ describe("fromPromise", () => {
   });
 });
 
-describe("fromAsync", () => {
+describe("Result fromAsync", () => {
   it("should resolve to Ok on success", async () => {
     const result = await fromAsync(async () => 10);
     expect(result.isOk()).toBe(true);
@@ -150,5 +151,110 @@ describe("fromAsync", () => {
     expect(
       result.match({ ok: () => "", err: (e) => (e as Error).message })
     ).toBe("async error");
+  });
+});
+
+describe("Result - Curried Helpers", () => {
+  it("should apply curried map function to Ok", () => {
+    const result = pipe(
+      new Ok(10),
+      mapR((n) => n * 2),
+      unwrapOrR(0)
+    );
+    expect(result).toBe(20);
+  });
+
+  it("should not apply map to Err (curried)", () => {
+    const result = pipe(
+      new Err<number, string>("Error"),
+      mapR((n) => n * 2),
+      unwrapOrR(0)
+    );
+    expect(result).toBe(0);
+  });
+
+  it("should apply curried mapErr function to Err", () => {
+    const result = pipe(
+      new Err("initial error"),
+      mapErrR((err) => `Mapped Error: ${err}`)
+    );
+
+    expect(result.unwrapOr("fallback")).toBe("fallback");
+    expect(result.match({ ok: (_) => "", err: (e) => e })).toBe("Mapped Error: initial error");
+  });
+
+  it("should do nothing when mapping Err on Ok", () => {
+    const result = pipe(
+      new Ok(10),
+      mapErrR((err) => `Mapped Error: ${err}`)
+    );
+
+    expect(result.unwrapOr(0)).toBe(10);
+  });
+
+  it("should transform error using curried mapErr", () => {
+    const result = pipe(
+      new Err("Something went wrong"),
+      mapErrR((err) => `Error: ${err}`)
+    );
+
+    expect(result.unwrapOr("fallback")).toBe("fallback");
+    expect(result.match({ ok: (_) => "", err: (e) => e })).toBe("Error: Something went wrong");
+  });
+
+  it("should chain Ok values with curried chain", () => {
+    const result = pipe(
+      new Ok(5),
+      chainR((x) => new Ok(x + 5)),
+      unwrapOrR(0)
+    );
+    expect(result).toBe(10);
+  });
+
+  it("should return Err when chaining from Err (curried)", () => {
+    const result = pipe(
+      new Err<number, string>("Error"),
+      chainR((x) => new Ok(x + 5)),
+      unwrapOrR(0)
+    );
+    expect(result).toBe(0);
+  });
+
+  it("should unwrapOr with default value using curried unwrapOr", () => {
+    const result = pipe(
+      new Ok(10),
+      unwrapOrR(42)
+    );
+    expect(result).toBe(10);
+  });
+
+  it("should return default value for Err using curried unwrapOr", () => {
+    const result = pipe(
+      new Err<number, string>("Error"),
+      unwrapOrR(42)
+    );
+    expect(result).toBe(42);
+  });
+
+  it("should match Ok with curried match", () => {
+    const result = pipe(
+      new Ok(10),
+      matchR({
+        ok: (value) => `Success: ${value}`,
+        err: () => "Error",
+      })
+    );
+    expect(result).toBe("Success: 10");
+  });
+
+  it("should match Err with curried match", () => {
+    const result = pipe(
+      new Err("Something went wrong"),
+      matchR({
+        ok: () => "Success",
+        err: (err) => `Error: ${err}`,
+      })
+    );
+    expect(result).toBe("Error: Something went wrong");
   });
 });
