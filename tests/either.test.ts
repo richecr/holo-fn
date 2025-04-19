@@ -251,7 +251,7 @@ describe("Either - Curried Helpers", () => {
       mapLeftE((err) => `Mapped Error: ${err}`)
     );
 
-    expect(result.unwrapOr(0)).toBe(42); // Should remain the same
+    expect(result.unwrapOr(0)).toBe(42);
   });
 
   it("should apply mapLeft to Left with custom error mapping", () => {
@@ -270,7 +270,7 @@ describe("Either - Curried Helpers", () => {
       mapLeftE((err) => `Error: ${err}`)
     );
 
-    expect(result.unwrapOr(0)).toBe(100);  // No transformation should occur
+    expect(result.unwrapOr(0)).toBe(100);
   });
 
   it("should match Right with curried match", () => {

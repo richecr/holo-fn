@@ -9,7 +9,26 @@
     "url": "http://richecr.dev.br"
   },
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./maybe": {
+      "import": "./dist/maybe/index.js",
+      "require": "./dist/maybe/index.cjs"
+    },
+    "./either": {
+      "import": "./dist/either/index.js",
+      "require": "./dist/either/index.cjs"
+    },
+    "./result": {
+      "import": "./dist/result/index.js",
+      "require": "./dist/result/index.cjs"
+    }
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -37,5 +56,10 @@
     "utilities",
     "toolkit",
     "fp"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
   ]
 }

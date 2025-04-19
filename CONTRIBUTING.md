@@ -47,6 +47,35 @@ This will transpile the TypeScript code into JavaScript.
 
 ---
 
+## 🧰 Testing Locally
+
+To test your changes locally before publishing or linking the library:
+
+1. Build the Library:
+
+  - Run the following to build the project and prepare the files for testing:
+  ```bash
+  npm run build
+  ```
+
+2. Pack the Library:
+
+  - After building, run npm pack to create a .tgz file that you can install locally:
+  ```bash
+  npm pack
+  ```
+
+3. Install Locally in Your Test Project:
+
+  - In the project where you want to test the library, run the following:
+  ```bash
+  npm install /path/to/holo-fn-<version>.tgz
+  ```
+
+  - This will install the library locally in your project, and you can import and use it as if it were an npm package.
+
+---
+
 ## 🤝 How to Contribute
 
 1. **Fork the repository** to your GitHub account and clone it locally.
