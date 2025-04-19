@@ -17,6 +17,7 @@ export default defineConfig([
   tseslint.configs.recommended,
   {
     rules: {
+      "semi": ["error", "always"],
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
