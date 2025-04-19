@@ -15,9 +15,9 @@ Below you will find detailed explanations, examples, and usage instructions to h
 - [Features](#-features)
 - [Getting Started](#-getting-started)
 - [API Reference](#-api-reference)
-  - [Maybe](/maybe)
-  - [Either](/either)
-  - [Result](/result)
+  - [Maybe](./maybe)
+  - [Either](./either)
+  - [Result](./result)
 - [Contributing](#-contributing)
 
 ---
