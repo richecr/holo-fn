@@ -1,7 +1,9 @@
 
 # 📚 holo-fn Documentation
 
-Welcome to the **holo-fn** documentation! This library is a minimal functional library for TypeScript, featuring monads like `Maybe`, `Either`, and `Result`.
+**A minimal functional library for TypeScript** featuring **monads** like `Maybe`, `Either` and `Result`. Built for composability and Rambda compatibility.
+
+> 💡 Designed to work seamlessly with `pipe` from Rambda. Fully typed, immutable, and safe by default.
 
 Below you will find detailed explanations, examples, and usage instructions to help you get started with **holo-fn**.
 
@@ -9,13 +11,14 @@ Below you will find detailed explanations, examples, and usage instructions to h
 
 ## ✨ Table of Contents
 
-- [Introduction](#introduction)
-- [Getting Started](#getting-started)
-- [API Reference](#api-reference)
-  - [Maybe](/docs/maybe/index.md)
-  - [Either](/docs/either/index.md)
-  - [Result](/docs/result/index.md)
-- [Contributing](#contributing)
+- [Introduction](#-introduction)
+- [Features](#-features)
+- [Getting Started](#-getting-started)
+- [API Reference](#-api-reference)
+  - [Maybe](/maybe)
+  - [Either](/either)
+  - [Result](/result)
+- [Contributing](#-contributing)
 
 ---
 
@@ -25,6 +28,17 @@ Below you will find detailed explanations, examples, and usage instructions to h
 
 - Designed to work seamlessly with `pipe` from `Rambda`.
 - Fully typed, immutable by default, and safe for modern TypeScript development.
+
+---
+
+## ✨ Features
+
+- ✅ Functional types: `Maybe`, `Either`, `Result`
+- ⚙️ Pipe-friendly (Rambda/Ramda compatible)
+- 🔒 Immutable by default
+- 🧪 100% test coverage
+- ⚡️ Zero dependencies
+- 🧠 Full TypeScript inference
 
 ---
 

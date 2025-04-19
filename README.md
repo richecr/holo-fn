@@ -32,29 +32,31 @@ npm install holo-fn
 
 ## 📦 API Overview
 
-[API documentation can be found here](/docs/index.md)
+[API documentation can be found here](https://richecr.github.io/holo-fn/)
 
 ## 🧠 Examples
 
 ### Safe object access
 
 ```ts
-import { fromNullable } from 'holo-fn/maybe'
-import { pipe } from 'rambda'
+const double = (n: number) => n * 2;
 
-const getUserName = (user: any) =>
-  pipe(
-    fromNullable(user.profile),
-    m => m.chain(p => fromNullable(p.name)),
-    m => m.unwrapOr('Guest')
-  )(user)
+const result = pipe(
+  [5, 5, 6],
+  (ns) => fromNullable(head(ns)),
+  (x) => x.map(double),
+  M.matchM({
+    just: (n) => n,
+    nothing: () => -1
+  })
+);
+
+console.log(result); // 10
 ```
 
 ### Optional parsing
 
 ```ts
-import { fromNullable } from 'holo-fn/maybe'
-
 const parsePrice = (input: string) =>
   fromNullable(parseFloat(input))
     .map(n => (n > 0 ? n : null))
