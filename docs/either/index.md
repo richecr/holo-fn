@@ -3,11 +3,13 @@
 `Either` is used for computations that may fail. It is either a `Left<L>` (error) or a `Right<R>` (success).
 
 ```ts
-import { Right, Left, tryCatch } from 'holo-fn/either'
+import { Right } from 'holo-fn/either'
 
 const result = new Right<number, number>(10)
   .map(n => n * 2)
-  .unwrapOr(0) // 20
+  .unwrapOr(0)
+
+console.log(result); // 20
 ```
 
 ## Methods
@@ -42,9 +44,13 @@ Wraps a potentially throwing function in an `Either`.
 ```ts
 import { tryCatch } from 'holo-fn/either'
 
+const input = '{"user": "John Doe"}'
+
 const parsed = tryCatch(() => JSON.parse(input), e => 'Invalid JSON')
   .map(obj => obj.user)
   .unwrapOr('anonymous')
+
+console.log(parsed) // John Doe
 ```
 
 - Returns `Right<R>` if `fn()` succeeds
@@ -60,6 +66,8 @@ Wraps a `Promise<T>` into a `Promise<Either<L, R>>`.
 import { fromPromise } from 'holo-fn/either'
 
 const result = await fromPromise(fetch('/api'), e => 'Network error')
+
+console.log(result) // _Left { value: 'Network error' }
 
 ```
 
@@ -77,6 +85,8 @@ import { fromAsync } from 'holo-fn/either'
 
 const result = await fromAsync(async () => await fetch('/api'), e => 'Request failed')
 
+console.log(result) // _Left { value: 'Request failed' }
+
 ```
 
 - Allows deferred execution
@@ -91,7 +101,7 @@ const result = await fromAsync(async () => await fetch('/api'), e => 'Request fa
 Curried version of `map` for `Either`. This allows functional composition with `pipe`.
 
 ```ts
-import { mapE } from 'holo-fn/either';
+import { mapE, Right } from 'holo-fn/either';
 
 const result = pipe(
   new Right(5),
@@ -109,7 +119,7 @@ console.log(result); // 10
 Curried version of `mapLeft` for `Either`. This allows mapping over the Left value in a functional pipeline.
 
 ```ts
-import { mapLeftE } from 'holo-fn/either';
+import { Left, mapLeftE } from 'holo-fn/either';
 
 const result = pipe(
   new Left("Error"),
@@ -117,7 +127,7 @@ const result = pipe(
   (res) => res.unwrapOr("No value") 
 );
 
-console.log(result); // "Mapped error: Error"
+console.log(result); // "No value"
 ```
 
 ---
@@ -127,9 +137,7 @@ console.log(result); // "Mapped error: Error"
 Curried version of `chain` for `Either`. This allows chaining transformations on the **Right** value of `Either`, using a functional composition style.
 
 ```ts
-import { Right, Left, chainE } from 'holo-fn/either';
-
-const double = (n: number) => n * 2;
+import { Right, chainE } from 'holo-fn/either';
 
 const result = pipe(
   new Right(5),
@@ -147,11 +155,11 @@ console.log(result); // 10
 Curried version of `unwrapOr` for `Either`. This provides a cleaner way to unwrap the value in a `Either`, returning a default value if it's `Left`.
 
 ```ts
-import { unwrapOrE } from 'holo-fn/either';
+import { Left, unwrapOrE } from 'holo-fn/either';
 
 const result = pipe(
   new Left("Fail"),
-  unwrapOrE("No value")
+  unwrapOrE<string, unknown>("No value")
 );
 
 console.log(result); // "No value"
@@ -164,7 +172,7 @@ console.log(result); // "No value"
 Curried version of `match` for `Either`. This allows handling `Left` and `Right` in a functional way.
 
 ```ts
-import { matchE } from 'holo-fn/either';
+import { matchE, Right } from 'holo-fn/either';
 
 const result = pipe(
   new Right(10),

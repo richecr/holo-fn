@@ -39,13 +39,15 @@ npm install holo-fn
 ### Safe object access
 
 ```ts
+import { fromNullable, matchM } from 'holo-fn/maybe';
+
 const double = (n: number) => n * 2;
 
 const result = pipe(
   [5, 5, 6],
   (ns) => fromNullable(head(ns)),
   (x) => x.map(double),
-  M.matchM({
+  matchM({
     just: (n) => n,
     nothing: () => -1
   })
@@ -57,11 +59,18 @@ console.log(result); // 10
 ### Optional parsing
 
 ```ts
+import { fromNullable } from 'holo-fn/maybe';
+
 const parsePrice = (input: string) =>
   fromNullable(parseFloat(input))
     .map(n => (n > 0 ? n : null))
     .chain(fromNullable)
     .unwrapOr(0)
+
+console.log(parsePrice('123.45')) // 123.45
+console.log(parsePrice('0')) // 0
+console.log(parsePrice('-123.45')) // 0
+console.log(parsePrice('abc')) // 0
 ```
 
 ---

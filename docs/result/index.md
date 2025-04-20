@@ -3,11 +3,13 @@
 `Result` is used to represent computations that either succeed with a value (`Ok<T>`) or fail with an error (`Err<E>`).
 
 ```ts
-import { Ok, Err, fromThrowable, fromPromise, fromAsync } from 'holo-fn/result'
+import { Ok } from 'holo-fn/result'
 
 const result = new Ok<number, string>(10)
   .map(n => n + 1)
-  .unwrapOr(0) // 11
+  .unwrapOr(0)
+
+console.log(result) // 11
 ```
 
 ## Methods
@@ -40,7 +42,13 @@ Matches the value to execute either the `ok` or `err` case.
 Wraps a synchronous function in a `Result`.
 
 ```ts
+import { fromThrowable } from 'holo-fn';
+
+const input = '{"name": "John", "age": 30}'
+
 const result = fromThrowable(() => JSON.parse(input), e => 'Invalid JSON')
+
+console.log(result) // _Ok { value: { name: 'John', age: 30 } }
 ```
 
 - Returns `Ok<T>` if `fn()` succeeds
@@ -51,7 +59,11 @@ const result = fromThrowable(() => JSON.parse(input), e => 'Invalid JSON')
 Wraps a `Promise<T>` into a `Promise<Result<T, E>>`.
 
 ```ts
+import { fromPromise } from 'holo-fn/result';
+
 const result = await fromPromise(fetch('/api'), e => 'Network error')
+
+console.log(result) // _Err { error: 'Network error' }
 ```
 
 - Resolves to `Ok<T>` on success
@@ -62,7 +74,11 @@ const result = await fromPromise(fetch('/api'), e => 'Network error')
 Same as `fromPromise`, but lazy — receives a function returning a Promise.
 
 ```ts
+import { fromAsync } from 'holo-fn/result';
+
 const result = await fromAsync(() => fetch('/api'), e => 'Request failed')
+
+console.log(result) // _Err { error: 'Request failed' }
 ```
 
 - Allows deferred execution
@@ -77,7 +93,7 @@ const result = await fromAsync(() => fetch('/api'), e => 'Request failed')
 Curried version of the `map` function for `Result`. This allows you to apply a transformation to the **Ok** value in a more functional style.
 
 ```ts
-import { mapR } from 'holo-fn/result';
+import { mapR, Ok } from 'holo-fn/result';
 
 const result = pipe(
   new Ok(5),
@@ -95,7 +111,7 @@ console.log(result); // 10
 Curried version of `mapErr` for `Result`. This allows handling errors in a more functional composition style.
 
 ```ts
-import { mapErrR } from 'holo-fn/result';
+import { Err, mapErrR } from 'holo-fn/result';
 
 const result = pipe(
   new Err("Error"),
@@ -103,7 +119,7 @@ const result = pipe(
   (res) => res.unwrapOr("No value")
 );
 
-console.log(result); // "Mapped error: Error"
+console.log(result); // "No value"
 ```
 
 ---
@@ -113,7 +129,7 @@ console.log(result); // "Mapped error: Error"
 Curried version of `chain` for `Result`. This allows you to chain transformations on the Ok value in a functional pipeline.
 
 ```ts
-import { chainR } from 'holo-fn/result';
+import { chainR, Ok } from 'holo-fn/result';
 
 const result = pipe(
   new Ok(10),
@@ -131,7 +147,7 @@ console.log(result); // 15
 Curried version of `unwrapOr` for `Result`. This provides a cleaner way to unwrap the value in a `Result`, returning a default value if it's `Err`.
 
 ```ts
-import { unwrapOrR } from 'holo-fn/result';
+import { Ok, unwrapOrR } from 'holo-fn/result';
 
 const result = pipe(
   new Ok(42),
@@ -148,7 +164,7 @@ console.log(result); // 42
 Curried version of `match` for `Result`. This allows you to handle both `Ok` and `Err` in a functional way, providing a clean way to handle both cases.
 
 ```ts
-import { matchR } from 'holo-fn/result';
+import { matchR, Ok } from 'holo-fn/result';
 
 const result = pipe(
   new Ok(10),

@@ -8,6 +8,8 @@ import { fromNullable } from 'holo-fn/maybe'
 const name = fromNullable('Rich')
   .map(n => n.toUpperCase())
   .unwrapOr('Anonymous')
+
+console.log(name) // RICH
 ```
 
 ## Methods
@@ -52,7 +54,7 @@ const maybeEmail = fromNullable(user.email)
 Curried version of `map` for `Maybe`. This allows functional composition with `pipe`.
 
 ```ts
-import { mapM } from 'holo-fn/maybe';
+import { Just, mapM } from 'holo-fn/maybe';
 
 const result = pipe(
   new Just(10),
@@ -70,7 +72,7 @@ console.log(result); // 20
 Curried version of `chain` for `Maybe`. This allows chaining transformations in a functional pipeline.
 
 ```ts
-import { chainM } from 'holo-fn/maybe';
+import { chainM, Just } from 'holo-fn/maybe';
 
 const result = pipe(
   new Just(2),
@@ -88,10 +90,10 @@ console.log(result); // 20
 Curried version of `unwrapOr` for `Maybe`. This provides a cleaner way to unwrap the value in a `Maybe`.
 
 ```ts
-import { unwrapOrM } from 'holo-fn/maybe';
+import { Nothing, unwrapOrM } from 'holo-fn/maybe';
 
 const result = pipe(
-  new Nothing(),
+  new Nothing<string>(),
   unwrapOrM("No value")
 );
 
@@ -105,7 +107,7 @@ console.log(result); // "No value"
 Curried version of `match` for `Maybe`. This allows handling `Just` and `Nothing` in a functional way.
 
 ```ts
-import { matchM } from 'holo-fn/maybe';
+import { Just, matchM } from 'holo-fn/maybe';
 
 const result = pipe(
   new Just("hello"),
