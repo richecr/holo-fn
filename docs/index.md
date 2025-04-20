@@ -66,11 +66,9 @@ import { fromThrowable } from 'holo-fn/result'
 
 ## 📦 API Reference
 
-- [Maybe](/docs/maybe/index.md)
-- [Either](/docs/either/index.md)
-- [Result](/docs/result/index.md)
-
-### 📚 Comparison between Maybe, Either, and Result
+- [Maybe](./maybe)
+- [Either](./either)
+- [Result](./result)
 
 ### 📚 Comparison between Maybe, Either, and Result
 
