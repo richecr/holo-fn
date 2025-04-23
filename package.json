@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/richecr/holo-fn"
+  },
   "author": {
     "name": "Rich Ramalho",
     "email": "richecr1799@gmail.com",
