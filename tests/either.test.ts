@@ -8,7 +8,7 @@ describe("Either", () => {
   });
 
   it("should transform Left value", () => {
-    const result = new Left<string, number>("fail")
+    const result = new Left("fail")
       .mapLeft((msg) => `Error: ${msg}`)
       .match({
         left: (e) => e,

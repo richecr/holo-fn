@@ -9,7 +9,7 @@ export interface Either<L, R> {
   match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T;
 }
 
-export class Right<R, L = unknown> implements Either<L, R> {
+export class Right<L, R> implements Either<L, R> {
   constructor(private readonly value: R) {}
 
   isLeft(): boolean {
@@ -78,7 +78,7 @@ export const tryCatch = <L = unknown, R = unknown>(
   onError?: (e: unknown) => L
 ): Either<L, R> => {
   try {
-    return new Right<R, L>(fn());
+    return new Right<L, R>(fn());
   } catch (e) {
     return new Left<L, R>(onError ? onError(e) : (e as L));
   }
@@ -90,7 +90,7 @@ export const fromPromise = async <L, R>(
 ): Promise<Either<L, R>> => {
   try {
     const data = await promise;
-    return new Right<R, L>(data);
+    return new Right<L, R>(data);
   } catch (e) {
     return new Left<L, R>(onError ? onError(e) : (e as L));
   }
@@ -102,7 +102,7 @@ export const fromAsync = async <L, R>(
 ): Promise<Either<L, R>> => {
   try {
     const data = await fn();
-    return new Right<R, L>(data);
+    return new Right<L, R>(data);
   } catch (e) {
     return new Left<L, R>(onError ? onError(e) : (e as L));
   }
