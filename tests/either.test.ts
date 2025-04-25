@@ -1,5 +1,6 @@
 import { pipe } from "rambda";
 import { chainE, fromAsync, fromPromise, Left, mapE, mapLeftE, matchE, Right, tryCatch, unwrapOrE } from "../src/either";
+import { equalsE } from "../src/either/Either";
 
 describe("Either", () => {
   it("Right.map applies function to value", () => {
@@ -86,6 +87,30 @@ describe("Either", () => {
 
   it("Left.isLeft returns true", () => {
     expect(new Left("x").isLeft()).toBe(true);
+  });
+
+  it("Right.equals returns true for equal Right values", () => {
+    const a = new Right(42);
+    const b = new Right(42);
+    expect(a.equals(b)).toBe(true);
+  });
+
+  it("Left.equals returns true for equal Left values", () => {
+    const a = new Left("error");
+    const b = new Left("error");
+    expect(a.equals(b)).toBe(true);
+  });
+
+  it("Right.equals returns false for different Right values", () => {
+    const a = new Right(42);
+    const b = new Right(43);
+    expect(a.equals(b)).toBe(false);
+  });
+
+  it("Left.equals returns false for different Left values", () => {
+    const a = new Left("error");
+    const b = new Left("different error");
+    expect(a.equals(b)).toBe(false);
   });
 
   it("tryCatch should return Right when function succeeds", () => {
@@ -294,4 +319,53 @@ describe("Either - Curried Helpers", () => {
     );
     expect(result).toBe("error: Bad Request");
   });
+
+  it("should return true for equal Right values with curried equals", () => {
+    const result = pipe(
+      new Right(42),
+      equalsE(new Right(42))
+    );
+    expect(result).toBe(true);
+  });
+
+  it("should return false for different Right values with curried equals", () => {
+    const result = pipe(
+      new Right(42),
+      equalsE(new Right(43))
+    );
+    expect(result).toBe(false);
+  });
+
+  it("should return true for equal Left values with curried equals", () => {
+    const result = pipe(
+      new Left("error"),
+      equalsE(new Left("error"))
+    );
+    expect(result).toBe(true);
+  });
+
+  it("should return false for different Left values with curried equals", () => {
+    const result = pipe(
+      new Left("error"),
+      equalsE(new Left("different error"))
+    );
+    expect(result).toBe(false);
+  });
+
+  it("should return false for different Left and Right values with curried equals", () => {
+    const result = pipe(
+      new Left<string, number>("error"),
+      equalsE(new Right(42))
+    );
+    expect(result).toBe(false);
+  });
+
+  it("should return false for different Right and Left values with curried equals", () => {
+    const result = pipe(
+      new Right<string, number>(42),
+      equalsE(new Left("error"))
+    );
+    expect(result).toBe(false);
+  });
+
 });

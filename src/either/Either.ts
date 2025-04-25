@@ -7,10 +7,13 @@ export interface Either<L, R> {
   chain<U>(fn: (value: R) => Either<L, U>): Either<L, U>;
   unwrapOr(defaultValue: R): R;
   match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T;
+  equals(other: Either<L, R>): boolean;
+
+  extract(): L | R;
 }
 
 export class Right<L, R> implements Either<L, R> {
-  constructor(private readonly value: R) {}
+  constructor(private readonly value: R) { }
 
   isLeft(): boolean {
     return false;
@@ -39,10 +42,18 @@ export class Right<L, R> implements Either<L, R> {
   match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T {
     return cases.right(this.value);
   }
+
+  equals(other: Either<L, R>): boolean {
+    return other.isRight() ? this.value === other.extract() : false;
+  }
+
+  extract(): R {
+    return this.value;
+  }
 }
 
 export class Left<L, R = unknown> implements Either<L, R> {
-  constructor(private readonly value: L) {}
+  constructor(private readonly value: L) { }
 
   isLeft(): boolean {
     return true;
@@ -70,6 +81,14 @@ export class Left<L, R = unknown> implements Either<L, R> {
 
   match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T {
     return cases.left(this.value);
+  }
+
+  equals(other: Either<L, R>): boolean {
+    return other.isLeft() ? this.value === other.extract() : false;
+  }
+
+  extract(): L {
+    return this.value;
   }
 }
 
@@ -137,4 +156,10 @@ export const matchE = <L, R, T>(
   cases: { left: (left: L) => T; right: (right: R) => T }
 ) => (either: Either<L, R>): T => {
   return either.match(cases);
+};
+
+export const equalsE = <L, R>(
+  other: Either<L, R>
+) => (either: Either<L, R>): boolean => {
+  return either.equals(other);
 };
