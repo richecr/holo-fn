@@ -52,7 +52,7 @@ export class Right<L, R> implements Either<L, R> {
   }
 }
 
-export class Left<L, R = unknown> implements Either<L, R> {
+export class Left<L, R = never> implements Either<L, R> {
   constructor(private readonly value: L) { }
 
   isLeft(): boolean {
