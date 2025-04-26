@@ -47,7 +47,7 @@ export class Just<T> implements Maybe<T> {
   }
 }
 
-export class Nothing<T> implements Maybe<T> {
+export class Nothing<T = never> implements Maybe<T> {
   isJust(): boolean {
     return false;
   }
