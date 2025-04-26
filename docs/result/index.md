@@ -14,26 +14,124 @@ console.log(result) // 11
 
 ## Methods
 
-### `map(fn: (value: T) => U): Result<U, E>`
+##### `map(fn: (value: T) => U): Result<U, E>`
 Maps over the `Ok` value. Does nothing for `Err`.
 
-### `mapErr(fn: (err: E) => F): Result<T, F>`
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(5).map((n) => n * 2);
+console.log(result1.unwrapOr(0)); // 10
+
+const result2 = new Err<number, string>("Error").map((n) => n * 2);
+console.log(result2.unwrapOr(0)); // 0
+```
+
+##### `mapErr(fn: (err: E) => F): Result<T, F>`
 Maps over the `Err` value. Does nothing for `Ok`.
 
-### `chain(fn: (value: T) => Result<U, E>): Result<U, E>`
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(10).mapErr((e) => `Error: ${e}`);
+console.log(result1.unwrapOr(0)); // 10
+
+const result2 = new Err("Fail").mapErr((e) => `Mapped error: ${e}`);
+console.log(result2.unwrapOr(0)); // 0
+```
+
+##### `chain(fn: (value: T) => Result<U, E>): Result<U, E>`
 Chains the transformation if the value is `Ok`. Returns `Err` otherwise.
 
-### `unwrapOr(defaultValue: T): T`
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(5)
+  .chain((n) => new Ok(n * 2))
+  .unwrapOr(0);
+console.log(result1); // 10
+
+const result2 = new Err<number, string>("Error")
+  .chain((n) => new Ok(n * 2))
+  .unwrapOr(0);
+console.log(result2); // 0
+```
+
+##### `unwrapOr(defaultValue: T): T`
 Returns the value of `Ok`, or the default value for `Err`.
 
-### `isOk(): boolean`
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(15).unwrapOr(0);
+console.log(result1); // 15
+
+const result2 = new Err("Error").unwrapOr(100);
+console.log(result2); // 100
+```
+
+##### `isOk(): boolean`
 Checks if the value is `Ok`.
 
-### `isErr(): boolean`
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(5);
+console.log(result1.isOk()); // true
+
+const result2 = new Err("Error");
+console.log(result2.isOk()); // false
+```
+
+##### `isErr(): boolean`
 Checks if the value is `Err`.
 
-### `match<T>(cases: { ok: (value: T) => T; err: (err: E) => T }): T`
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(5);
+console.log(result1.isErr()); // false
+
+const result2 = new Err("Error");
+console.log(result2.isErr()); // true
+```
+
+##### `match<T>(cases: { ok: (value: T) => T; err: (err: E) => T }): T`
 Matches the value to execute either the `ok` or `err` case.
+
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(10).match({
+  ok: (n) => `Success: ${n}`,
+  err: (e) => `Failure: ${e}`,
+});
+console.log(result1); // "Success: 10"
+
+const result2 = new Err("Error").match({
+  ok: (n) => `Success: ${n}`,
+  err: (e) => `Failure: ${e}`,
+});
+console.log(result2); // "Failure: Error"
+```
+
+##### `equals(other: Result<T, E>): boolean`
+Compares `this` to another `Result`, returns `false` if the values inside are different.
+
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(10);
+console.log(result1.equals(new Ok(10))); // true
+console.log(result1.equals(new Ok(20))); // false
+console.log(result1.equals(new Err("Error"))); // false
+
+
+const result2 = new Err("Error");
+console.log(result2.equals(new Err("Error"))); // true
+console.log(result1.equals(new Err("Error"))); // false
+console.log(result2.equals(new Ok(10))); // false
+```
 
 ## Helpers
 
@@ -175,6 +273,30 @@ const result = pipe(
 );
 
 console.log(result); // "Success: 10"
+```
+
+---
+
+### `equalsR`
+
+Curried version of `equals` for `Result`. Compares `this` to another `Result`, returns `false` if the values inside are different.
+
+```ts
+import { equalsR, Ok } from 'holo-fn/result';
+
+const result1 = pipe(
+  new Ok(10),
+  equalsR(new Ok(10)),
+);
+
+console.log(result1); // true
+
+const result2 = pipe(
+  new Ok(10),
+  equalsR(new Ok(11)),
+);
+
+console.log(result2); // false
 ```
 
 ---

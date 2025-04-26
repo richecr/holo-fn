@@ -14,23 +14,105 @@ console.log(name) // RICH
 
 ## Methods
 
-### `map(fn: (value: T) => U): Maybe<U>`
+##### `map(fn: (value: T) => U): Maybe<U>`
 Maps over the `Just` value. Does nothing for `Nothing`.
 
-### `chain(fn: (value: T) => Maybe<U>): Maybe<U>`
+```ts
+import { Just, Nothing } from "holo-fn/maybe";
+
+const result1 = new Just(5).map((n) => n * 2);
+console.log(result1.unwrapOr(0)); // 10
+
+const result2 = new Nothing<number>().map((n) => n * 2);
+console.log(result2.unwrapOr(0)); // 0
+```
+
+##### `chain(fn: (value: T) => Maybe<U>): Maybe<U>`
 Chains the transformation if the value is `Just`. Returns `Nothing` otherwise.
 
-### `unwrapOr(defaultValue: T): T`
+```ts
+import { Just, Nothing } from "holo-fn/maybe";
+
+const result1 = new Just(5).chain((n) => new Just(n * 2));
+console.log(result1.unwrapOr(0)); // 10
+
+const result2 = new Nothing<number>().chain((n) => new Just(n * 2));
+console.log(result2.unwrapOr(0)); // 0
+```
+
+##### `unwrapOr(defaultValue: T): T`
 Returns the value of `Just`, or the default value for `Nothing`.
 
-### `isJust(): boolean`
+```ts
+import { Just, Nothing } from "holo-fn/maybe";
+
+const result1 = new Just(10);
+console.log(result1.unwrapOr(0)); // 10
+
+const result2 = new Nothing<number>();
+console.log(result2.unwrapOr(0)); // 0
+```
+
+##### `isJust(): boolean`
 Checks if the value is `Just`.
 
-### `isNothing(): boolean`
+```ts
+import { Just, Nothing } from "holo-fn/maybe";
+
+const result1 = new Just("value");
+console.log(result1.isJust()); // true
+
+const result2 = new Nothing();
+console.log(result2.isJust()); // false
+```
+
+##### `isNothing(): boolean`
 Checks if the value is `Nothing`.
 
-### `match<U>(cases: { just: (value: T) => U; nothing: () => U }): U`
+```ts
+import { Just, Nothing } from "holo-fn/maybe";
+
+const result1 = new Just("value");
+console.log(result1.isNothing()); // false
+
+const result2 = new Nothing();
+console.log(result2.isNothing()); // true
+```
+
+##### `match<U>(cases: { just: (value: T) => U; nothing: () => U }): U`
 Matches the value to execute either the `just` or `nothing` case.
+
+```ts
+import { Just, Nothing } from "holo-fn/maybe";
+
+const result1 = new Just("value").match({
+  just: (v) => `Has value: ${v}`,
+  nothing: () => "No value",
+});
+console.log(result1); // "Has value: value"
+
+const result2 = new Nothing().match({
+  just: (v) => `Has value: ${v}`,
+  nothing: () => "No value",
+});
+console.log(result2); // "No value"
+```
+
+##### `equals(other: Maybe<T>): boolean`
+Compares the values inside `this` and the other, returns `true` if both are `Nothing` or if the values are equal.
+
+```ts
+import { Just, Nothing } from "holo-fn/maybe";
+
+const result1 = new Just("value").chain(v => new Just(v + " modified"));
+
+console.log(result1.equals(new Just("value"))); // false
+console.log(result1.equals(new Just("value modified"))); // true
+
+const result2 = new Just("value").chain(v => new Nothing());
+console.log(result2.equals(new Nothing())); // true
+console.log(result2.equals(new Just("value"))); // false
+```
 
 ## Helpers
 
@@ -118,6 +200,23 @@ const result = pipe(
 );
 
 console.log(result); // "Got hello"
+```
+
+---
+
+### `equalsM`
+
+Curried version of `equals` for `Maybe`. Compares the values inside `this` and the other, returns `true` if both are `Nothing` or if the values are equal.
+
+```ts
+import { equalsM, Just } from 'holo-fn/maybe';
+
+const result = pipe(
+  new Just(10),
+  equalsM(new Just(10))
+);
+
+console.log(result); // true
 ```
 
 ---

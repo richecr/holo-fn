@@ -5,7 +5,7 @@
 ```ts
 import { Right } from 'holo-fn/either'
 
-const result = new Right<number, number>(10)
+const result = new Right(10)
   .map(n => n * 2)
   .unwrapOr(0)
 
@@ -14,26 +14,225 @@ console.log(result); // 20
 
 ## Methods
 
-### `map(fn: (value: R) => U): Either<L, U>`
+##### `map(fn: (value: R) => U): Either<L, U>`
 Maps over the `Right` value. Does nothing for `Left`.
 
-### `mapLeft<M>(fn: (err: L) => M): Either<M, R>`
+```ts
+import { Either, Left, Right } from "holo-fn/either";
+
+const calculate = (a: number, b: number): Either<string, number> => {
+  if (b === 0) {
+    return new Left("Division by zero");
+  }
+
+  return new Right(a / b);
+};
+
+const result1 = calculate(10, 2)
+  .map(n => n * 2)
+  .unwrapOr(0);
+
+console.log(result1); // 10
+
+const result2 = calculate(10, 0)
+  .map(n => n * 2)
+  .unwrapOr(0);
+
+console.log(result2); // 0
+```
+
+##### `mapLeft<M>(fn: (err: L) => M): Either<M, R>`
 Maps over the `Left` value. Does nothing for `Right`.
 
-### `chain(fn: (value: R) => Either<L, U>): Either<L, U>`
+```ts
+import { Either, Left, Right } from "holo-fn/either";
+
+const calculate = (a: number, b: number): Either<string, number> => {
+  if (b === 0) {
+    return new Left("Division by zero");
+  }
+
+  return new Right(a / b);
+};
+
+const result1 = calculate(10, 2)
+  .map(n => n * 2)
+  .mapLeft(e => console.log(`Error: ${e}`)) // No printing here
+  .unwrapOr(0);
+
+console.log(result1); // 10
+
+const result2 = calculate(10, 0)
+  .map(n => n * 2)
+  .mapLeft(e => console.log(`Error: ${e}`)) // Prints "Error: Division by zero"
+  .unwrapOr(0);
+
+console.log(result2); // 0
+```
+
+##### `chain(fn: (value: R) => Either<L, U>): Either<L, U>`
 Chains the transformation if the value is `Right`. Returns `Left` otherwise.
 
-### `unwrapOr(defaultValue: R): R`
+```ts
+import { Either, Left, Right } from "holo-fn/either";
+
+const calculate = (a: number, b: number): Either<string, number> => {
+  if (b === 0) {
+    return new Left("Division by zero");
+  }
+
+  return new Right(a / b);
+};
+
+const result1 = calculate(12, 2)
+  .chain(n => n > 5 ? new Right(n * 2) : new Left("Result is too small"))
+  .map(n => n + 1)
+  .mapLeft(e => console.log(`Error: ${e}`)) // Not run
+  .unwrapOr(0);
+
+
+console.log(result1); // 13
+
+const result2 = calculate(10, 2)
+  .chain(n => n > 5 ? new Right(n * 2) : new Left("Result is too small"))
+  .map(n => n + 1)
+  .mapLeft(e => console.log(`Error: ${e}`)) // Prints "Error: Result is too small"
+  .unwrapOr(0);
+
+console.log(result2); // 0
+```
+
+##### `unwrapOr(defaultValue: R): R`
 Returns the value of `Right`, or the default value for `Left`.
 
-### `isRight(): boolean`
+```ts
+import { Either, Left, Right } from "holo-fn/either";
+
+const calculate = (a: number, b: number): Either<string, number> => {
+  if (b === 0) {
+    return new Left("Division by zero");
+  }
+
+  return new Right(a / b);
+};
+
+const result1 = calculate(12, 2).unwrapOr(0);
+console.log(result1); // 6
+
+const result2 = calculate(10, 0).unwrapOr(-1);
+console.log(result2); // -1
+```
+
+##### `isRight(): boolean`
 Checks if the value is `Right`.
 
-### `isLeft(): boolean`
+```ts
+import { Either, Left, Right } from "holo-fn/either";
+
+const calculate = (a: number, b: number): Either<string, number> => {
+  if (b === 0) {
+    return new Left("Division by zero");
+  }
+
+  return new Right(a / b);
+};
+
+const result1 = calculate(12, 2).isRight();
+console.log(result1); // true
+
+const result2 = calculate(10, 0).isRight();
+console.log(result2); // false
+```
+
+##### `isLeft(): boolean`
 Checks if the value is `Left`.
 
-### `match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T`
+```ts
+import { Either, Left, Right } from "holo-fn/either";
+
+const calculate = (a: number, b: number): Either<string, number> => {
+  if (b === 0) {
+    return new Left("Division by zero");
+  }
+
+  return new Right(a / b);
+};
+
+const result1 = calculate(12, 2).isLeft();
+console.log(result1); // false
+
+const result2 = calculate(10, 0).isLeft();
+console.log(result2); // true
+```
+
+##### `match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T`
 Matches the value to execute either the `left` or `right` case.
+
+```ts
+import { Either, Left, Right } from "holo-fn/either";
+
+const calculate = (a: number, b: number): Either<string, number> => {
+  if (b === 0) {
+    return new Left("Division by zero");
+  }
+
+  return new Right(a / b);
+};
+
+const result1 = calculate(12, 2)
+  .chain(n => n > 5 ? new Right(n * 2) : new Left("Result is too small"))
+  .map(n => n + 1)
+  .match({
+    right: n => n,
+    left: e => {
+      console.log(`Error: ${e}`); // Not run
+      return 0;
+    }
+  });
+
+console.log(result1); // 13
+
+const result2 = calculate(10, 2)
+  .chain(n => n > 5 ? new Right(n * 2) : new Left("Result is too small"))
+  .map(n => n + 1)
+  .match({
+    right: n => n,
+    left: e => {
+      console.log(`Error: ${e}`); // Prints "Error: Result is too small"
+      return 0;
+    }
+  });
+
+console.log(result2); // 0
+```
+
+##### `equals(other: Either<L, R>): boolean`
+Compares `this` to another `Either`, returns `false` if the values inside are different.
+
+```ts
+import { Either, Left, Right } from "holo-fn/either";
+
+const calculate = (a: number, b: number): Either<string, number> => {
+  if (b === 0) {
+    return new Left("Division by zero");
+  }
+
+  return new Right(a / b);
+};
+
+const result1 = calculate(12, 2)
+  .chain(n => n > 5 ? new Right(n * 2) : new Left("Result is too small"))
+  .map(n => n + 1);
+
+console.log(result1.equals(new Right(13))); // true
+
+const result2 = calculate(10, 2)
+  .chain(n => n > 5 ? new Right(n * 2) : new Left("Result is too small"))
+  .map(n => n + 1);
+
+console.log(result2.equals(new Right(0))); // false
+
+```
 
 ## Helpers
 
@@ -183,6 +382,23 @@ const result = pipe(
 );
 
 console.log(result); // "Success: 10"
+```
+
+---
+
+### `equalsE`
+
+Curried version of `equals` for `Either`. Compares `this` to another `Either`, returns `false` if the values inside are different.
+
+```ts
+import { equalsE, Right } from 'holo-fn/either';
+
+const result = pipe(
+  new Right(10),
+  equalsE(new Right(10))
+);
+
+console.log(result); // true
 ```
 
 ---
