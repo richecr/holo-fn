@@ -9,3 +9,4 @@ export { mapLeftE } from "./Either";
 export { chainE } from "./Either";
 export { unwrapOrE } from "./Either";
 export { matchE } from "./Either";
+export { equalsE } from "./Either";

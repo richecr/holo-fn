@@ -9,3 +9,4 @@ export { mapErrR } from "./Result";
 export { chainR } from "./Result";
 export { unwrapOrR } from "./Result";
 export { matchR } from "./Result";
+export { equalsR } from "./Result";

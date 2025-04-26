@@ -6,3 +6,4 @@ export { mapM } from "./Maybe";
 export { chainM } from "./Maybe";
 export { unwrapOrM } from "./Maybe";
 export { matchM } from "./Maybe";
+export { equalsM } from "./Maybe";
