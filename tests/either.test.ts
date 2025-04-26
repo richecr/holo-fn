@@ -53,7 +53,7 @@ describe("Either", () => {
   });
 
   it("Left.unwrapOr returns default value", () => {
-    const result = new Left("fail");
+    const result = new Left<string, number>("fail");
     expect(result.unwrapOr(123)).toBe(123);
   });
 
@@ -262,7 +262,7 @@ describe("Either - Curried Helpers", () => {
 
   it("should apply curried mapLeft function to Left", () => {
     const result = pipe(
-      new Left("error"),
+      new Left<string, string>("error"),
       mapLeftE((err) => `Mapped Error: ${err}`)
     );
 
@@ -281,7 +281,7 @@ describe("Either - Curried Helpers", () => {
 
   it("should apply mapLeft to Left with custom error mapping", () => {
     const result = pipe(
-      new Left("Something went wrong"),
+      new Left<string, string>("Something went wrong"),
       mapLeftE((err) => `Error: ${err}`)
     );
 
