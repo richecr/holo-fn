@@ -85,6 +85,10 @@ import { fromThrowable } from 'holo-fn/result'
 | **Example of `map`**       | `maybeValue.map(value => value * 2)`   | `eitherValue.map(value => value * 2)` | `resultValue.map(value => value * 2)`  |
 | **Example of `chain`**     | `maybeValue.chain(value => fromNullable(value))` | `eitherValue.chain(value => new Right(value))` | `resultValue.chain(value => new Ok(value))` |
 
+## Changelog
+
+All notable changes to this project will be documented in [here](https://richecr.github.io/holo-fn/changelog).
+
 ## 🤝 Contributing
 
 We welcome contributions to **holo-fn**! Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) for detailed instructions on how to run tests, build the library, and contribute.

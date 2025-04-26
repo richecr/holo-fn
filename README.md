@@ -75,6 +75,10 @@ console.log(parsePrice('abc')) // 0
 
 ---
 
+## Changelog
+
+All notable changes to this project will be documented in [here](https://richecr.github.io/holo-fn/changelog).
+
 ## 🤝 Contributing
 
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to run tests, build the library, and contribute.
