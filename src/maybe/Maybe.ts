@@ -6,10 +6,13 @@ export interface Maybe<T> {
   chain<U>(fn: (value: T) => Maybe<U>): Maybe<U>;
   unwrapOr(defaultValue: T): T;
   match<U>(cases: { just: (value: T) => U; nothing: () => U }): U;
+  equals(other: Maybe<T>): boolean;
+
+  extract(): T;
 }
 
 export class Just<T> implements Maybe<T> {
-  constructor(private readonly value: T) {}
+  constructor(private readonly value: T) { }
 
   isJust(): boolean {
     return true;
@@ -33,6 +36,14 @@ export class Just<T> implements Maybe<T> {
 
   match<U>(cases: { just: (value: T) => U; nothing: () => U }): U {
     return cases.just(this.value);
+  }
+
+  equals(other: Maybe<T>): boolean {
+    return other.isJust() ? this.value === other.extract() : false;
+  }
+
+  extract(): T {
+    return this.value;
   }
 }
 
@@ -60,6 +71,14 @@ export class Nothing<T> implements Maybe<T> {
   match<U>(cases: { just: (value: T) => U; nothing: () => U }): U {
     return cases.nothing();
   }
+
+  equals(other: Maybe<T>): boolean {
+    return other.isNothing();
+  }
+
+  extract(): T {
+    return undefined as T;
+  }
 }
 
 export const fromNullable = <T>(value: T | null | undefined): Maybe<T> => {
@@ -86,4 +105,8 @@ export const matchM = <T, U>(
   cases: { just: (value: T) => U; nothing: () => U }
 ) => (maybe: Maybe<T>): U => {
   return maybe.match(cases);
+};
+
+export const equalsM = <T>(other: Maybe<T>) => (maybe: Maybe<T>): boolean => {
+  return maybe.equals(other);
 };

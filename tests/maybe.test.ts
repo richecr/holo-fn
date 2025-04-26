@@ -1,5 +1,6 @@
 import { pipe } from "rambda";
 import { Just, Nothing, fromNullable, chainM, mapM, unwrapOrM, matchM } from "../src/maybe";
+import { equalsM } from "../src/maybe/Maybe";
 
 describe("Maybe", () => {
   it("should map over Just", () => {
@@ -44,6 +45,28 @@ describe("Maybe", () => {
 
     expect(justMsg).toBe("Temos value");
     expect(nothingMsg).toBe("Nada aqui");
+  });
+
+  it("should check equality between Just and Nothing", () => {
+    const just1 = new Just(10);
+    const just2 = new Just(10);
+    const nothing1 = new Nothing<number>();
+    const nothing2 = new Nothing<number>();
+
+    expect(just1.equals(just2)).toBe(true);
+    expect(just1.equals(nothing1)).toBe(false);
+    expect(nothing1.equals(nothing2)).toBe(true);
+  });
+
+  it("should check equality with different values", () => {
+    const just1 = new Just(10);
+    const just2 = new Just(20);
+    const nothing1 = new Nothing<number>();
+    const nothing2 = new Nothing<number>();
+
+    expect(just1.equals(just2)).toBe(false);
+    expect(just1.equals(nothing1)).toBe(false);
+    expect(nothing1.equals(nothing2)).toBe(true);
   });
 });
 
@@ -133,6 +156,29 @@ describe("Maybe - Curried Helpers", () => {
       })
     );
     expect(result).toBe("Nada aqui");
+  });
+
+  it("should check equality with curried equals", () => {
+    const just1 = new Just(10);
+    const just2 = new Just(10);
+    const nothing1 = new Nothing<number>();
+    const nothing2 = new Nothing<number>();
+
+    expect(pipe(just1, equalsM(just2))).toBe(true);
+    expect(pipe(just1, equalsM(nothing1))).toBe(false);
+    expect(pipe(nothing1, equalsM(nothing2))).toBe(true);
+  });
+
+  it("should check extract value from Just", () => {
+    const just = new Just(10);
+    const result = just.extract();
+    expect(result).toBe(10);
+  });
+
+  it("should check extract value from Nothing", () => {
+    const nothing = new Nothing<number>();
+    const result = nothing.extract();
+    expect(result).toBe(undefined);
   });
 });
 
