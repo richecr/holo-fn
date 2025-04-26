@@ -1,5 +1,6 @@
 import { pipe } from "rambda";
 import { Ok, Err, fromThrowable, fromPromise, fromAsync, matchR, mapR, unwrapOrR, chainR, mapErrR } from "../src/result";
+import { equalsR } from "../src/result/Result";
 
 describe("Result", () => {
   it("Ok.map should apply the function", () => {
@@ -68,6 +69,30 @@ describe("Result", () => {
     const result = new Err("fail");
     expect(result.isErr()).toBe(true);
     expect(result.isOk()).toBe(false);
+  });
+
+  it("Ok.equals should be equal to another Ok with same value", () => {
+    const result1 = new Ok(5);
+    const result2 = new Ok(5);
+    expect(result1.equals(result2)).toBe(true);
+  });
+
+  it("Err.equals should be equal to another Err with same error", () => {
+    const result1 = new Err("error");
+    const result2 = new Err("error");
+    expect(result1.equals(result2)).toBe(true);
+  });
+
+  it("Ok.equals should not be equal to Err", () => {
+    const result1 = new Ok(5);
+    const result2 = new Err<number, string>("error");
+    expect(result1.equals(result2)).toBe(false);
+  });
+
+  it("Err.equals should not be equal to Ok", () => {
+    const result1 = new Err("error");
+    const result2 = new Ok<number, string>(5);
+    expect(result1.equals(result2)).toBe(false);
   });
 });
 
@@ -256,5 +281,37 @@ describe("Result - Curried Helpers", () => {
       })
     );
     expect(result).toBe("Error: Something went wrong");
+  });
+
+  it("should equals with another Ok using curried equals", () => {
+    const result = pipe(
+      new Ok(5),
+      equalsR(new Ok(5))
+    );
+    expect(result).toBe(true);
+  });
+
+  it("should not equals with another Ok using curried equals", () => {
+    const result = pipe(
+      new Ok(5),
+      equalsR(new Ok(10))
+    );
+    expect(result).toBe(false);
+  });
+
+  it("should equals with another Err using curried equals", () => {
+    const result = pipe(
+      new Err("Error"),
+      equalsR(new Err("Error"))
+    );
+    expect(result).toBe(true);
+  });
+
+  it("should not equals with another Err using curried equals", () => {
+    const result = pipe(
+      new Err("Error"),
+      equalsR(new Err("Different Error"))
+    );
+    expect(result).toBe(false);
   });
 });

@@ -7,6 +7,9 @@ export interface Result<T, E> {
   chain<U>(fn: (value: T) => Result<U, E>): Result<U, E>;
   unwrapOr(defaultValue: T): T;
   match<U>(cases: { ok: (value: T) => U; err: (err: E) => U }): U;
+  equals(other: Result<T, E>): boolean;
+
+  extract(): T | E;
 }
 
 export class Ok<T, E> implements Result<T, E> {
@@ -39,6 +42,14 @@ export class Ok<T, E> implements Result<T, E> {
   match<U>(cases: { ok: (value: T) => U; err: (err: E) => U }): U {
     return cases.ok(this.value);
   }
+
+  equals(other: Result<T, E>): boolean {
+    return other.isOk() ? this.value === other.extract() : false;
+  }
+
+  extract(): T {
+    return this.value;
+  }
 }
 
 export class Err<T, E> implements Result<T, E> {
@@ -70,6 +81,14 @@ export class Err<T, E> implements Result<T, E> {
 
   match<U>(cases: { ok: (value: T) => U; err: (err: E) => U }): U {
     return cases.err(this.error);
+  }
+
+  equals(other: Result<T, E>): boolean {
+    return other.isErr() ? this.error === other.extract() : false;
+  }
+
+  extract(): E {
+    return this.error;
   }
 }
 
@@ -136,4 +155,10 @@ export const matchR = <T, E, U>(
   cases: { ok: (value: T) => U; err: (err: E) => U }
 ) => (result: Result<T, E>): U => {
   return result.match(cases);
+};
+
+export const equalsR = <T, E>(
+  other: Result<T, E>
+) => (result: Result<T, E>): boolean => {
+  return result.equals(other);
 };
