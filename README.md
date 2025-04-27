@@ -81,7 +81,7 @@ All notable changes to this project will be documented in [here](https://richecr
 
 ## 🤝 Contributing
 
-Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to run tests, build the library, and contribute.
+Please refer to [CONTRIBUTING.md](https://richecr.github.io/holo-fn/contributing) for instructions on how to run tests, build the library, and contribute.
 
 ## 📜 License
 

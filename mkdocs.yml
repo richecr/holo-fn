@@ -1,0 +1,32 @@
+site_name: Holo-Fn
+site_description: A minimal functional library for TypeScript featuring monads like Maybe, Either and Result. Built for composability and Rambda compatibility.
+
+google_analytics:
+  - UA-72514911-3
+  - auto
+theme:
+  name: "material"
+  palette:
+    primary: indigo
+
+repo_name: richecr/holo-fn
+repo_url: https://github.com/richecr/holo-fn
+# edit_uri: ""
+
+nav:
+  - Introduction: "index.md"
+  - Getting Started: "index.md"
+  - Contributing: "contributing.md"
+  - Either:
+    - Overview: "either/index.md"
+  - Maybe:
+    - Overview: "maybe/index.md"
+  - Result:
+    - Overview: "result/index.md"
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      linenums: true
