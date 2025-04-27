@@ -250,12 +250,12 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../getting_started/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Introduction
+    Getting Started
     
   </span>
   
@@ -697,6 +697,28 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -921,7 +943,7 @@
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="c1">// RICH</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="methods">Methods</h2>
-<h5 id="mapfn-value-t-u-maybeu"><code>map(fn: (value: T) =&gt; U): Maybe&lt;U&gt;</code></h5>
+<h3 id="mapfn-value-t-u-maybeu"><code>map(fn: (value: T) =&gt; U): Maybe&lt;U&gt;</code></h3>
 <p>Maps over the <code>Just</code> value. Does nothing for <code>Nothing</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -937,7 +959,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Nothing</span><span class="o">&lt;</span><span class="kt">number</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">map</span><span class="p">((</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="chainfn-value-t-maybeu-maybeu"><code>chain(fn: (value: T) =&gt; Maybe&lt;U&gt;): Maybe&lt;U&gt;</code></h5>
+<h3 id="chainfn-value-t-maybeu-maybeu"><code>chain(fn: (value: T) =&gt; Maybe&lt;U&gt;): Maybe&lt;U&gt;</code></h3>
 <p>Chains the transformation if the value is <code>Just</code>. Returns <code>Nothing</code> otherwise.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -953,7 +975,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Nothing</span><span class="o">&lt;</span><span class="kt">number</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">chain</span><span class="p">((</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="nx">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">));</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="unwrapordefaultvalue-t-t"><code>unwrapOr(defaultValue: T): T</code></h5>
+<h3 id="unwrapordefaultvalue-t-t"><code>unwrapOr(defaultValue: T): T</code></h3>
 <p>Returns the value of <code>Just</code>, or the default value for <code>Nothing</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -969,7 +991,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Nothing</span><span class="o">&lt;</span><span class="kt">number</span><span class="o">&gt;</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="isjust-boolean"><code>isJust(): boolean</code></h5>
+<h3 id="isjust-boolean"><code>isJust(): boolean</code></h3>
 <p>Checks if the value is <code>Just</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -985,7 +1007,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Nothing</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">isJust</span><span class="p">());</span><span class="w"> </span><span class="c1">// false</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="isnothing-boolean"><code>isNothing(): boolean</code></h5>
+<h3 id="isnothing-boolean"><code>isNothing(): boolean</code></h3>
 <p>Checks if the value is <code>Nothing</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1001,7 +1023,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Nothing</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">isNothing</span><span class="p">());</span><span class="w"> </span><span class="c1">// true</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="matchucases-just-value-t-u-nothing-u-u"><code>match&lt;U&gt;(cases: { just: (value: T) =&gt; U; nothing: () =&gt; U }): U</code></h5>
+<h3 id="matchucases-just-value-t-u-nothing-u-u"><code>match&lt;U&gt;(cases: { just: (value: T) =&gt; U; nothing: () =&gt; U }): U</code></h3>
 <p>Matches the value to execute either the <code>just</code> or <code>nothing</code> case.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1029,7 +1051,7 @@
 <span class="p">});</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;No value&quot;</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="equalsother-maybet-boolean"><code>equals(other: Maybe&lt;T&gt;): boolean</code></h5>
+<h3 id="equalsother-maybet-boolean"><code>equals(other: Maybe&lt;T&gt;): boolean</code></h3>
 <p>Compares the values inside <code>this</code> and the other, returns <code>true</code> if both are <code>Nothing</code> or if the values are equal.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>

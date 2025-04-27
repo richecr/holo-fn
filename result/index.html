@@ -14,6 +14,8 @@
         <link rel="prev" href="../maybe/">
       
       
+        <link rel="next" href="../changelog/">
+      
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
@@ -248,12 +250,12 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../getting_started/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Introduction
+    Getting Started
     
   </span>
   
@@ -731,6 +733,28 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -991,7 +1015,7 @@
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="c1">// 11</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="methods">Methods</h2>
-<h5 id="mapfn-value-t-u-resultu-e"><code>map(fn: (value: T) =&gt; U): Result&lt;U, E&gt;</code></h5>
+<h3 id="mapfn-value-t-u-resultu-e"><code>map(fn: (value: T) =&gt; U): Result&lt;U, E&gt;</code></h3>
 <p>Maps over the <code>Ok</code> value. Does nothing for <code>Err</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1007,7 +1031,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Err</span><span class="o">&lt;</span><span class="kt">number</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">).</span><span class="nx">map</span><span class="p">((</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="maperrfn-err-e-f-resultt-f"><code>mapErr(fn: (err: E) =&gt; F): Result&lt;T, F&gt;</code></h5>
+<h3 id="maperrfn-err-e-f-resultt-f"><code>mapErr(fn: (err: E) =&gt; F): Result&lt;T, F&gt;</code></h3>
 <p>Maps over the <code>Err</code> value. Does nothing for <code>Ok</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1023,7 +1047,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Err</span><span class="p">(</span><span class="s2">&quot;Fail&quot;</span><span class="p">).</span><span class="nx">mapErr</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="sb">`Mapped error: </span><span class="si">${</span><span class="nx">e</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="chainfn-value-t-resultu-e-resultu-e"><code>chain(fn: (value: T) =&gt; Result&lt;U, E&gt;): Result&lt;U, E&gt;</code></h5>
+<h3 id="chainfn-value-t-resultu-e-resultu-e"><code>chain(fn: (value: T) =&gt; Result&lt;U, E&gt;): Result&lt;U, E&gt;</code></h3>
 <p>Chains the transformation if the value is <code>Ok</code>. Returns <code>Err</code> otherwise.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1047,7 +1071,7 @@
 <span class="w">  </span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="unwrapordefaultvalue-t-t"><code>unwrapOr(defaultValue: T): T</code></h5>
+<h3 id="unwrapordefaultvalue-t-t"><code>unwrapOr(defaultValue: T): T</code></h3>
 <p>Returns the value of <code>Ok</code>, or the default value for <code>Err</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1063,7 +1087,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Err</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">100</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// 100</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="isok-boolean"><code>isOk(): boolean</code></h5>
+<h3 id="isok-boolean"><code>isOk(): boolean</code></h3>
 <p>Checks if the value is <code>Ok</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1079,7 +1103,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Err</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">isOk</span><span class="p">());</span><span class="w"> </span><span class="c1">// false</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="iserr-boolean"><code>isErr(): boolean</code></h5>
+<h3 id="iserr-boolean"><code>isErr(): boolean</code></h3>
 <p>Checks if the value is <code>Err</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1095,7 +1119,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Err</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">isErr</span><span class="p">());</span><span class="w"> </span><span class="c1">// true</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="matchtcases-ok-value-t-t-err-err-e-t-t"><code>match&lt;T&gt;(cases: { ok: (value: T) =&gt; T; err: (err: E) =&gt; T }): T</code></h5>
+<h3 id="matchtcases-ok-value-t-t-err-err-e-t-t"><code>match&lt;T&gt;(cases: { ok: (value: T) =&gt; T; err: (err: E) =&gt; T }): T</code></h3>
 <p>Matches the value to execute either the <code>ok</code> or <code>err</code> case.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1123,7 +1147,7 @@
 <span class="p">});</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;Failure: Error&quot;</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="equalsother-resultt-e-boolean"><code>equals(other: Result&lt;T, E&gt;): boolean</code></h5>
+<h3 id="equalsother-resultt-e-boolean"><code>equals(other: Result&lt;T, E&gt;): boolean</code></h3>
 <p>Compares <code>this</code> to another <code>Result</code>, returns <code>false</code> if the values inside are different.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>

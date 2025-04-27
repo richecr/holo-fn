@@ -250,12 +250,12 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../getting_started/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Introduction
+    Getting Started
     
   </span>
   
@@ -733,6 +733,28 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -993,7 +1015,7 @@
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span><span class="w"> </span><span class="c1">// 20</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="methods">Methods</h2>
-<h5 id="mapfn-value-r-u-eitherl-u"><code>map(fn: (value: R) =&gt; U): Either&lt;L, U&gt;</code></h5>
+<h3 id="mapfn-value-r-u-eitherl-u"><code>map(fn: (value: R) =&gt; U): Either&lt;L, U&gt;</code></h3>
 <p>Maps over the <code>Right</code> value. Does nothing for <code>Left</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1037,7 +1059,7 @@
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="mapleftmfn-err-l-m-eitherm-r"><code>mapLeft&lt;M&gt;(fn: (err: L) =&gt; M): Either&lt;M, R&gt;</code></h5>
+<h3 id="mapleftmfn-err-l-m-eitherm-r"><code>mapLeft&lt;M&gt;(fn: (err: L) =&gt; M): Either&lt;M, R&gt;</code></h3>
 <p>Maps over the <code>Left</code> value. Does nothing for <code>Right</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1085,7 +1107,7 @@
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="chainfn-value-r-eitherl-u-eitherl-u"><code>chain(fn: (value: R) =&gt; Either&lt;L, U&gt;): Either&lt;L, U&gt;</code></h5>
+<h3 id="chainfn-value-r-eitherl-u-eitherl-u"><code>chain(fn: (value: R) =&gt; Either&lt;L, U&gt;): Either&lt;L, U&gt;</code></h3>
 <p>Chains the transformation if the value is <code>Right</code>. Returns <code>Left</code> otherwise.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1139,7 +1161,7 @@
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="unwrapordefaultvalue-r-r"><code>unwrapOr(defaultValue: R): R</code></h5>
+<h3 id="unwrapordefaultvalue-r-r"><code>unwrapOr(defaultValue: R): R</code></h3>
 <p>Returns the value of <code>Right</code>, or the default value for <code>Left</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1171,7 +1193,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">calculate</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="o">-</span><span class="mf">1</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// -1</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="isright-boolean"><code>isRight(): boolean</code></h5>
+<h3 id="isright-boolean"><code>isRight(): boolean</code></h3>
 <p>Checks if the value is <code>Right</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1203,7 +1225,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">calculate</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">).</span><span class="nx">isRight</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// false</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="isleft-boolean"><code>isLeft(): boolean</code></h5>
+<h3 id="isleft-boolean"><code>isLeft(): boolean</code></h3>
 <p>Checks if the value is <code>Left</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1235,7 +1257,7 @@
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">calculate</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">).</span><span class="nx">isLeft</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// true</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="matchtcases-left-left-l-t-right-right-r-t-t"><code>match&lt;T&gt;(cases: { left: (left: L) =&gt; T; right: (right: R) =&gt; T }): T</code></h5>
+<h3 id="matchtcases-left-left-l-t-right-right-r-t-t"><code>match&lt;T&gt;(cases: { left: (left: L) =&gt; T; right: (right: R) =&gt; T }): T</code></h3>
 <p>Matches the value to execute either the <code>left</code> or <code>right</code> case.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1307,7 +1329,7 @@
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">);</span><span class="w"> </span><span class="c1">// 0</span>
 </code></pre></div></td></tr></table></div>
-<h5 id="equalsother-eitherl-r-boolean"><code>equals(other: Either&lt;L, R&gt;): boolean</code></h5>
+<h3 id="equalsother-eitherl-r-boolean"><code>equals(other: Either&lt;L, R&gt;): boolean</code></h3>
 <p>Compares <code>this</code> to another <code>Either</code>, returns <code>false</code> if the values inside are different.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
