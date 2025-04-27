@@ -14,7 +14,7 @@ console.log(result); // 20
 
 ## Methods
 
-##### `map(fn: (value: R) => U): Either<L, U>`
+### `map(fn: (value: R) => U): Either<L, U>`
 Maps over the `Right` value. Does nothing for `Left`.
 
 ```ts
@@ -41,7 +41,7 @@ const result2 = calculate(10, 0)
 console.log(result2); // 0
 ```
 
-##### `mapLeft<M>(fn: (err: L) => M): Either<M, R>`
+### `mapLeft<M>(fn: (err: L) => M): Either<M, R>`
 Maps over the `Left` value. Does nothing for `Right`.
 
 ```ts
@@ -70,7 +70,7 @@ const result2 = calculate(10, 0)
 console.log(result2); // 0
 ```
 
-##### `chain(fn: (value: R) => Either<L, U>): Either<L, U>`
+### `chain(fn: (value: R) => Either<L, U>): Either<L, U>`
 Chains the transformation if the value is `Right`. Returns `Left` otherwise.
 
 ```ts
@@ -102,7 +102,7 @@ const result2 = calculate(10, 2)
 console.log(result2); // 0
 ```
 
-##### `unwrapOr(defaultValue: R): R`
+### `unwrapOr(defaultValue: R): R`
 Returns the value of `Right`, or the default value for `Left`.
 
 ```ts
@@ -123,7 +123,7 @@ const result2 = calculate(10, 0).unwrapOr(-1);
 console.log(result2); // -1
 ```
 
-##### `isRight(): boolean`
+### `isRight(): boolean`
 Checks if the value is `Right`.
 
 ```ts
@@ -144,7 +144,7 @@ const result2 = calculate(10, 0).isRight();
 console.log(result2); // false
 ```
 
-##### `isLeft(): boolean`
+### `isLeft(): boolean`
 Checks if the value is `Left`.
 
 ```ts
@@ -165,7 +165,7 @@ const result2 = calculate(10, 0).isLeft();
 console.log(result2); // true
 ```
 
-##### `match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T`
+### `match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T`
 Matches the value to execute either the `left` or `right` case.
 
 ```ts
@@ -206,7 +206,7 @@ const result2 = calculate(10, 2)
 console.log(result2); // 0
 ```
 
-##### `equals(other: Either<L, R>): boolean`
+### `equals(other: Either<L, R>): boolean`
 Compares `this` to another `Either`, returns `false` if the values inside are different.
 
 ```ts

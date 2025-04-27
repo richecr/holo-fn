@@ -14,7 +14,7 @@ console.log(name) // RICH
 
 ## Methods
 
-##### `map(fn: (value: T) => U): Maybe<U>`
+### `map(fn: (value: T) => U): Maybe<U>`
 Maps over the `Just` value. Does nothing for `Nothing`.
 
 ```ts
@@ -27,7 +27,7 @@ const result2 = new Nothing<number>().map((n) => n * 2);
 console.log(result2.unwrapOr(0)); // 0
 ```
 
-##### `chain(fn: (value: T) => Maybe<U>): Maybe<U>`
+### `chain(fn: (value: T) => Maybe<U>): Maybe<U>`
 Chains the transformation if the value is `Just`. Returns `Nothing` otherwise.
 
 ```ts
@@ -40,7 +40,7 @@ const result2 = new Nothing<number>().chain((n) => new Just(n * 2));
 console.log(result2.unwrapOr(0)); // 0
 ```
 
-##### `unwrapOr(defaultValue: T): T`
+### `unwrapOr(defaultValue: T): T`
 Returns the value of `Just`, or the default value for `Nothing`.
 
 ```ts
@@ -53,7 +53,7 @@ const result2 = new Nothing<number>();
 console.log(result2.unwrapOr(0)); // 0
 ```
 
-##### `isJust(): boolean`
+### `isJust(): boolean`
 Checks if the value is `Just`.
 
 ```ts
@@ -66,7 +66,7 @@ const result2 = new Nothing();
 console.log(result2.isJust()); // false
 ```
 
-##### `isNothing(): boolean`
+### `isNothing(): boolean`
 Checks if the value is `Nothing`.
 
 ```ts
@@ -79,7 +79,7 @@ const result2 = new Nothing();
 console.log(result2.isNothing()); // true
 ```
 
-##### `match<U>(cases: { just: (value: T) => U; nothing: () => U }): U`
+### `match<U>(cases: { just: (value: T) => U; nothing: () => U }): U`
 Matches the value to execute either the `just` or `nothing` case.
 
 ```ts
@@ -98,7 +98,7 @@ const result2 = new Nothing().match({
 console.log(result2); // "No value"
 ```
 
-##### `equals(other: Maybe<T>): boolean`
+### `equals(other: Maybe<T>): boolean`
 Compares the values inside `this` and the other, returns `true` if both are `Nothing` or if the values are equal.
 
 ```ts

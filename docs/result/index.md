@@ -14,7 +14,7 @@ console.log(result) // 11
 
 ## Methods
 
-##### `map(fn: (value: T) => U): Result<U, E>`
+### `map(fn: (value: T) => U): Result<U, E>`
 Maps over the `Ok` value. Does nothing for `Err`.
 
 ```ts
@@ -27,7 +27,7 @@ const result2 = new Err<number, string>("Error").map((n) => n * 2);
 console.log(result2.unwrapOr(0)); // 0
 ```
 
-##### `mapErr(fn: (err: E) => F): Result<T, F>`
+### `mapErr(fn: (err: E) => F): Result<T, F>`
 Maps over the `Err` value. Does nothing for `Ok`.
 
 ```ts
@@ -40,7 +40,7 @@ const result2 = new Err("Fail").mapErr((e) => `Mapped error: ${e}`);
 console.log(result2.unwrapOr(0)); // 0
 ```
 
-##### `chain(fn: (value: T) => Result<U, E>): Result<U, E>`
+### `chain(fn: (value: T) => Result<U, E>): Result<U, E>`
 Chains the transformation if the value is `Ok`. Returns `Err` otherwise.
 
 ```ts
@@ -57,7 +57,7 @@ const result2 = new Err<number, string>("Error")
 console.log(result2); // 0
 ```
 
-##### `unwrapOr(defaultValue: T): T`
+### `unwrapOr(defaultValue: T): T`
 Returns the value of `Ok`, or the default value for `Err`.
 
 ```ts
@@ -70,7 +70,7 @@ const result2 = new Err("Error").unwrapOr(100);
 console.log(result2); // 100
 ```
 
-##### `isOk(): boolean`
+### `isOk(): boolean`
 Checks if the value is `Ok`.
 
 ```ts
@@ -83,7 +83,7 @@ const result2 = new Err("Error");
 console.log(result2.isOk()); // false
 ```
 
-##### `isErr(): boolean`
+### `isErr(): boolean`
 Checks if the value is `Err`.
 
 ```ts
@@ -96,7 +96,7 @@ const result2 = new Err("Error");
 console.log(result2.isErr()); // true
 ```
 
-##### `match<T>(cases: { ok: (value: T) => T; err: (err: E) => T }): T`
+### `match<T>(cases: { ok: (value: T) => T; err: (err: E) => T }): T`
 Matches the value to execute either the `ok` or `err` case.
 
 ```ts
@@ -115,7 +115,7 @@ const result2 = new Err("Error").match({
 console.log(result2); // "Failure: Error"
 ```
 
-##### `equals(other: Result<T, E>): boolean`
+### `equals(other: Result<T, E>): boolean`
 Compares `this` to another `Result`, returns `false` if the values inside are different.
 
 ```ts

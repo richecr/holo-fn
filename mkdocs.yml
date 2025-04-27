@@ -1,21 +1,62 @@
+# Project information
 site_name: Holo-Fn
 site_description: A minimal functional library for TypeScript featuring monads like Maybe, Either and Result. Built for composability and Rambda compatibility.
+site_author: Rich Ramalho
 
-google_analytics:
-  - UA-72514911-3
-  - auto
-theme:
-  name: "material"
-  palette:
-    primary: indigo
-
+# Repository
 repo_name: richecr/holo-fn
 repo_url: https://github.com/richecr/holo-fn
-# edit_uri: ""
 
+# Copyright
+copyright: Copyright &copy; 2016 - 2025 Rich Ramalho
+
+# Configuration
+theme:
+  name: "material"
+  features:
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+# Additional configuration
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/richecr
+    - icon: fontawesome/brands/npm
+      link: https://www.npmjs.com/package/holo-fn
+    - icon: fontawesome/brands/bluesky
+      link: https://bsky.app/profile/richecr.bsky.social
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/richzinho_ecr
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      linenums: true
+
+# Page tree
 nav:
   - Introduction: "index.md"
-  - Getting Started: "index.md"
+  - Getting Started: "getting_started.md"
   - Contributing: "contributing.md"
   - Either:
     - Overview: "either/index.md"
@@ -23,10 +64,5 @@ nav:
     - Overview: "maybe/index.md"
   - Result:
     - Overview: "result/index.md"
+  - Changelog: "changelog.md"
 
-markdown_extensions:
-  - admonition
-  - codehilite
-  - pymdownx.superfences
-  - pymdownx.highlight:
-      linenums: true
