@@ -1,6 +1,6 @@
 import { pipe } from "rambda";
 import { Ok, Err, fromThrowable, fromPromise, fromAsync, matchR, mapR, unwrapOrR, chainR, mapErrR } from "../src/result";
-import { equalsR } from "../src/result/Result";
+import { equalsR, err, ok } from "../src/result/Result";
 
 describe("Result", () => {
   it("Ok.map should apply the function", () => {
@@ -285,7 +285,7 @@ describe("Result - Curried Helpers", () => {
 
   it("should equals with another Ok using curried equals", () => {
     const result = pipe(
-      new Ok(5),
+      ok(5),
       equalsR(new Ok(5))
     );
     expect(result).toBe(true);
@@ -301,7 +301,7 @@ describe("Result - Curried Helpers", () => {
 
   it("should equals with another Err using curried equals", () => {
     const result = pipe(
-      new Err("Error"),
+      err("Error"),
       equalsR(new Err("Error"))
     );
     expect(result).toBe(true);

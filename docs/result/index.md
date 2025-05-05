@@ -135,6 +135,32 @@ console.log(result2.equals(new Ok(10))); // false
 
 ## Helpers
 
+### `ok<T, E>(value: T): Result<T, E>`
+
+Creates an `Ok` value, representing the success of an operation with a value.
+
+```ts
+import { ok } from 'holo-fn/result';
+
+const resultValue = ok(10);
+console.log(resultValue.unwrapOr(0)); // 10
+```
+
+---
+
+### `err<T, E>(error: E): Result<T, E>`
+
+Creates an `Err` value, representing a failed operation with an value.
+
+```ts
+import { err } from 'holo-fn/result';
+
+const resultValue = err("Error");
+console.log(resultValue.unwrapOr("No error")); // "No error"
+```
+
+---
+
 ### `fromThrowable(fn, onError?)`
 
 Wraps a synchronous function in a `Result`.
@@ -152,6 +178,8 @@ console.log(result) // _Ok { value: { name: 'John', age: 30 } }
 - Returns `Ok<T>` if `fn()` succeeds
 - Returns `Err<E>` if it throws, using `onError` if provided
 
+---
+
 ### `fromPromise(promise, onError?)`
 
 Wraps a `Promise<T>` into a `Promise<Result<T, E>>`.
@@ -166,6 +194,8 @@ console.log(result) // _Err { error: 'Network error' }
 
 - Resolves to `Ok<T>` on success
 - Resolves to `Err<E>` on failure
+
+---
 
 ### `fromAsync(fn, onError?)`
 

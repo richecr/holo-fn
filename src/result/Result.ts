@@ -162,3 +162,8 @@ export const equalsR = <T, E>(
 ) => (result: Result<T, E>): boolean => {
   return result.equals(other);
 };
+
+const ok = <T, E>(value: T): Result<T, E> => new Ok(value);
+const err = <T, E>(error: E): Result<T, E> => new Err(error);
+
+export { ok, err };

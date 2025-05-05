@@ -1,12 +1,16 @@
-export { Result } from "./Result";
-export { Ok } from "./Result";
-export { Err } from "./Result";
-export { fromThrowable } from "./Result";
-export { fromPromise } from "./Result";
-export { fromAsync } from "./Result";
-export { mapR } from "./Result";
-export { mapErrR } from "./Result";
-export { chainR } from "./Result";
-export { unwrapOrR } from "./Result";
-export { matchR } from "./Result";
-export { equalsR } from "./Result";
+export {
+  Result,
+  Ok,
+  Err,
+  ok,
+  err,
+  fromThrowable,
+  fromPromise,
+  fromAsync,
+  mapR,
+  mapErrR,
+  chainR,
+  unwrapOrR,
+  matchR,
+  equalsR,
+} from "./Result";
