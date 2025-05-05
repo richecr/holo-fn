@@ -110,3 +110,8 @@ export const matchM = <T, U>(
 export const equalsM = <T>(other: Maybe<T>) => (maybe: Maybe<T>): boolean => {
   return maybe.equals(other);
 };
+
+const just = <T>(value: T): Maybe<T> => new Just(value);
+const nothing = <T = never>() => new Nothing<T>();
+
+export { just, nothing };

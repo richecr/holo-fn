@@ -116,6 +116,32 @@ console.log(result2.equals(new Just("value"))); // false
 
 ## Helpers
 
+### `just(value: T): Maybe<T>`
+
+Creates a `Just` value with the given value, representing the presence of a value.
+
+```ts
+import { just } from 'holo-fn/maybe';
+
+const maybeValue = just('Hello');
+console.log(maybeValue.unwrapOr('Default')); // 'Hello'
+```
+
+---
+
+### `nothing<T = never>(): Maybe<T>`
+
+Creates a `Nothing` value, representing the absence of a value.
+
+```ts
+import { nothing } from 'holo-fn/maybe';
+
+const maybeValue = nothing();
+console.log(maybeValue.unwrapOr('Default')); // 'Default'
+```
+
+---
+
 ### `fromNullable(value)`
 
 Creates a `Maybe` from a value that might be `null` or `undefined`.

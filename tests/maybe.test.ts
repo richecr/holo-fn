@@ -1,6 +1,6 @@
 import { pipe } from "rambda";
 import { Just, Nothing, fromNullable, chainM, mapM, unwrapOrM, matchM } from "../src/maybe";
-import { equalsM } from "../src/maybe/Maybe";
+import { equalsM, just, nothing } from "../src/maybe/Maybe";
 
 describe("Maybe", () => {
   it("should map over Just", () => {
@@ -9,12 +9,12 @@ describe("Maybe", () => {
   });
 
   it("Just.isNothing() deve retornar false", () => {
-    const result = new Just("x");
+    const result = just("x");
     expect(result.isNothing()).toBe(false);
   });
 
   it("should return default for Nothing", () => {
-    const result = new Nothing<number>().map((x) => x + 5);
+    const result = nothing<number>().map((x) => x + 5);
     expect(result.unwrapOr(42)).toBe(42);
   });
 
