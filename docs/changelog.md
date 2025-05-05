@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[unreleased]]() - No date
+
+### Added
+- New helpers functions:
+  - Maybe:
+    - just(value: T): Maybe<T>: Creates a `Just` value representing the presence of a value.
+    - nothing<T = never>(): Maybe<T>: Creates a `Nothing` value representing the absence of a value.
+  - Either:
+    - left<L, R = never>(value: L): Either<L, R>: Creates a `Left` value representing a failure or error.
+    - right<L, R>(value: R): Either<L, R>: Creates a `Right` value representing a success.
+  - Result:
+    - ok<T, E>(value: T): Result<T, E>: Creates an `Ok` value representing the success of an operation with a value.
+    - err<T, E>(error: E): Result<T, E>: Creates an `Err` value representing a failure of an operation with an error.
+  
+---
+
 ## [[0.2.0]](https://github.com/richecr/holo-fn/releases/tag/v0.2.0) - 2025-04-26
 
 ### Added
