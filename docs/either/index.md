@@ -236,6 +236,32 @@ console.log(result2.equals(new Right(0))); // false
 
 ## Helpers
 
+### `left<L, R = never>(value: L): Either<L, R>`
+
+Creates a `Left` value, representing an error or failure in an operation.
+
+```ts
+import { left } from 'holo-fn/either';
+
+const eitherValue = left("Error");
+console.log(eitherValue.unwrapOr("No error")); // "No error"
+```
+
+---
+
+### `right<L, R>(value: R): Either<L, R>`
+
+Creates a `Right` value, representing a success in an operation.
+
+```ts
+import { right } from 'holo-fn/either';
+
+const eitherValue = right(10);
+console.log(eitherValue.unwrapOr(0)); // 10
+```
+
+---
+
 ### `tryCatch(fn, onError?)`
 
 Wraps a potentially throwing function in an `Either`.

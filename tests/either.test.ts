@@ -1,6 +1,6 @@
 import { pipe } from "rambda";
 import { chainE, fromAsync, fromPromise, Left, mapE, mapLeftE, matchE, Right, tryCatch, unwrapOrE } from "../src/either";
-import { equalsE } from "../src/either/Either";
+import { equalsE, left, right } from "../src/either/Either";
 
 describe("Either", () => {
   it("Right.map applies function to value", () => {
@@ -228,7 +228,7 @@ describe("Either - Curried Helpers", () => {
 
   it("should chain Right values with curried chain", () => {
     const result = pipe(
-      new Right(2),
+      right(2),
       chainE((x) => new Right(x * 10)),
       unwrapOrE(0)
     );
@@ -262,7 +262,7 @@ describe("Either - Curried Helpers", () => {
 
   it("should apply curried mapLeft function to Left", () => {
     const result = pipe(
-      new Left<string, string>("error"),
+      left<string, string>("error"),
       mapLeftE((err) => `Mapped Error: ${err}`)
     );
 

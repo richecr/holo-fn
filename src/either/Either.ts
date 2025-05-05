@@ -163,3 +163,8 @@ export const equalsE = <L, R>(
 ) => (either: Either<L, R>): boolean => {
   return either.equals(other);
 };
+
+const left = <L, R = never>(value: L): Either<L, R> => new Left(value);
+const right = <L, R>(value: R): Either<L, R> => new Right(value);
+
+export { left, right };
