@@ -521,6 +521,24 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#leftl-r-nevervalue-l-eitherl-r" class="md-nav__link">
+    <span class="md-ellipsis">
+      left&lt;L, R = never&gt;(value: L): Either&lt;L, R&gt;
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rightl-rvalue-r-eitherl-r" class="md-nav__link">
+    <span class="md-ellipsis">
+      right&lt;L, R&gt;(value: R): Either&lt;L, R&gt;
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#trycatchfn-onerror" class="md-nav__link">
     <span class="md-ellipsis">
       tryCatch(fn, onError?)
@@ -917,6 +935,24 @@
   
     <nav class="md-nav" aria-label="Helpers">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#leftl-r-nevervalue-l-eitherl-r" class="md-nav__link">
+    <span class="md-ellipsis">
+      left&lt;L, R = never&gt;(value: L): Either&lt;L, R&gt;
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rightl-rvalue-r-eitherl-r" class="md-nav__link">
+    <span class="md-ellipsis">
+      right&lt;L, R&gt;(value: R): Either&lt;L, R&gt;
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#trycatchfn-onerror" class="md-nav__link">
@@ -1414,6 +1450,28 @@
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">equals</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">Right</span><span class="p">(</span><span class="mf">0</span><span class="p">)));</span><span class="w"> </span><span class="c1">// false</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="helpers">Helpers</h2>
+<h3 id="leftl-r-nevervalue-l-eitherl-r"><code>left&lt;L, R = never&gt;(value: L): Either&lt;L, R&gt;</code></h3>
+<p>Creates a <code>Left</code> value, representing an error or failure in an operation.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">left</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/either&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">eitherValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">left</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">eitherValue</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="s2">&quot;No error&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// &quot;No error&quot;</span>
+</code></pre></div></td></tr></table></div>
+<hr />
+<h3 id="rightl-rvalue-r-eitherl-r"><code>right&lt;L, R&gt;(value: R): Either&lt;L, R&gt;</code></h3>
+<p>Creates a <code>Right</code> value, representing a success in an operation.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">right</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/either&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">eitherValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">right</span><span class="p">(</span><span class="mf">10</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">eitherValue</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 10</span>
+</code></pre></div></td></tr></table></div>
+<hr />
 <h3 id="trycatchfn-onerror"><code>tryCatch(fn, onError?)</code></h3>
 <p>Wraps a potentially throwing function in an <code>Either</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>

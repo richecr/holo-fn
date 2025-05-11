@@ -586,6 +586,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#unreleased-no-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      [unreleased] - No date
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="[unreleased] - No date">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#020-2025-04-26" class="md-nav__link">
     <span class="md-ellipsis">
       [0.2.0] - 2025-04-26
@@ -596,7 +620,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -629,7 +653,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added_1" class="md-nav__link">
+  <a href="#added_2" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -677,6 +701,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#unreleased-no-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      [unreleased] - No date
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="[unreleased] - No date">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#020-2025-04-26" class="md-nav__link">
     <span class="md-ellipsis">
       [0.2.0] - 2025-04-26
@@ -687,7 +735,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -720,7 +768,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added_1" class="md-nav__link">
+  <a href="#added_2" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -756,8 +804,29 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <hr />
-<h2 id="020-2025-04-26"><a href="https://github.com/richecr/holo-fn/releases/tag/v0.2.0">[0.2.0]</a> - 2025-04-26</h2>
+<h2 id="unreleased-no-date"><a href="">[unreleased]</a> - No date</h2>
 <h3 id="added">Added</h3>
+<ul>
+<li>New helpers functions:</li>
+<li>Maybe:<ul>
+<li>just(value: T): Maybe<T>: Creates a <code>Just</code> value representing the presence of a value.</li>
+<li>nothing<T = never>(): Maybe<T>: Creates a <code>Nothing</code> value representing the absence of a value.</li>
+</ul>
+</li>
+<li>Either:<ul>
+<li>left<L, R = never>(value: L): Either<L, R>: Creates a <code>Left</code> value representing a failure or error.</li>
+<li>right<L, R>(value: R): Either<L, R>: Creates a <code>Right</code> value representing a success.</li>
+</ul>
+</li>
+<li>Result:<ul>
+<li>ok<T, E>(value: T): Result<T, E>: Creates an <code>Ok</code> value representing the success of an operation with a value.</li>
+<li>err<T, E>(error: E): Result<T, E>: Creates an <code>Err</code> value representing a failure of an operation with an error.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="020-2025-04-26"><a href="https://github.com/richecr/holo-fn/releases/tag/v0.2.0">[0.2.0]</a> - 2025-04-26</h2>
+<h3 id="added_1">Added</h3>
 <ul>
 <li>Introduced the <code>equals</code> method for <strong>Maybe</strong>, <strong>Either</strong>, and <strong>Result</strong> types to compare instances of these types based on their internal values.</li>
 <li>Added <strong>curried functions</strong> for <code>equals</code> to allow for easier composition and usage:</li>
@@ -773,7 +842,7 @@
 </ul>
 <hr />
 <h2 id="010-2025-04-23"><a href="https://github.com/richecr/holo-fn/releases/tag/v0.1.0">[0.1.0]</a> - 2025-04-23</h2>
-<h3 id="added_1">Added</h3>
+<h3 id="added_2">Added</h3>
 <ul>
 <li>Initial release of <strong>holo-fn</strong> with core monads: <code>Maybe</code>, <code>Either</code>, and <code>Result</code>.</li>
 <li><code>Maybe</code> monad: <code>Just</code>, <code>Nothing</code>, and helper functions like <code>fromNullable</code>.</li>
