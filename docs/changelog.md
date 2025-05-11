@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [[unreleased]]() - No date
+## [[0.3.0]](https://github.com/richecr/holo-fn/releases/tag/v0.3.0) - 2025-05-10
 
 ### Added
 - New helpers functions:
