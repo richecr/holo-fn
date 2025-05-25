@@ -14,7 +14,8 @@
   "scripts": {
     "build": "bun run build.ts",
     "lint": "eslint",
-    "test": "bun test --coverage"
+    "test": "bun test --coverage",
+    "coverage:html": "genhtml --output-directory coverage-html coverage/lcov.info"
   },
   "type": "module",
   "main": "dist/index.js",

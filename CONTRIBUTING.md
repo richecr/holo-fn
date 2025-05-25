@@ -25,6 +25,12 @@ You can run the tests using Jest to ensure everything works as expected:
 bun run test
 ```
 
+To convert the coverage into an HTML report, run:
+
+```bash
+bun run coverage:html
+```
+
 ---
 
 ## 📦 Building

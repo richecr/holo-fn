@@ -6,10 +6,41 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [[1.0.0]](https://github.com/richecr/holo-fn/releases/tag/v1.0.0) - Unreleased
+## [[1.0.0]](https://github.com/richecr/holo-fn/releases/tag/v1.0.0) - 2025-06-25
 
 ### Added
-- 
+- First stable release of `holo-fn` with core monads: `Maybe`, `Either`, and `Result`.
+- `Maybe` monad:
+  - `Just`, `Nothing`, and helper functions like `fromNullable`.
+  - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
+- `Either` monad:
+  - `Left`, 'Right', and helper functions like `tryCatch`, `fromPromise`, `fromAsync`.
+  - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
+- `Result` monad:
+  - `Ok`, `Err`, and helper functions like `fromThrowable`, `fromPromise`, `fromAsync`.
+  - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
+- Introduced `curried functions` for `map`, `chain`, `unwrapOr`, and `match` for each monad:
+  - `mapE`, `chainE`, `unwrapOrE`, and `matchE` for `Either`.
+  - `mapM`, `chainM`, `unwrapOrM`, and `matchM` for `Maybe`.
+  - `mapR`, `chainR`, `unwrapOrR`, and `matchR` for `Result`.
+- `Export restructuring`:
+  - Now, monads are imported from their specific files, instead of a global import.
+  - Example:
+  ```ts
+  import { M, E, R } from "holo-fn";
+  import { fromNullable } from 'holo-fn/maybe';
+  import { tryCatch } from 'holo-fn/either';
+  import { fromThrowable } from 'holo-fn/result';
+  ```
+
+### Changed
+- `Migration to Bun`: The library is now compatible with `Bun` runtime, offering better performance and faster execution.
+- Reorganized the imports for better modularization and performance.
+  - Now, to use specific monads and functions, you must import from their respective files.
+
+### Fixed
+- Fixed `bug` related to circular imports.
+- Optimized the library for faster loading and reduced bundle size.
 
 ---
 
