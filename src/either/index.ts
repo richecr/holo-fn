@@ -118,37 +118,37 @@ export const fromAsync = async <L, R>(fn: () => Promise<R>, onError?: (e: unknow
   }
 };
 
-export const mapE =
+export const map =
   <L, R, U>(fn: (value: R) => U) =>
   (either: Either<L, R>): Either<L, U> => {
     return either.map(fn);
   };
 
-export const mapLeftE =
+export const mapLeft =
   <L, M, R>(fn: (err: L) => M) =>
   (either: Either<L, R>): Either<M, R> => {
     return either.mapLeft(fn);
   };
 
-export const chainE =
+export const chain =
   <L, R, U>(fn: (value: R) => Either<L, U>) =>
   (either: Either<L, R>): Either<L, U> => {
     return either.chain(fn);
   };
 
-export const unwrapOrE =
+export const unwrapOr =
   <L, R>(defaultValue: R) =>
   (either: Either<L, R>): R => {
     return either.unwrapOr(defaultValue);
   };
 
-export const matchE =
+export const match =
   <L, R, T>(cases: { left: (left: L) => T; right: (right: R) => T }) =>
   (either: Either<L, R>): T => {
     return either.match(cases);
   };
 
-export const equalsE =
+export const equals =
   <L, R>(other: Either<L, R>) =>
   (either: Either<L, R>): boolean => {
     return either.equals(other);

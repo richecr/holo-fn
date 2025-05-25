@@ -333,16 +333,16 @@ console.log(result) // _Left { value: 'Request failed' }
 
 ## Curried Helpers
 
-### `mapE`
+### `map`
 
 Curried version of `map` for `Either`. This allows functional composition with `pipe`.
 
 ```ts
-import { mapE, Right } from 'holo-fn/either';
+import { map, Right } from 'holo-fn/either';
 
 const result = pipe(
   new Right(5),
-  mapE((x) => x * 2),
+  map((x) => x * 2),
   (res) => res.unwrapOr(0)
 );
 
@@ -351,16 +351,16 @@ console.log(result); // 10
 
 ---
 
-### `mapLeftE`
+### `mapLeft`
 
 Curried version of `mapLeft` for `Either`. This allows mapping over the Left value in a functional pipeline.
 
 ```ts
-import { Left, mapLeftE } from 'holo-fn/either';
+import { Left, mapLeft } from 'holo-fn/either';
 
 const result = pipe(
   new Left<string, string>("Error"),
-  mapLeftE((e) => `Mapped error: ${e}`),
+  mapLeft((e) => `Mapped error: ${e}`),
   (res) => res.unwrapOr("No value") 
 );
 
@@ -369,16 +369,16 @@ console.log(result); // "No value"
 
 ---
 
-### `chainE`
+### `chain`
 
 Curried version of `chain` for `Either`. This allows chaining transformations on the **Right** value of `Either`, using a functional composition style.
 
 ```ts
-import { Right, chainE } from 'holo-fn/either';
+import { Right, chain } from 'holo-fn/either';
 
 const result = pipe(
   new Right(5),
-  chainE((x) => new Right(x + 5)),
+  chain((x) => new Right(x + 5)),
   (res) => res.unwrapOr(0)
 );
 
@@ -387,16 +387,16 @@ console.log(result); // 10
 
 ---
 
-### `unwrapOrE`
+### `unwrapOr`
 
 Curried version of `unwrapOr` for `Either`. This provides a cleaner way to unwrap the value in a `Either`, returning a default value if it's `Left`.
 
 ```ts
-import { Left, unwrapOrE } from 'holo-fn/either';
+import { Left, unwrapOr } from 'holo-fn/either';
 
 const result = pipe(
   new Left<string, string>("Fail"),
-  unwrapOrE("No value")
+  unwrapOr("No value")
 );
 
 console.log(result); // "No value"
@@ -404,16 +404,16 @@ console.log(result); // "No value"
 
 ---
 
-### `matchE`
+### `match`
 
 Curried version of `match` for `Either`. This allows handling `Left` and `Right` in a functional way.
 
 ```ts
-import { matchE, Right } from 'holo-fn/either';
+import { match, Right } from 'holo-fn/either';
 
 const result = pipe(
   new Right<string, number>(10),
-  matchE({
+  match({
     left: (e) => `Error: ${e}`,
     right: (v) => `Success: ${v}`
   })
@@ -424,16 +424,16 @@ console.log(result); // "Success: 10"
 
 ---
 
-### `equalsE`
+### `equals`
 
 Curried version of `equals` for `Either`. Compares `this` to another `Either`, returns `false` if the values inside are different.
 
 ```ts
-import { equalsE, Right } from 'holo-fn/either';
+import { equals, Right } from 'holo-fn/either';
 
 const result = pipe(
   new Right(10),
-  equalsE(new Right(10))
+  equals(new Right(10))
 );
 
 console.log(result); // true

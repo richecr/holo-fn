@@ -216,16 +216,16 @@ console.log(result) // _Err { error: 'Request failed' }
 
 ## Curried Helpers
 
-### `mapR`
+### `map`
 
 Curried version of the `map` function for `Result`. This allows you to apply a transformation to the **Ok** value in a more functional style.
 
 ```ts
-import { mapR, Ok } from 'holo-fn/result';
+import { map, Ok } from 'holo-fn/result';
 
 const result = pipe(
   new Ok(5),
-  mapR((x) => x * 2),
+  map((x) => x * 2),
   (res) => res.unwrapOr(0)
 );
 
@@ -234,12 +234,12 @@ console.log(result); // 10
 
 ---
 
-### `mapErrR`
+### `mapErr`
 
 Curried version of `mapErr` for `Result`. This allows handling errors in a more functional composition style.
 
 ```ts
-import { Err, mapErrR, Ok, Result } from 'holo-fn/result';
+import { Err, mapErr, Ok, Result } from 'holo-fn/result';
 
 const getValue = (value: string | null): Result<string, string> => {
     if (value === null) {
@@ -250,7 +250,7 @@ const getValue = (value: string | null): Result<string, string> => {
 
 const result = pipe(
   getValue(null),
-  mapErrR((e) => `Mapped error: ${e}`),
+  mapErr((e) => `Mapped error: ${e}`),
   (res) => res.unwrapOr("No value")
 );
 
@@ -259,16 +259,16 @@ console.log(result); // "No value"
 
 ---
 
-### `chainR`
+### `chain`
 
 Curried version of `chain` for `Result`. This allows you to chain transformations on the Ok value in a functional pipeline.
 
 ```ts
-import { chainR, Ok } from 'holo-fn/result';
+import { chain, Ok } from 'holo-fn/result';
 
 const result = pipe(
   new Ok(10),
-  chainR((x) => new Ok(x + 5)),
+  chain((x) => new Ok(x + 5)),
   (res) => res.unwrapOr(0)
 );
 
@@ -277,16 +277,16 @@ console.log(result); // 15
 
 ---
 
-### `unwrapOrR`
+### `unwrapOr`
 
 Curried version of `unwrapOr` for `Result`. This provides a cleaner way to unwrap the value in a `Result`, returning a default value if it's `Err`.
 
 ```ts
-import { Ok, unwrapOrR } from 'holo-fn/result';
+import { Ok, unwrapOr } from 'holo-fn/result';
 
 const result = pipe(
   new Ok(42),
-  unwrapOrR(0)
+  unwrapOr(0)
 );
 
 console.log(result); // 42
@@ -294,16 +294,16 @@ console.log(result); // 42
 
 ---
 
-### `matchR`
+### `match`
 
 Curried version of `match` for `Result`. This allows you to handle both `Ok` and `Err` in a functional way, providing a clean way to handle both cases.
 
 ```ts
-import { matchR, Ok } from 'holo-fn/result';
+import { match, Ok } from 'holo-fn/result';
 
 const result = pipe(
   new Ok(10),
-  matchR({
+  match({
     ok: (v) => `Success: ${v}`,
     err: (e) => `Error: ${e}`
   })
@@ -314,23 +314,23 @@ console.log(result); // "Success: 10"
 
 ---
 
-### `equalsR`
+### `equals`
 
 Curried version of `equals` for `Result`. Compares `this` to another `Result`, returns `false` if the values inside are different.
 
 ```ts
-import { equalsR, Ok } from 'holo-fn/result';
+import { equals, Ok } from 'holo-fn/result';
 
 const result1 = pipe(
   new Ok(10),
-  equalsR(new Ok(10)),
+  equals(new Ok(10)),
 );
 
 console.log(result1); // true
 
 const result2 = pipe(
   new Ok(10),
-  equalsR(new Ok(11)),
+  equals(new Ok(11)),
 );
 
 console.log(result2); // false

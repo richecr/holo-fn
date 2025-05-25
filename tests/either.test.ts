@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'bun:test';
 import { pipe } from 'rambda';
 import {
-  chainE,
-  equalsE,
+  chain,
+  equals,
   fromAsync,
   fromPromise,
   Left,
   left,
-  mapE,
-  mapLeftE,
-  matchE,
+  map,
+  mapLeft,
+  match,
   Right,
   right,
   tryCatch,
-  unwrapOrE,
+  unwrapOr,
 } from '../src/either';
 
 describe('Either', () => {
@@ -216,8 +216,8 @@ describe('Either - Curried Helpers', () => {
   it('should apply curried map function to Right', () => {
     const result = pipe(
       new Right(10),
-      mapE((n) => n * 2),
-      unwrapOrE(0)
+      map((n) => n * 2),
+      unwrapOr(0)
     );
     expect(result).toBe(20);
   });
@@ -225,8 +225,8 @@ describe('Either - Curried Helpers', () => {
   it('should not apply map to Left (curried)', () => {
     const result = pipe(
       new Left<string, number>('Error'),
-      mapE((n) => n * 2),
-      unwrapOrE(0)
+      map((n) => n * 2),
+      unwrapOr(0)
     );
     expect(result).toBe(0);
   });
@@ -234,8 +234,8 @@ describe('Either - Curried Helpers', () => {
   it('should chain Right values with curried chain', () => {
     const result = pipe(
       right(2),
-      chainE((x) => new Right(x * 10)),
-      unwrapOrE(0)
+      chain((x) => new Right(x * 10)),
+      unwrapOr(0)
     );
     expect(result).toBe(20);
   });
@@ -243,26 +243,26 @@ describe('Either - Curried Helpers', () => {
   it('should return Left when chaining from Left (curried)', () => {
     const result = pipe(
       new Left<string, number>('Error'),
-      chainE((x) => new Right(x * 10)),
-      unwrapOrE(0)
+      chain((x) => new Right(x * 10)),
+      unwrapOr(0)
     );
     expect(result).toBe(0);
   });
 
   it('should unwrapOr with default value using curried unwrapOr', () => {
-    const result = pipe(new Right(10), unwrapOrE(42));
+    const result = pipe(new Right(10), unwrapOr(42));
     expect(result).toBe(10);
   });
 
   it('should return default value for Left using curried unwrapOr', () => {
-    const result = pipe(new Left<string, number>('Error'), unwrapOrE(42));
+    const result = pipe(new Left<string, number>('Error'), unwrapOr(42));
     expect(result).toBe(42);
   });
 
   it('should apply curried mapLeft function to Left', () => {
     const result = pipe(
       left<string, string>('error'),
-      mapLeftE((err) => `Mapped Error: ${err}`)
+      mapLeft((err) => `Mapped Error: ${err}`)
     );
 
     expect(result.unwrapOr('default')).toBe('default');
@@ -272,7 +272,7 @@ describe('Either - Curried Helpers', () => {
   it('should do nothing when mapping Left on Right', () => {
     const result = pipe(
       new Right(42),
-      mapLeftE((err) => `Mapped Error: ${err}`)
+      mapLeft((err) => `Mapped Error: ${err}`)
     );
 
     expect(result.unwrapOr(0)).toBe(42);
@@ -281,7 +281,7 @@ describe('Either - Curried Helpers', () => {
   it('should apply mapLeft to Left with custom error mapping', () => {
     const result = pipe(
       new Left<string, string>('Something went wrong'),
-      mapLeftE((err) => `Error: ${err}`)
+      mapLeft((err) => `Error: ${err}`)
     );
 
     expect(result.unwrapOr('fallback')).toBe('fallback');
@@ -291,7 +291,7 @@ describe('Either - Curried Helpers', () => {
   it('should not apply mapLeft to Right', () => {
     const result = pipe(
       new Right(100),
-      mapLeftE((err) => `Error: ${err}`)
+      mapLeft((err) => `Error: ${err}`)
     );
 
     expect(result.unwrapOr(0)).toBe(100);
@@ -300,7 +300,7 @@ describe('Either - Curried Helpers', () => {
   it('should match Right with curried match', () => {
     const result = pipe(
       new Right(7),
-      matchE({
+      match({
         left: () => 'error',
         right: (n) => `value is ${n}`,
       })
@@ -311,7 +311,7 @@ describe('Either - Curried Helpers', () => {
   it('should match Left with curried match', () => {
     const result = pipe(
       new Left<string, number>('Bad Request'),
-      matchE({
+      match({
         left: (e) => `error: ${e}`,
         right: () => 'success',
       })
@@ -320,32 +320,32 @@ describe('Either - Curried Helpers', () => {
   });
 
   it('should return true for equal Right values with curried equals', () => {
-    const result = pipe(new Right(42), equalsE(new Right(42)));
+    const result = pipe(new Right(42), equals(new Right(42)));
     expect(result).toBe(true);
   });
 
   it('should return false for different Right values with curried equals', () => {
-    const result = pipe(new Right(42), equalsE(new Right(43)));
+    const result = pipe(new Right(42), equals(new Right(43)));
     expect(result).toBe(false);
   });
 
   it('should return true for equal Left values with curried equals', () => {
-    const result = pipe(new Left('error'), equalsE(new Left('error')));
+    const result = pipe(new Left('error'), equals(new Left('error')));
     expect(result).toBe(true);
   });
 
   it('should return false for different Left values with curried equals', () => {
-    const result = pipe(new Left('error'), equalsE(new Left('different error')));
+    const result = pipe(new Left('error'), equals(new Left('different error')));
     expect(result).toBe(false);
   });
 
   it('should return false for different Left and Right values with curried equals', () => {
-    const result = pipe(new Left<string, number>('error'), equalsE(new Right(42)));
+    const result = pipe(new Left<string, number>('error'), equals(new Right(42)));
     expect(result).toBe(false);
   });
 
   it('should return false for different Right and Left values with curried equals', () => {
-    const result = pipe(new Right<string, number>(42), equalsE(new Left('error')));
+    const result = pipe(new Right<string, number>(42), equals(new Left('error')));
     expect(result).toBe(false);
   });
 });

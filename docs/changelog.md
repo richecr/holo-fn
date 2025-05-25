@@ -20,9 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - `Ok`, `Err`, and helper functions like `fromThrowable`, `fromPromise`, `fromAsync`.
   - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
 - Introduced `curried functions` for `map`, `chain`, `unwrapOr`, and `match` for each monad:
-  - `mapE`, `chainE`, `unwrapOrE`, and `matchE` for `Either`.
-  - `mapM`, `chainM`, `unwrapOrM`, and `matchM` for `Maybe`.
-  - `mapR`, `chainR`, `unwrapOrR`, and `matchR` for `Result`.
+  - `map`, `chain`, `unwrapOr`, and `match` for `Either`, `Maybe` and `Result`.
 - `Export restructuring`:
   - Now, monads are imported from their specific files, instead of a global import.
   - Example:

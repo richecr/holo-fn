@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'bun:test';
 import { pipe } from 'rambda';
 import {
-  chainR,
-  equalsR,
+  chain,
+  equals,
   Err,
   err,
   fromAsync,
   fromPromise,
   fromThrowable,
-  mapErrR,
-  mapR,
-  matchR,
+  map,
+  mapErr,
+  match,
   Ok,
   ok,
-  unwrapOrR,
+  unwrapOr,
 } from '../src/result';
 
 describe('Result', () => {
@@ -202,8 +202,8 @@ describe('Result - Curried Helpers', () => {
   it('should apply curried map function to Ok', () => {
     const result = pipe(
       new Ok(10),
-      mapR((n) => n * 2),
-      unwrapOrR(0)
+      map((n) => n * 2),
+      unwrapOr(0)
     );
     expect(result).toBe(20);
   });
@@ -211,8 +211,8 @@ describe('Result - Curried Helpers', () => {
   it('should not apply map to Err (curried)', () => {
     const result = pipe(
       new Err<number, string>('Error'),
-      mapR((n) => n * 2),
-      unwrapOrR(0)
+      map((n) => n * 2),
+      unwrapOr(0)
     );
     expect(result).toBe(0);
   });
@@ -220,7 +220,7 @@ describe('Result - Curried Helpers', () => {
   it('should apply curried mapErr function to Err', () => {
     const result = pipe(
       new Err('initial error'),
-      mapErrR((err) => `Mapped Error: ${err}`)
+      mapErr((err) => `Mapped Error: ${err}`)
     );
 
     expect(result.unwrapOr('fallback')).toBe('fallback');
@@ -230,7 +230,7 @@ describe('Result - Curried Helpers', () => {
   it('should do nothing when mapping Err on Ok', () => {
     const result = pipe(
       new Ok(10),
-      mapErrR((err) => `Mapped Error: ${err}`)
+      mapErr((err) => `Mapped Error: ${err}`)
     );
 
     expect(result.unwrapOr(0)).toBe(10);
@@ -239,7 +239,7 @@ describe('Result - Curried Helpers', () => {
   it('should transform error using curried mapErr', () => {
     const result = pipe(
       new Err('Something went wrong'),
-      mapErrR((err) => `Error: ${err}`)
+      mapErr((err) => `Error: ${err}`)
     );
 
     expect(result.unwrapOr('fallback')).toBe('fallback');
@@ -249,8 +249,8 @@ describe('Result - Curried Helpers', () => {
   it('should chain Ok values with curried chain', () => {
     const result = pipe(
       new Ok(5),
-      chainR((x) => new Ok(x + 5)),
-      unwrapOrR(0)
+      chain((x) => new Ok(x + 5)),
+      unwrapOr(0)
     );
     expect(result).toBe(10);
   });
@@ -258,26 +258,26 @@ describe('Result - Curried Helpers', () => {
   it('should return Err when chaining from Err (curried)', () => {
     const result = pipe(
       new Err<number, string>('Error'),
-      chainR((x) => new Ok(x + 5)),
-      unwrapOrR(0)
+      chain((x) => new Ok(x + 5)),
+      unwrapOr(0)
     );
     expect(result).toBe(0);
   });
 
   it('should unwrapOr with default value using curried unwrapOr', () => {
-    const result = pipe(new Ok(10), unwrapOrR(42));
+    const result = pipe(new Ok(10), unwrapOr(42));
     expect(result).toBe(10);
   });
 
   it('should return default value for Err using curried unwrapOr', () => {
-    const result = pipe(new Err<number, string>('Error'), unwrapOrR(42));
+    const result = pipe(new Err<number, string>('Error'), unwrapOr(42));
     expect(result).toBe(42);
   });
 
   it('should match Ok with curried match', () => {
     const result = pipe(
       new Ok(10),
-      matchR({
+      match({
         ok: (value) => `Success: ${value}`,
         err: () => 'Error',
       })
@@ -288,7 +288,7 @@ describe('Result - Curried Helpers', () => {
   it('should match Err with curried match', () => {
     const result = pipe(
       new Err('Something went wrong'),
-      matchR({
+      match({
         ok: () => 'Success',
         err: (err) => `Error: ${err}`,
       })
@@ -297,22 +297,22 @@ describe('Result - Curried Helpers', () => {
   });
 
   it('should equals with another Ok using curried equals', () => {
-    const result = pipe(ok(5), equalsR(new Ok(5)));
+    const result = pipe(ok(5), equals(new Ok(5)));
     expect(result).toBe(true);
   });
 
   it('should not equals with another Ok using curried equals', () => {
-    const result = pipe(new Ok(5), equalsR(new Ok(10)));
+    const result = pipe(new Ok(5), equals(new Ok(10)));
     expect(result).toBe(false);
   });
 
   it('should equals with another Err using curried equals', () => {
-    const result = pipe(err('Error'), equalsR(new Err('Error')));
+    const result = pipe(err('Error'), equals(new Err('Error')));
     expect(result).toBe(true);
   });
 
   it('should not equals with another Err using curried equals', () => {
-    const result = pipe(new Err('Error'), equalsR(new Err('Different Error')));
+    const result = pipe(new Err('Error'), equals(new Err('Different Error')));
     expect(result).toBe(false);
   });
 });

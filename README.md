@@ -39,7 +39,7 @@ npm install holo-fn
 ### Safe object access
 
 ```ts
-import { fromNullable, matchM } from 'holo-fn/maybe';
+import { fromNullable, match } from 'holo-fn/maybe';
 
 const double = (n: number) => n * 2;
 
@@ -47,7 +47,7 @@ const result = pipe(
   [5, 5, 6],
   (ns) => fromNullable(head(ns)),
   (x) => x.map(double),
-  matchM({
+  match({
     just: (n) => n,
     nothing: () => -1
   })

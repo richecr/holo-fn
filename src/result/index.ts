@@ -124,37 +124,37 @@ export const fromAsync = async <T, E = unknown>(
   }
 };
 
-export const mapR =
+export const map =
   <T, E, U>(fn: (value: T) => U) =>
   (result: Result<T, E>): Result<U, E> => {
     return result.map(fn);
   };
 
-export const mapErrR =
+export const mapErr =
   <T, E, F>(fn: (err: E) => F) =>
   (result: Result<T, E>): Result<T, F> => {
     return result.mapErr(fn);
   };
 
-export const chainR =
+export const chain =
   <T, E, U>(fn: (value: T) => Result<U, E>) =>
   (result: Result<T, E>): Result<U, E> => {
     return result.chain(fn);
   };
 
-export const unwrapOrR =
+export const unwrapOr =
   <T, E>(defaultValue: T) =>
   (result: Result<T, E>): T => {
     return result.unwrapOr(defaultValue);
   };
 
-export const matchR =
+export const match =
   <T, E, U>(cases: { ok: (value: T) => U; err: (err: E) => U }) =>
   (result: Result<T, E>): U => {
     return result.match(cases);
   };
 
-export const equalsR =
+export const equals =
   <T, E>(other: Result<T, E>) =>
   (result: Result<T, E>): boolean => {
     return result.equals(other);

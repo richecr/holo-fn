@@ -157,16 +157,16 @@ const maybeEmail = fromNullable(user.email)
 
 ## Curried Helpers
 
-### `mapM`
+### `map`
 
 Curried version of `map` for `Maybe`. This allows functional composition with `pipe`.
 
 ```ts
-import { Just, mapM } from 'holo-fn/maybe';
+import { Just, map } from 'holo-fn/maybe';
 
 const result = pipe(
   new Just(10),
-  mapM((x) => x * 2),
+  map((x) => x * 2),
   (res) => res.unwrapOr(0)
 );
 
@@ -175,16 +175,16 @@ console.log(result); // 20
 
 ---
 
-### `chainM`
+### `chain`
 
 Curried version of `chain` for `Maybe`. This allows chaining transformations in a functional pipeline.
 
 ```ts
-import { chainM, Just } from 'holo-fn/maybe';
+import { chain, Just } from 'holo-fn/maybe';
 
 const result = pipe(
   new Just(2),
-  chainM((x) => new Just(x * 10)),
+  chain((x) => new Just(x * 10)),
   (res) => res.unwrapOr(0)
 );
 
@@ -193,16 +193,16 @@ console.log(result); // 20
 
 ---
 
-### `unwrapOrM`
+### `unwrapOr`
 
 Curried version of `unwrapOr` for `Maybe`. This provides a cleaner way to unwrap the value in a `Maybe`.
 
 ```ts
-import { Nothing, unwrapOrM } from 'holo-fn/maybe';
+import { Nothing, unwrapOr } from 'holo-fn/maybe';
 
 const result = pipe(
   new Nothing<string>(),
-  unwrapOrM("No value")
+  unwrapOr("No value")
 );
 
 console.log(result); // "No value"
@@ -210,16 +210,16 @@ console.log(result); // "No value"
 
 ---
 
-### `matchM`
+### `match`
 
 Curried version of `match` for `Maybe`. This allows handling `Just` and `Nothing` in a functional way.
 
 ```ts
-import { Just, matchM } from 'holo-fn/maybe';
+import { Just, match } from 'holo-fn/maybe';
 
 const result = pipe(
   new Just("hello"),
-  matchM({
+  match({
     just: (v) => `Got ${v}`,
     nothing: () => "No value"
   })
@@ -230,16 +230,16 @@ console.log(result); // "Got hello"
 
 ---
 
-### `equalsM`
+### `equals`
 
 Curried version of `equals` for `Maybe`. Compares the values inside `this` and the other, returns `true` if both are `Nothing` or if the values are equal.
 
 ```ts
-import { equalsM, Just } from 'holo-fn/maybe';
+import { equals, Just } from 'holo-fn/maybe';
 
 const result = pipe(
   new Just(10),
-  equalsM(new Just(10))
+  equals(new Just(10))
 );
 
 console.log(result); // true

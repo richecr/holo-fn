@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 import { pipe } from 'rambda';
-import { Just, Nothing, chainM, equalsM, fromNullable, just, mapM, matchM, nothing, unwrapOrM } from '../src/maybe';
+import { Just, Nothing, chain, equals, fromNullable, just, map, match, nothing, unwrapOr } from '../src/maybe';
 
 describe('Maybe', () => {
   it('Just.isJust() should return true', () => {
@@ -98,8 +98,8 @@ describe('Maybe - Curried Helpers', () => {
   it('should apply curried map function to Just', () => {
     const result = pipe(
       new Just(10),
-      mapM((x) => x + 5),
-      unwrapOrM(0)
+      map((x) => x + 5),
+      unwrapOr(0)
     );
     expect(result).toBe(15);
   });
@@ -107,8 +107,8 @@ describe('Maybe - Curried Helpers', () => {
   it('should not apply map to Nothing (curried)', () => {
     const result = pipe(
       new Nothing<number>(),
-      mapM((x) => x + 5),
-      unwrapOrM(42)
+      map((x) => x + 5),
+      unwrapOr(42)
     );
     expect(result).toBe(42);
   });
@@ -116,8 +116,8 @@ describe('Maybe - Curried Helpers', () => {
   it('should chain Just values with curried chain', () => {
     const result = pipe(
       new Just(2),
-      chainM((x) => new Just(x * 10)),
-      unwrapOrM(0)
+      chain((x) => new Just(x * 10)),
+      unwrapOr(0)
     );
     expect(result).toBe(20);
   });
@@ -125,26 +125,26 @@ describe('Maybe - Curried Helpers', () => {
   it('should return Nothing when chaining from Nothing (curried)', () => {
     const result = pipe(
       new Nothing<number>(),
-      chainM((x) => new Just(x * 10)),
-      unwrapOrM(0)
+      chain((x) => new Just(x * 10)),
+      unwrapOr(0)
     );
     expect(result).toBe(0);
   });
 
   it('should unwrapOr with default value using curried unwrapOr', () => {
-    const result = pipe(new Just(10), unwrapOrM(42));
+    const result = pipe(new Just(10), unwrapOr(42));
     expect(result).toBe(10);
   });
 
   it('should return the default value for Nothing using curried unwrapOr', () => {
-    const result = pipe(new Nothing<number>(), unwrapOrM(42));
+    const result = pipe(new Nothing<number>(), unwrapOr(42));
     expect(result).toBe(42);
   });
 
   it('should match Just with curried match', () => {
     const result = pipe(
       new Just('value'),
-      matchM({
+      match({
         just: (v) => `We have ${v}`,
         nothing: () => 'Nothing here',
       })
@@ -155,7 +155,7 @@ describe('Maybe - Curried Helpers', () => {
   it('should match Nothing with curried match', () => {
     const result = pipe(
       new Nothing(),
-      matchM({
+      match({
         just: (v) => `We have ${v}`,
         nothing: () => 'Nothing here',
       })
@@ -169,9 +169,9 @@ describe('Maybe - Curried Helpers', () => {
     const nothing1 = new Nothing<number>();
     const nothing2 = new Nothing<number>();
 
-    expect(pipe(just1, equalsM(just2))).toBe(true);
-    expect(pipe(just1, equalsM(nothing1))).toBe(false);
-    expect(pipe(nothing1, equalsM(nothing2))).toBe(true);
+    expect(pipe(just1, equals(just2))).toBe(true);
+    expect(pipe(just1, equals(nothing1))).toBe(false);
+    expect(pipe(nothing1, equals(nothing2))).toBe(true);
   });
 
   it('should check extract value from Just', () => {
@@ -186,4 +186,3 @@ describe('Maybe - Curried Helpers', () => {
     expect(result).toBeNil();
   });
 });
-
