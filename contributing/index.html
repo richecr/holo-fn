@@ -381,18 +381,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-running-tests" class="md-nav__link">
+  <a href="#2-running-tests-and-coverage" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Running Tests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-test-coverage" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Test Coverage
+      2. Running Tests and Coverage
     </span>
   </a>
   
@@ -719,18 +710,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-running-tests" class="md-nav__link">
+  <a href="#2-running-tests-and-coverage" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Running Tests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-test-coverage" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Test Coverage
+      2. Running Tests and Coverage
     </span>
   </a>
   
@@ -806,22 +788,20 @@
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yourusername/holo-fn.git
 <span class="nb">cd</span><span class="w"> </span>holo-fn
-npm<span class="w"> </span>install
+bun<span class="w"> </span>install
 </code></pre></div></td></tr></table></div>
-<h3 id="2-running-tests">2. Running Tests</h3>
+<h3 id="2-running-tests-and-coverage">2. Running Tests and Coverage</h3>
 <p>You can run the tests using Jest to ensure everything works as expected:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>bun<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span>
 </code></pre></div></td></tr></table></div>
-<h3 id="3-test-coverage">3. Test Coverage</h3>
-<p>To check test coverage:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>test:cov
+<p>To convert the coverage into an HTML report, run:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>bun<span class="w"> </span>run<span class="w"> </span>coverage:html
 </code></pre></div></td></tr></table></div>
 <hr />
 <h2 id="building">📦 Building</h2>
 <p>To build the project:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>build
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>bun<span class="w"> </span>run<span class="w"> </span>build
 </code></pre></div></td></tr></table></div>
-<p>This will transpile the TypeScript code into JavaScript.</p>
 <hr />
 <h2 id="testing-locally">🧰 Testing Locally</h2>
 <p>To test your changes locally before publishing or linking the library:</p>
@@ -831,7 +811,7 @@ npm<span class="w"> </span>install
 </li>
 <li>
 <p>Run the following to build the project and prepare the files for testing:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>build
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>bun<span class="w"> </span>run<span class="w"> </span>build
 </code></pre></div></td></tr></table></div></p>
 </li>
 <li>
@@ -839,7 +819,7 @@ npm<span class="w"> </span>install
 </li>
 <li>
 <p>After building, run npm pack to create a .tgz file that you can install locally:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>npm<span class="w"> </span>pack
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>bun<span class="w"> </span>pm<span class="w"> </span>pack
 </code></pre></div></td></tr></table></div></p>
 </li>
 <li>
@@ -907,7 +887,7 @@ npm<span class="w"> </span>install
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2016 - 2025 Rich Ramalho
+      Copyright &copy; 2025 - 2025 Rich Ramalho
     </div>
   
   

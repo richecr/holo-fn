@@ -622,45 +622,45 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mapm" class="md-nav__link">
+  <a href="#map" class="md-nav__link">
     <span class="md-ellipsis">
-      mapM
+      map
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#chainm" class="md-nav__link">
+  <a href="#chain" class="md-nav__link">
     <span class="md-ellipsis">
-      chainM
+      chain
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#unwraporm" class="md-nav__link">
+  <a href="#unwrapor" class="md-nav__link">
     <span class="md-ellipsis">
-      unwrapOrM
+      unwrapOr
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#matchm" class="md-nav__link">
+  <a href="#match" class="md-nav__link">
     <span class="md-ellipsis">
-      matchM
+      match
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#equalsm" class="md-nav__link">
+  <a href="#equals" class="md-nav__link">
     <span class="md-ellipsis">
-      equalsM
+      equals
     </span>
   </a>
   
@@ -934,45 +934,45 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mapm" class="md-nav__link">
+  <a href="#map" class="md-nav__link">
     <span class="md-ellipsis">
-      mapM
+      map
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#chainm" class="md-nav__link">
+  <a href="#chain" class="md-nav__link">
     <span class="md-ellipsis">
-      chainM
+      chain
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#unwraporm" class="md-nav__link">
+  <a href="#unwrapor" class="md-nav__link">
     <span class="md-ellipsis">
-      unwrapOrM
+      unwrapOr
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#matchm" class="md-nav__link">
+  <a href="#match" class="md-nav__link">
     <span class="md-ellipsis">
-      matchM
+      match
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#equalsm" class="md-nav__link">
+  <a href="#equals" class="md-nav__link">
     <span class="md-ellipsis">
-      equalsM
+      equals
     </span>
   </a>
   
@@ -1168,7 +1168,7 @@
 <span class="normal">3</span>
 <span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">nothing</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
 
-<span class="kd">const</span><span class="w"> </span><span class="nx">maybeValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">nothing</span><span class="p">();</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">maybeValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">nothing</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">maybeValue</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="s1">&#39;Default&#39;</span><span class="p">));</span><span class="w"> </span><span class="c1">// &#39;Default&#39;</span>
 </code></pre></div></td></tr></table></div>
 <hr />
@@ -1182,7 +1182,7 @@
 </ul>
 <hr />
 <h2 id="curried-helpers">Curried Helpers</h2>
-<h3 id="mapm"><code>mapM</code></h3>
+<h3 id="map"><code>map</code></h3>
 <p>Curried version of <code>map</code> for <code>Maybe</code>. This allows functional composition with <code>pipe</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1192,18 +1192,18 @@
 <span class="normal">6</span>
 <span class="normal">7</span>
 <span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Just</span><span class="p">,</span><span class="w"> </span><span class="nx">mapM</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Just</span><span class="p">,</span><span class="w"> </span><span class="nx">map</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">pipe</span><span class="p">(</span>
 <span class="w">  </span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="mf">10</span><span class="p">),</span>
-<span class="w">  </span><span class="nx">mapM</span><span class="p">((</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">map</span><span class="p">((</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">),</span>
 <span class="w">  </span><span class="p">(</span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">)</span>
 <span class="p">);</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span><span class="w"> </span><span class="c1">// 20</span>
 </code></pre></div></td></tr></table></div>
 <hr />
-<h3 id="chainm"><code>chainM</code></h3>
+<h3 id="chain"><code>chain</code></h3>
 <p>Curried version of <code>chain</code> for <code>Maybe</code>. This allows chaining transformations in a functional pipeline.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1213,18 +1213,18 @@
 <span class="normal">6</span>
 <span class="normal">7</span>
 <span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">chainM</span><span class="p">,</span><span class="w"> </span><span class="nx">Just</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">chain</span><span class="p">,</span><span class="w"> </span><span class="nx">Just</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">pipe</span><span class="p">(</span>
 <span class="w">  </span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span>
-<span class="w">  </span><span class="nx">chainM</span><span class="p">((</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">10</span><span class="p">)),</span>
+<span class="w">  </span><span class="nx">chain</span><span class="p">((</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">10</span><span class="p">)),</span>
 <span class="w">  </span><span class="p">(</span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">)</span>
 <span class="p">);</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span><span class="w"> </span><span class="c1">// 20</span>
 </code></pre></div></td></tr></table></div>
 <hr />
-<h3 id="unwraporm"><code>unwrapOrM</code></h3>
+<h3 id="unwrapor"><code>unwrapOr</code></h3>
 <p>Curried version of <code>unwrapOr</code> for <code>Maybe</code>. This provides a cleaner way to unwrap the value in a <code>Maybe</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1233,17 +1233,17 @@
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Nothing</span><span class="p">,</span><span class="w"> </span><span class="nx">unwrapOrM</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Nothing</span><span class="p">,</span><span class="w"> </span><span class="nx">unwrapOr</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">pipe</span><span class="p">(</span>
 <span class="w">  </span><span class="ow">new</span><span class="w"> </span><span class="nx">Nothing</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(),</span>
-<span class="w">  </span><span class="nx">unwrapOrM</span><span class="p">(</span><span class="s2">&quot;No value&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nx">unwrapOr</span><span class="p">(</span><span class="s2">&quot;No value&quot;</span><span class="p">)</span>
 <span class="p">);</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;No value&quot;</span>
 </code></pre></div></td></tr></table></div>
 <hr />
-<h3 id="matchm"><code>matchM</code></h3>
+<h3 id="match"><code>match</code></h3>
 <p>Curried version of <code>match</code> for <code>Maybe</code>. This allows handling <code>Just</code> and <code>Nothing</code> in a functional way.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1255,11 +1255,11 @@
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Just</span><span class="p">,</span><span class="w"> </span><span class="nx">matchM</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Just</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">pipe</span><span class="p">(</span>
 <span class="w">  </span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">),</span>
-<span class="w">  </span><span class="nx">matchM</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">match</span><span class="p">({</span>
 <span class="w">    </span><span class="nx">just</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="sb">`Got </span><span class="si">${</span><span class="nx">v</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
 <span class="w">    </span><span class="nx">nothing</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s2">&quot;No value&quot;</span>
 <span class="w">  </span><span class="p">})</span>
@@ -1268,7 +1268,7 @@
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;Got hello&quot;</span>
 </code></pre></div></td></tr></table></div>
 <hr />
-<h3 id="equalsm"><code>equalsM</code></h3>
+<h3 id="equals"><code>equals</code></h3>
 <p>Curried version of <code>equals</code> for <code>Maybe</code>. Compares the values inside <code>this</code> and the other, returns <code>true</code> if both are <code>Nothing</code> or if the values are equal.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1277,11 +1277,11 @@
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">equalsM</span><span class="p">,</span><span class="w"> </span><span class="nx">Just</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">equals</span><span class="p">,</span><span class="w"> </span><span class="nx">Just</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/maybe&#39;</span><span class="p">;</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">pipe</span><span class="p">(</span>
 <span class="w">  </span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="mf">10</span><span class="p">),</span>
-<span class="w">  </span><span class="nx">equalsM</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="mf">10</span><span class="p">))</span>
+<span class="w">  </span><span class="nx">equals</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">Just</span><span class="p">(</span><span class="mf">10</span><span class="p">))</span>
 <span class="p">);</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span><span class="w"> </span><span class="c1">// true</span>
@@ -1316,7 +1316,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2016 - 2025 Rich Ramalho
+      Copyright &copy; 2025 - 2025 Rich Ramalho
     </div>
   
   
