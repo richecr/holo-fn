@@ -1,7 +1,5 @@
-export * from './maybe';
-export * from './either';
-export * from './result';
+import * as E from './either';
+import * as M from './maybe';
+import * as R from './result';
 
-export { Just, Nothing, fromNullable } from './maybe';
-export { Right, Left, tryCatch, fromPromise, fromAsync } from './either';
-export { Ok, Err, fromThrowable, fromPromise as fromPromiseResult, fromAsync as fromAsyncResult } from './result';
+export { E, M, R };

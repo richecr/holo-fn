@@ -1,186 +1,205 @@
-import { pipe } from "rambda";
-import { Ok, Err, fromThrowable, fromPromise, fromAsync, matchR, mapR, unwrapOrR, chainR, mapErrR } from "../src/result";
-import { equalsR, err, ok } from "../src/result/Result";
+import { describe, expect, it } from 'bun:test';
+import { pipe } from 'rambda';
+import {
+  chainR,
+  equalsR,
+  Err,
+  err,
+  fromAsync,
+  fromPromise,
+  fromThrowable,
+  mapErrR,
+  mapR,
+  matchR,
+  Ok,
+  ok,
+  unwrapOrR,
+} from '../src/result';
 
-describe("Result", () => {
-  it("Ok.map should apply the function", () => {
+describe('Result', () => {
+  it('Ok.map should apply the function', () => {
     const result = new Ok(2).map((x) => x * 3);
     expect(result.unwrapOr(0)).toBe(6);
   });
 
-  it("Err.map should not apply the function", () => {
-    const result = new Err<number, string>("fail").map((x) => x * 3);
+  it('Err.map should not apply the function', () => {
+    const result = new Err<number, string>('fail').map((x) => x * 3);
     expect(result.unwrapOr(42)).toBe(42);
   });
 
-  it("Ok.mapErr should do nothing", () => {
+  it('Ok.mapErr should do nothing', () => {
     const result = new Ok(5).mapErr((e) => `err: ${e}`);
     expect(result.unwrapOr(0)).toBe(5);
   });
 
-  it("Err.mapErr should transform the error", () => {
-    const result = new Err<number, string>("fail").mapErr((e) => `${e}ed`);
-    expect(result.match({ ok: (_) => "", err: (e) => e })).toBe("failed");
+  it('Err.mapErr should transform the error', () => {
+    const result = new Err<number, string>('fail').mapErr((e) => `${e}ed`);
+    expect(result.match({ ok: (_) => '', err: (e) => e })).toBe('failed');
   });
 
-  it("Ok.chain should chain into new Ok", () => {
+  it('Ok.chain should chain into new Ok', () => {
     const result = new Ok(10).chain((x) => new Ok(x + 5));
     expect(result.unwrapOr(0)).toBe(15);
   });
 
-  it("Err.chain should skip function and stay Err", () => {
-    const result = new Err<number, string>("bad").chain((x) => new Ok(x + 1));
+  it('Err.chain should skip function and stay Err', () => {
+    const result = new Err<number, string>('bad').chain((x) => new Ok(x + 1));
     expect(result.unwrapOr(123)).toBe(123);
   });
 
-  it("Ok.unwrapOr should return value", () => {
-    expect(new Ok("val").unwrapOr("fallback")).toBe("val");
+  it('Ok.unwrapOr should return value', () => {
+    expect(new Ok('val').unwrapOr('fallback')).toBe('val');
   });
 
-  it("Err.unwrapOr should return fallback", () => {
-    expect(new Err<string, string>("fail").unwrapOr("fallback")).toBe(
-      "fallback"
-    );
+  it('Err.unwrapOr should return fallback', () => {
+    expect(new Err<string, string>('fail').unwrapOr('fallback')).toBe('fallback');
   });
 
-  it("Ok.match should call Ok branch", () => {
+  it('Ok.match should call Ok branch', () => {
     const result = new Ok(10).match({
       ok: (n) => `got ${n}`,
-      err: (_) => "error",
+      err: (_) => 'error',
     });
-    expect(result).toBe("got 10");
+    expect(result).toBe('got 10');
   });
 
-  it("Err.match should call Err branch", () => {
-    const result = new Err<number, string>("fail").match({
-      ok: (_) => "ok",
+  it('Err.match should call Err branch', () => {
+    const result = new Err<number, string>('fail').match({
+      ok: (_) => 'ok',
       err: (e) => `error: ${e}`,
     });
-    expect(result).toBe("error: fail");
+    expect(result).toBe('error: fail');
   });
 
-  it("Ok.isOk returns true, isErr false", () => {
+  it('Ok.isOk returns true, isErr false', () => {
     const result = new Ok(1);
     expect(result.isOk()).toBe(true);
     expect(result.isErr()).toBe(false);
   });
 
-  it("Err.isErr returns true, isOk false", () => {
-    const result = new Err("fail");
+  it('Err.isErr returns true, isOk false', () => {
+    const result = new Err('fail');
     expect(result.isErr()).toBe(true);
     expect(result.isOk()).toBe(false);
   });
 
-  it("Ok.equals should be equal to another Ok with same value", () => {
+  it('Ok.equals should be equal to another Ok with same value', () => {
     const result1 = new Ok(5);
     const result2 = new Ok(5);
     expect(result1.equals(result2)).toBe(true);
   });
 
-  it("Err.equals should be equal to another Err with same error", () => {
-    const result1 = new Err("error");
-    const result2 = new Err("error");
+  it('Err.equals should be equal to another Err with same error', () => {
+    const result1 = new Err('error');
+    const result2 = new Err('error');
     expect(result1.equals(result2)).toBe(true);
   });
 
-  it("Ok.equals should not be equal to Err", () => {
+  it('Ok.equals should not be equal to Err', () => {
     const result1 = new Ok(5);
-    const result2 = new Err<number, string>("error");
+    const result2 = new Err<number, string>('error');
     expect(result1.equals(result2)).toBe(false);
   });
 
-  it("Err.equals should not be equal to Ok", () => {
-    const result1 = new Err("error");
+  it('Err.equals should not be equal to Ok', () => {
+    const result1 = new Err('error');
     const result2 = new Ok<number, string>(5);
     expect(result1.equals(result2)).toBe(false);
   });
 });
 
-describe("Result fromThrowable", () => {
-  it("fromThrowable should return Ok when function succeeds", () => {
+describe('Result fromThrowable', () => {
+  it('fromThrowable should return Ok when function succeeds', () => {
     const result = fromThrowable(() => JSON.parse('{"a": 1}'));
     expect(result.isOk()).toBe(true);
     expect(result.unwrapOr({ a: 0 })).toEqual({ a: 1 });
   });
 
-  it("fromThrowable should return Err when function throws", () => {
+  it('fromThrowable should return Err when function throws', () => {
     const result = fromThrowable(
-      () => JSON.parse("invalid"),
+      () => JSON.parse('invalid'),
       (e) => (e as Error).message
     );
     expect(result.isErr()).toBe(true);
-    expect(result.match({ ok: () => "", err: (e) => e })).toMatch(
-      /Unexpected token/
-    );
+    expect(result.match({ ok: () => '', err: (e) => e })).toMatch('JSON Parse error: Unexpected identifier "invalid"');
   });
 
-  it("fromThrowable fallback to cast if no error mapper", () => {
+  it('fromThrowable fallback to cast if no error mapper', () => {
     const result = fromThrowable(() => {
-      throw new Error("fail");
+      throw new Error('fail');
     });
     expect(result.isErr()).toBe(true);
     expect(
-      result.match({ ok: () => "", err: (e) => (e as Error).message })
-    ).toBe("fail");
+      result.match({
+        ok: () => '',
+        err: (e) => (e as Error).message,
+      })
+    ).toBe('fail');
   });
 });
 
-describe("Result fromPromise", () => {
-  it("should resolve to Ok on success", async () => {
+describe('Result fromPromise', () => {
+  it('should resolve to Ok on success', async () => {
     const promise = Promise.resolve(42);
     const result = await fromPromise(promise);
     expect(result.isOk()).toBe(true);
     expect(result.unwrapOr(0)).toBe(42);
   });
 
-  it("should resolve to Err on failure", async () => {
-    const promise = Promise.reject(new Error("boom"));
+  it('should resolve to Err on failure', async () => {
+    const promise = Promise.reject(new Error('boom'));
     const result = await fromPromise(promise, (e) => (e as Error).message);
     expect(result.isErr()).toBe(true);
-    expect(result.match({ ok: () => "", err: (e) => e })).toBe("boom");
+    expect(result.match({ ok: () => '', err: (e) => e })).toBe('boom');
   });
 
-  it("should fallback to cast if no onError is provided", async () => {
-    const promise = Promise.reject(new Error("fallback error"));
+  it('should fallback to cast if no onError is provided', async () => {
+    const promise = Promise.reject(new Error('fallback error'));
     const result = await fromPromise(promise);
     expect(result.isErr()).toBe(true);
     expect(
-      result.match({ ok: () => "", err: (e) => (e as Error).message })
-    ).toBe("fallback error");
+      result.match({
+        ok: () => '',
+        err: (e) => (e as Error).message,
+      })
+    ).toBe('fallback error');
   });
 });
 
-describe("Result fromAsync", () => {
-  it("should resolve to Ok on success", async () => {
+describe('Result fromAsync', () => {
+  it('should resolve to Ok on success', async () => {
     const result = await fromAsync(async () => 10);
     expect(result.isOk()).toBe(true);
     expect(result.unwrapOr(0)).toBe(10);
   });
 
-  it("should resolve to Err on exception", async () => {
+  it('should resolve to Err on exception', async () => {
     const result = await fromAsync(
       async () => {
-        throw new Error("fail");
+        throw new Error('fail');
       },
       (e) => (e as Error).message
     );
     expect(result.isErr()).toBe(true);
-    expect(result.match({ ok: () => "", err: (e) => e })).toBe("fail");
+    expect(result.match({ ok: () => '', err: (e) => e })).toBe('fail');
   });
 
-  it("should fallback to cast if no onError is provided", async () => {
+  it('should fallback to cast if no onError is provided', async () => {
     const result = await fromAsync(async () => {
-      throw new Error("async error");
+      throw new Error('async error');
     });
     expect(result.isErr()).toBe(true);
     expect(
-      result.match({ ok: () => "", err: (e) => (e as Error).message })
-    ).toBe("async error");
+      result.match({
+        ok: () => '',
+        err: (e) => (e as Error).message,
+      })
+    ).toBe('async error');
   });
 });
 
-describe("Result - Curried Helpers", () => {
-  it("should apply curried map function to Ok", () => {
+describe('Result - Curried Helpers', () => {
+  it('should apply curried map function to Ok', () => {
     const result = pipe(
       new Ok(10),
       mapR((n) => n * 2),
@@ -189,26 +208,26 @@ describe("Result - Curried Helpers", () => {
     expect(result).toBe(20);
   });
 
-  it("should not apply map to Err (curried)", () => {
+  it('should not apply map to Err (curried)', () => {
     const result = pipe(
-      new Err<number, string>("Error"),
+      new Err<number, string>('Error'),
       mapR((n) => n * 2),
       unwrapOrR(0)
     );
     expect(result).toBe(0);
   });
 
-  it("should apply curried mapErr function to Err", () => {
+  it('should apply curried mapErr function to Err', () => {
     const result = pipe(
-      new Err("initial error"),
+      new Err('initial error'),
       mapErrR((err) => `Mapped Error: ${err}`)
     );
 
-    expect(result.unwrapOr("fallback")).toBe("fallback");
-    expect(result.match({ ok: (_) => "", err: (e) => e })).toBe("Mapped Error: initial error");
+    expect(result.unwrapOr('fallback')).toBe('fallback');
+    expect(result.match({ ok: (_) => '', err: (e) => e })).toBe('Mapped Error: initial error');
   });
 
-  it("should do nothing when mapping Err on Ok", () => {
+  it('should do nothing when mapping Err on Ok', () => {
     const result = pipe(
       new Ok(10),
       mapErrR((err) => `Mapped Error: ${err}`)
@@ -217,17 +236,17 @@ describe("Result - Curried Helpers", () => {
     expect(result.unwrapOr(0)).toBe(10);
   });
 
-  it("should transform error using curried mapErr", () => {
+  it('should transform error using curried mapErr', () => {
     const result = pipe(
-      new Err("Something went wrong"),
+      new Err('Something went wrong'),
       mapErrR((err) => `Error: ${err}`)
     );
 
-    expect(result.unwrapOr("fallback")).toBe("fallback");
-    expect(result.match({ ok: (_) => "", err: (e) => e })).toBe("Error: Something went wrong");
+    expect(result.unwrapOr('fallback')).toBe('fallback');
+    expect(result.match({ ok: (_) => '', err: (e) => e })).toBe('Error: Something went wrong');
   });
 
-  it("should chain Ok values with curried chain", () => {
+  it('should chain Ok values with curried chain', () => {
     const result = pipe(
       new Ok(5),
       chainR((x) => new Ok(x + 5)),
@@ -236,82 +255,64 @@ describe("Result - Curried Helpers", () => {
     expect(result).toBe(10);
   });
 
-  it("should return Err when chaining from Err (curried)", () => {
+  it('should return Err when chaining from Err (curried)', () => {
     const result = pipe(
-      new Err<number, string>("Error"),
+      new Err<number, string>('Error'),
       chainR((x) => new Ok(x + 5)),
       unwrapOrR(0)
     );
     expect(result).toBe(0);
   });
 
-  it("should unwrapOr with default value using curried unwrapOr", () => {
-    const result = pipe(
-      new Ok(10),
-      unwrapOrR(42)
-    );
+  it('should unwrapOr with default value using curried unwrapOr', () => {
+    const result = pipe(new Ok(10), unwrapOrR(42));
     expect(result).toBe(10);
   });
 
-  it("should return default value for Err using curried unwrapOr", () => {
-    const result = pipe(
-      new Err<number, string>("Error"),
-      unwrapOrR(42)
-    );
+  it('should return default value for Err using curried unwrapOr', () => {
+    const result = pipe(new Err<number, string>('Error'), unwrapOrR(42));
     expect(result).toBe(42);
   });
 
-  it("should match Ok with curried match", () => {
+  it('should match Ok with curried match', () => {
     const result = pipe(
       new Ok(10),
       matchR({
         ok: (value) => `Success: ${value}`,
-        err: () => "Error",
+        err: () => 'Error',
       })
     );
-    expect(result).toBe("Success: 10");
+    expect(result).toBe('Success: 10');
   });
 
-  it("should match Err with curried match", () => {
+  it('should match Err with curried match', () => {
     const result = pipe(
-      new Err("Something went wrong"),
+      new Err('Something went wrong'),
       matchR({
-        ok: () => "Success",
+        ok: () => 'Success',
         err: (err) => `Error: ${err}`,
       })
     );
-    expect(result).toBe("Error: Something went wrong");
+    expect(result).toBe('Error: Something went wrong');
   });
 
-  it("should equals with another Ok using curried equals", () => {
-    const result = pipe(
-      ok(5),
-      equalsR(new Ok(5))
-    );
+  it('should equals with another Ok using curried equals', () => {
+    const result = pipe(ok(5), equalsR(new Ok(5)));
     expect(result).toBe(true);
   });
 
-  it("should not equals with another Ok using curried equals", () => {
-    const result = pipe(
-      new Ok(5),
-      equalsR(new Ok(10))
-    );
+  it('should not equals with another Ok using curried equals', () => {
+    const result = pipe(new Ok(5), equalsR(new Ok(10)));
     expect(result).toBe(false);
   });
 
-  it("should equals with another Err using curried equals", () => {
-    const result = pipe(
-      err("Error"),
-      equalsR(new Err("Error"))
-    );
+  it('should equals with another Err using curried equals', () => {
+    const result = pipe(err('Error'), equalsR(new Err('Error')));
     expect(result).toBe(true);
   });
 
-  it("should not equals with another Err using curried equals", () => {
-    const result = pipe(
-      new Err("Error"),
-      equalsR(new Err("Different Error"))
-    );
+  it('should not equals with another Err using curried equals', () => {
+    const result = pipe(new Err('Error'), equalsR(new Err('Different Error')));
     expect(result).toBe(false);
   });
 });

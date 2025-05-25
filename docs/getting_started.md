@@ -13,7 +13,7 @@ npm install holo-fn
 You can import specific monads or helpers as needed:
 
 ```ts
-import { Just, Nothing, matchE } from 'holo-fn'
+import { M, E, R } from "holo-fn"
 import { fromNullable } from 'holo-fn/maybe'
 import { tryCatch } from 'holo-fn/either'
 import { fromThrowable } from 'holo-fn/result'
