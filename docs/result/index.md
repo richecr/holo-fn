@@ -166,7 +166,7 @@ console.log(resultValue.unwrapOr("No error")); // "No error"
 Wraps a synchronous function in a `Result`.
 
 ```ts
-import { fromThrowable } from 'holo-fn';
+import { fromThrowable } from 'holo-fn/result';
 
 const input = '{"name": "John", "age": 30}'
 
@@ -239,10 +239,17 @@ console.log(result); // 10
 Curried version of `mapErr` for `Result`. This allows handling errors in a more functional composition style.
 
 ```ts
-import { Err, mapErrR } from 'holo-fn/result';
+import { Err, mapErrR, Ok, Result } from 'holo-fn/result';
+
+const getValue = (value: string | null): Result<string, string> => {
+    if (value === null) {
+        return new Err("Value is null");
+    }
+    return new Ok(value);
+}
 
 const result = pipe(
-  new Err("Error"),
+  getValue(null),
   mapErrR((e) => `Mapped error: ${e}`),
   (res) => res.unwrapOr("No value")
 );

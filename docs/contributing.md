@@ -14,23 +14,15 @@ To get started, clone the repository and install the dependencies:
 ```bash
 git clone https://github.com/yourusername/holo-fn.git
 cd holo-fn
-npm install
+bun install
 ```
 
-### 2. Running Tests
+### 2. Running Tests and Coverage
 
 You can run the tests using Jest to ensure everything works as expected:
 
 ```bash
-npm run test
-```
-
-### 3. Test Coverage
-
-To check test coverage:
-
-```bash
-npm run test:cov
+bun run test
 ```
 
 ---
@@ -40,10 +32,8 @@ npm run test:cov
 To build the project:
 
 ```bash
-npm run build
+bun run build
 ```
-
-This will transpile the TypeScript code into JavaScript.
 
 ---
 
@@ -55,14 +45,14 @@ To test your changes locally before publishing or linking the library:
 
   - Run the following to build the project and prepare the files for testing:
   ```bash
-  npm run build
+  bun run build
   ```
 
 2. Pack the Library:
 
   - After building, run npm pack to create a .tgz file that you can install locally:
   ```bash
-  npm pack
+  bun pm pack
   ```
 
 3. Install Locally in Your Test Project:

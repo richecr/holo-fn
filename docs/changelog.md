@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[1.0.0]](https://github.com/richecr/holo-fn/releases/tag/v1.0.0) - Unreleased
+
+### Added
+- 
+
+---
+
 ## [[0.3.0]](https://github.com/richecr/holo-fn/releases/tag/v0.3.0) - 2025-05-10
 
 ### Added
@@ -19,7 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Result:
     - ok<T, E>(value: T): Result<T, E>: Creates an `Ok` value representing the success of an operation with a value.
     - err<T, E>(error: E): Result<T, E>: Creates an `Err` value representing a failure of an operation with an error.
-  
+
 ---
 
 ## [[0.2.0]](https://github.com/richecr/holo-fn/releases/tag/v0.2.0) - 2025-04-26

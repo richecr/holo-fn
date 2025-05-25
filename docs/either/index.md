@@ -243,7 +243,7 @@ Creates a `Left` value, representing an error or failure in an operation.
 ```ts
 import { left } from 'holo-fn/either';
 
-const eitherValue = left("Error");
+const eitherValue = left<string, string>("Error");
 console.log(eitherValue.unwrapOr("No error")); // "No error"
 ```
 
@@ -267,15 +267,27 @@ console.log(eitherValue.unwrapOr(0)); // 10
 Wraps a potentially throwing function in an `Either`.
 
 ```ts
-import { tryCatch } from 'holo-fn/either'
+import { tryCatch } from 'holo-fn/either';
 
-const input = '{"user": "John Doe"}'
+const input = '{"name": "John Doe"}'
+
+interface User {
+    name: string;
+}
+
+const convertToJson = (obj: unknown): User => {
+  if (typeof obj === 'object' && obj !== null && 'name' in obj) {
+    return obj as User;
+  }
+
+  return { name: 'anonymous' };
+}
 
 const parsed = tryCatch(() => JSON.parse(input), e => 'Invalid JSON')
-  .map(obj => obj.user)
-  .unwrapOr('anonymous')
+  .map(convertToJson)
+  .unwrapOr({ name: 'anonymous 1' });
 
-console.log(parsed) // John Doe
+console.log(parsed.name) // John Doe
 ```
 
 - Returns `Right<R>` if `fn()` succeeds
@@ -347,7 +359,7 @@ Curried version of `mapLeft` for `Either`. This allows mapping over the Left val
 import { Left, mapLeftE } from 'holo-fn/either';
 
 const result = pipe(
-  new Left("Error"),
+  new Left<string, string>("Error"),
   mapLeftE((e) => `Mapped error: ${e}`),
   (res) => res.unwrapOr("No value") 
 );
@@ -383,8 +395,8 @@ Curried version of `unwrapOr` for `Either`. This provides a cleaner way to unwra
 import { Left, unwrapOrE } from 'holo-fn/either';
 
 const result = pipe(
-  new Left("Fail"),
-  unwrapOrE<string, unknown>("No value")
+  new Left<string, string>("Fail"),
+  unwrapOrE("No value")
 );
 
 console.log(result); // "No value"
@@ -400,7 +412,7 @@ Curried version of `match` for `Either`. This allows handling `Left` and `Right`
 import { matchE, Right } from 'holo-fn/either';
 
 const result = pipe(
-  new Right(10),
+  new Right<string, number>(10),
   matchE({
     left: (e) => `Error: ${e}`,
     right: (v) => `Success: ${v}`

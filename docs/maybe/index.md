@@ -136,7 +136,7 @@ Creates a `Nothing` value, representing the absence of a value.
 ```ts
 import { nothing } from 'holo-fn/maybe';
 
-const maybeValue = nothing();
+const maybeValue = nothing<string>();
 console.log(maybeValue.unwrapOr('Default')); // 'Default'
 ```
 
