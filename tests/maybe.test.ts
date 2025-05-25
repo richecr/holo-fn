@@ -3,14 +3,24 @@ import { pipe } from 'rambda';
 import { Just, Nothing, chainM, equalsM, fromNullable, just, mapM, matchM, nothing, unwrapOrM } from '../src/maybe';
 
 describe('Maybe', () => {
+  it('Just.isJust() should return true', () => {
+    const result = just('x');
+    expect(result.isJust()).toBe(true);
+  });
+
+  it('should instantiate Nothing explicitly via constructor', () => {
+    const instance = new Nothing<number>();
+    expect(instance.isNothing()).toBe(true);
+  });
+
+  it('Just.isNothing() should return false', () => {
+    const result = just<string>('x');
+    expect(result.isNothing()).toBe(false);
+  });
+
   it('should map over Just', () => {
     const result = new Just(10).map((x) => x + 5);
     expect(result.unwrapOr(0)).toBe(15);
-  });
-
-  it('Just.isNothing() deve retornar false', () => {
-    const result = just('x');
-    expect(result.isNothing()).toBe(false);
   });
 
   it('should return default for Nothing', () => {
@@ -18,7 +28,7 @@ describe('Maybe', () => {
     expect(result.unwrapOr(42)).toBe(42);
   });
 
-  it('Nothing.isJust() deve retornar false', () => {
+  it('Nothing.isJust()  should return false', () => {
     const result = new Nothing();
     expect(result.isJust()).toBe(false);
   });
@@ -28,23 +38,23 @@ describe('Maybe', () => {
     expect(result.unwrapOr(0)).toBe(20);
   });
 
-  it('chain em Nothing deve retornar outra Nothing', () => {
+  it('Nothing.chain() should return other Nothing', () => {
     const result = new Nothing<number>().chain((x) => new Just(x * 2));
     expect(result.isNothing()).toBe(true);
   });
 
   it('match should dispatch to correct branch', () => {
     const justMsg = new Just('value').match({
-      just: (v) => `Temos ${v}`,
-      nothing: () => 'Nada aqui',
+      just: (v) => `We have ${v}`,
+      nothing: () => 'nothing here',
     });
     const nothingMsg = new Nothing().match({
-      just: (v) => `Temos ${v}`,
-      nothing: () => 'Nada aqui',
+      just: (v) => `We have ${v}`,
+      nothing: () => 'nothing here',
     });
 
-    expect(justMsg).toBe('Temos value');
-    expect(nothingMsg).toBe('Nada aqui');
+    expect(justMsg).toBe('We have value');
+    expect(nothingMsg).toBe('nothing here');
   });
 
   it('should check equality between Just and Nothing', () => {
@@ -135,22 +145,22 @@ describe('Maybe - Curried Helpers', () => {
     const result = pipe(
       new Just('value'),
       matchM({
-        just: (v) => `Temos ${v}`,
-        nothing: () => 'Nada aqui',
+        just: (v) => `We have ${v}`,
+        nothing: () => 'Nothing here',
       })
     );
-    expect(result).toBe('Temos value');
+    expect(result).toBe('We have value');
   });
 
   it('should match Nothing with curried match', () => {
     const result = pipe(
       new Nothing(),
       matchM({
-        just: (v) => `Temos ${v}`,
-        nothing: () => 'Nada aqui',
+        just: (v) => `We have ${v}`,
+        nothing: () => 'Nothing here',
       })
     );
-    expect(result).toBe('Nada aqui');
+    expect(result).toBe('Nothing here');
   });
 
   it('should check equality with curried equals', () => {
@@ -176,3 +186,4 @@ describe('Maybe - Curried Helpers', () => {
     expect(result).toBeNil();
   });
 });
+

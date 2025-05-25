@@ -48,6 +48,8 @@ export class Just<T> implements Maybe<T> {
 }
 
 export class Nothing<T = never> implements Maybe<T> {
+  constructor() {}
+
   isJust(): boolean {
     return false;
   }
@@ -85,35 +87,35 @@ export const fromNullable = <T>(value: T | null | undefined): Maybe<T> => {
   return value == null ? new Nothing<T>() : new Just<T>(value);
 };
 
-export const mapM =
-  <T, U>(fn: (value: T) => U) =>
-  (maybe: Maybe<T>): Maybe<U> => {
-    return maybe.map(fn);
-  };
+export const mapM = <T, U>(
+  fn: (value: T) => U
+) => (maybe: Maybe<T>): Maybe<U> => {
+  return maybe.map(fn);
+};
 
-export const chainM =
-  <T, U>(fn: (value: T) => Maybe<U>) =>
-  (maybe: Maybe<T>): Maybe<U> => {
-    return maybe.chain(fn);
-  };
+export const chainM = <T, U>
+  (fn: (value: T) => Maybe<U>
+) => (maybe: Maybe<T>): Maybe<U> => {
+  return maybe.chain(fn);
+};
 
-export const unwrapOrM =
-  <T>(defaultValue: T) =>
-  (maybe: Maybe<T>): T => {
-    return maybe.unwrapOr(defaultValue);
-  };
+export const unwrapOrM = <T>(
+  defaultValue: T
+) => (maybe: Maybe<T>): T => {
+  return maybe.unwrapOr(defaultValue);
+};
 
-export const matchM =
-  <T, U>(cases: { just: (value: T) => U; nothing: () => U }) =>
-  (maybe: Maybe<T>): U => {
-    return maybe.match(cases);
-  };
+export const matchM = <T, U>(
+  cases: { just: (value: T) => U; nothing: () => U }
+) => (maybe: Maybe<T>): U => {
+  return maybe.match(cases);
+};
 
-export const equalsM =
-  <T>(other: Maybe<T>) =>
-  (maybe: Maybe<T>): boolean => {
-    return maybe.equals(other);
-  };
+export const equalsM = <T>(
+  other: Maybe<T>
+) => (maybe: Maybe<T>): boolean => {
+  return maybe.equals(other);
+};
 
 export const just = <T>(value: T): Maybe<T> => new Just(value);
 export const nothing = <T = never>() => new Nothing<T>();
