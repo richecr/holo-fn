@@ -4,6 +4,7 @@ export interface Maybe<T> {
 
   map<U>(fn: (value: T) => U): Maybe<U>;
   chain<U>(fn: (value: T) => Maybe<U>): Maybe<U>;
+  filter(fn: (value: T) => boolean): Maybe<T>;
   unwrapOr(defaultValue: T): T;
   match<U>(cases: { just: (value: T) => U; nothing: () => U }): U;
   equals(other: Maybe<T>): boolean;
@@ -28,6 +29,10 @@ export class Just<T> implements Maybe<T> {
 
   chain<U>(fn: (value: T) => Maybe<U>): Maybe<U> {
     return fn(this.value);
+  }
+
+  filter(fn: (value: T) => boolean): Maybe<T> {
+    return fn(this.value) ? this : new Nothing<T>();
   }
 
   unwrapOr(_: T): T {
@@ -66,6 +71,10 @@ export class Nothing<T = never> implements Maybe<T> {
     return new Nothing<U>();
   }
 
+  filter(_: (value: T) => boolean): Maybe<T> {
+    return this;
+  }
+
   unwrapOr(defaultValue: T): T {
     return defaultValue;
   }
@@ -97,6 +106,12 @@ export const chain =
   <T, U>(fn: (value: T) => Maybe<U>) =>
   (maybe: Maybe<T>): Maybe<U> => {
     return maybe.chain(fn);
+  };
+
+export const filter =
+  <T>(fn: (value: T) => boolean) =>
+  (maybe: Maybe<T>): Maybe<T> => {
+    return maybe.filter(fn);
   };
 
 export const unwrapOr =
