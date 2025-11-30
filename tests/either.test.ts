@@ -14,6 +14,7 @@ import {
   right,
   tryCatch,
   unwrapOr,
+  validate,
 } from '../src/either';
 
 describe('Either', () => {
@@ -57,6 +58,31 @@ describe('Either', () => {
   it('Left.chain does not call function', () => {
     const result = new Left<string, number>('error').chain((n) => new Right(n + 3));
     expect(result.unwrapOr(0)).toBe(0);
+  });
+
+  it('Right.validate should keep value when predicate returns true', () => {
+    const result = new Right<string, number>(25).validate((x) => x >= 18, 'Must be 18+');
+    expect(result.isRight()).toBe(true);
+    expect(result.unwrapOr(0)).toBe(25);
+  });
+
+  it('Right.validate should convert to Left when predicate returns false', () => {
+    const result = new Right<string, number>(15).validate((x) => x >= 18, 'Must be 18+');
+    expect(result.isLeft()).toBe(true);
+    expect(result.match({ left: (e) => e, right: (_) => '' })).toBe('Must be 18+');
+  });
+
+  it('Right.validate should support chaining multiple validations', () => {
+    const validateAge = (age: number) =>
+      right<string, number>(age)
+        .validate((x) => x >= 0, 'Age cannot be negative')
+        .validate((x) => x <= 150, 'Age too high')
+        .validate((x) => x >= 18, 'Must be 18+');
+
+    expect(validateAge(25).unwrapOr(0)).toBe(25);
+    expect(validateAge(15).match({ left: (e) => e, right: (_) => '' })).toBe('Must be 18+');
+    expect(validateAge(-5).match({ left: (e) => e, right: (_) => '' })).toBe('Age cannot be negative');
+    expect(validateAge(200).match({ left: (e) => e, right: (_) => '' })).toBe('Age too high');
   });
 
   it('Right.unwrapOr returns the value', () => {
@@ -247,6 +273,24 @@ describe('Either - Curried Helpers', () => {
       unwrapOr(0)
     );
     expect(result).toBe(0);
+  });
+
+  it('Left.validate should not run predicate (short-circuit)', () => {
+    const result = right<string, number>(15)
+      .validate((x) => x >= 18, 'Must be 18+')
+      .validate((x) => x <= 100, 'Too old');
+
+    expect(result.match({ left: (e) => e, right: (_) => '' })).toBe('Must be 18+');
+  });
+
+  it('curried validate should work with pipe', () => {
+    const result = pipe(
+      right<string, number>(42),
+      validate((x: number) => x > 0, 'Must be positive'),
+      validate((x: number) => x % 2 === 0, 'Must be even'),
+      unwrapOr(0)
+    );
+    expect(result).toBe(42);
   });
 
   it('should unwrapOr with default value using curried unwrapOr', () => {

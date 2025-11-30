@@ -5,6 +5,7 @@ export interface Either<L, R> {
   map<U>(fn: (value: R) => U): Either<L, U>;
   mapLeft<M>(fn: (err: L) => M): Either<M, R>;
   chain<U>(fn: (value: R) => Either<L, U>): Either<L, U>;
+  validate(predicate: (value: R) => boolean, leftValue: L): Either<L, R>;
   unwrapOr(defaultValue: R): R;
   match<T>(cases: { left: (left: L) => T; right: (right: R) => T }): T;
   equals(other: Either<L, R>): boolean;
@@ -33,6 +34,10 @@ export class Right<L, R> implements Either<L, R> {
 
   chain<U>(fn: (value: R) => Either<L, U>): Either<L, U> {
     return fn(this.value);
+  }
+
+  validate(predicate: (value: R) => boolean, leftValue: L): Either<L, R> {
+    return predicate(this.value) ? this : new Left<L, R>(leftValue);
   }
 
   unwrapOr(_: R): R {
@@ -73,6 +78,10 @@ export class Left<L, R = never> implements Either<L, R> {
 
   chain<U>(_: (value: R) => Either<L, U>): Either<L, U> {
     return new Left<L, U>(this.value);
+  }
+
+  validate(_predicate: (value: R) => boolean, _leftValue: L): Either<L, R> {
+    return this;
   }
 
   unwrapOr(defaultValue: R): R {
@@ -134,6 +143,12 @@ export const chain =
   <L, R, U>(fn: (value: R) => Either<L, U>) =>
   (either: Either<L, R>): Either<L, U> => {
     return either.chain(fn);
+  };
+
+export const validate =
+  <L, R>(predicate: (value: R) => boolean, leftValue: L) =>
+  (either: Either<L, R>): Either<L, R> => {
+    return either.validate(predicate, leftValue);
   };
 
 export const unwrapOr =
