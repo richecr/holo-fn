@@ -519,3 +519,31 @@ console.log(result); // true
 ```
 
 ---
+
+### `all`
+
+Combines an array of `Either` values into a single `Either`. Returns `Right` with all values if all are `Right`, or `Left` with all errors if any are `Left`.
+
+```ts
+import { all, right, left } from 'holo-fn/either';
+
+// All success case
+const result1 = all([right(1), right(2), right(3)]);
+console.log(result1.unwrapOr([])); // [1, 2, 3]
+
+// Collecting errors
+const result2 = all([left('Name required'), left('Email invalid'), right(25)]);
+console.log(
+  result2.match({
+    left: (e) => e,
+    right: (v) => v,
+  })
+); // ['Name required', 'Email invalid']
+
+// Empty array
+const result3 = all([]);
+console.log(result3.unwrapOr([])); // []
+```
+
+---
+

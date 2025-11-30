@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 import { pipe } from 'rambda';
 import {
+  all,
   chain,
   equals,
   fromAsync,
@@ -391,5 +392,39 @@ describe('Either - Curried Helpers', () => {
   it('should return false for different Right and Left values with curried equals', () => {
     const result = pipe(new Right<string, number>(42), equals(new Left('error')));
     expect(result).toBe(false);
+  });
+
+  it('all should return Right with all values when all are Right', () => {
+    const eithers = [right<string, number>(1), right<string, number>(2), right<string, number>(3)];
+    const result = all(eithers);
+    expect(result.isRight()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([1, 2, 3]);
+  });
+
+  it('all should return Left with all errors when any are Left', () => {
+    const eithers = [right<string, number>(1), left<string, number>('error1'), left<string, number>('error2')];
+    const result = all(eithers);
+    expect(result.isLeft()).toBe(true);
+    expect(result.match({ left: (e) => e, right: (_) => [] })).toEqual(['error1', 'error2']);
+  });
+
+  it('all should return Right with empty array for empty input', () => {
+    const result = all<string, number>([]);
+    expect(result.isRight()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([]);
+  });
+
+  it('all should collect all errors from multiple Left', () => {
+    const eithers = [
+      left<string, number>('Name required'),
+      left<string, number>('Email invalid'),
+      left<string, number>('Age too low'),
+    ];
+    const result = all(eithers);
+    expect(result.match({ left: (e) => e, right: (_) => [] })).toEqual([
+      'Name required',
+      'Email invalid',
+      'Age too low',
+    ]);
   });
 });

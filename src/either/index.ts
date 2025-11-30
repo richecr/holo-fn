@@ -169,5 +169,24 @@ export const equals =
     return either.equals(other);
   };
 
+export const all = <L, R>(eithers: Either<L, R>[]): Either<L[], R[]> => {
+  const values: R[] = [];
+  const errors: L[] = [];
+
+  for (const either of eithers) {
+    if (either.isLeft()) {
+      errors.push(either.extract() as L);
+    } else {
+      values.push(either.extract() as R);
+    }
+  }
+
+  if (errors.length > 0) {
+    return new Left<L[], R[]>(errors);
+  }
+
+  return new Right<L[], R[]>(values);
+};
+
 export const left = <L, R = never>(value: L): Either<L, R> => new Left(value);
 export const right = <L, R>(value: R): Either<L, R> => new Right(value);
