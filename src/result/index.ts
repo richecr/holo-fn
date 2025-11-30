@@ -5,6 +5,7 @@ export interface Result<T, E> {
   map<U>(fn: (value: T) => U): Result<U, E>;
   mapErr<F>(fn: (err: E) => F): Result<T, F>;
   chain<U>(fn: (value: T) => Result<U, E>): Result<U, E>;
+  validate(predicate: (value: T) => boolean, error: E): Result<T, E>;
   unwrapOr(defaultValue: T): T;
   match<U>(cases: { ok: (value: T) => U; err: (err: E) => U }): U;
   equals(other: Result<T, E>): boolean;
@@ -33,6 +34,10 @@ export class Ok<T, E> implements Result<T, E> {
 
   chain<U>(fn: (value: T) => Result<U, E>): Result<U, E> {
     return fn(this.value);
+  }
+
+  validate(predicate: (value: T) => boolean, error: E): Result<T, E> {
+    return predicate(this.value) ? this : new Err<T, E>(error);
   }
 
   unwrapOr(_: T): T {
@@ -73,6 +78,10 @@ export class Err<T, E> implements Result<T, E> {
 
   chain<U>(_: (value: T) => Result<U, E>): Result<U, E> {
     return new Err<U, E>(this.error);
+  }
+
+  validate(_predicate: (value: T) => boolean, _error: E): Result<T, E> {
+    return this;
   }
 
   unwrapOr(defaultValue: T): T {
@@ -140,6 +149,12 @@ export const chain =
   <T, E, U>(fn: (value: T) => Result<U, E>) =>
   (result: Result<T, E>): Result<U, E> => {
     return result.chain(fn);
+  };
+
+export const validate =
+  <T, E>(predicate: (value: T) => boolean, error: E) =>
+  (result: Result<T, E>): Result<T, E> => {
+    return result.validate(predicate, error);
   };
 
 export const unwrapOr =
