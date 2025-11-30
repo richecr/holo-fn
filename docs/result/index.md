@@ -298,7 +298,7 @@ console.log(result); // 15
 Curried version of `validate` for `Result`. This allows filtering/validating values in a functional pipeline with custom error messages.
 
 ```ts
-import { ok, pipe, validate, unwrapOr } from 'holo-fn/result';
+import { ok, validate, unwrapOr } from 'holo-fn/result';
 
 const validateAge = (age: number) =>
   pipe(
@@ -325,13 +325,21 @@ const validateEmail = (email: string) =>
     validate((s) => s.includes('.'), 'Invalid domain')
   );
 
+console.log(validateEmail('test@example.com').unwrapOr('Invalid'));
+
 // Parse and validate numbers
 const parsePositive = (input: string) =>
   pipe(
-    fromThrowable(() => parseInt(input, 10), () => 'Invalid number'),
+    fromThrowable(
+      () => parseInt(input, 10),
+      () => 'Invalid number'
+    ),
     validate((n) => !isNaN(n), 'Not a number'),
     validate((n) => n > 0, 'Must be positive')
   );
+
+console.log(parsePositive('42').unwrapOr(0)); // 42
+console.log(parsePositive('-5').unwrapOr(0));
 
 // Validate objects
 type User = { name: string; age: number };
@@ -341,6 +349,9 @@ const validateUser = (user: User) =>
     validate((u) => u.name.length > 0, 'Name required'),
     validate((u) => u.age >= 18, 'Must be adult')
   );
+
+console.log(validateUser({ name: 'Alice', age: 30 }).unwrapOr({ name: '', age: 0 }));
+console.log(validateUser({ name: '', age: 16 }).unwrapOr({ name: '', age: 0 }));
 ```
 
 ---

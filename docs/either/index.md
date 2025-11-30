@@ -104,18 +104,18 @@ const result2 = calculate(10, 2)
 Validates the `Right` value based on a predicate. If the predicate returns `true`, keeps the value. If it returns `false`, converts to `Left` with the provided error. Does nothing for `Left`.
 
 ```ts
-import { Right, Left } from "holo-fn/either";
+import { Left, Right } from 'holo-fn/either';
 
 const result1 = new Right<string, number>(25).validate((n) => n >= 18, 'Must be 18+');
 console.log(result1.unwrapOr(0)); // 25
 
 const result2 = new Right<string, number>(15).validate((n) => n >= 18, 'Must be 18+');
 console.log(result2.isLeft()); // true
+console.log(result2.unwrapOr(0)); // 0
 
 const result3 = new Left<string, number>('Already failed').validate((n) => n >= 18, 'Must be 18+');
 console.log(result3.isLeft()); // true (keeps original error)
 
-console.log(result2); // 0
 ```
 
 ### `unwrapOr(defaultValue: R): R`
@@ -408,7 +408,7 @@ console.log(result); // 10
 Curried version of `validate` for `Either`. This allows filtering/validating values in a functional pipeline with custom error values.
 
 ```ts
-import { right, pipe, validate, unwrapOr } from 'holo-fn/either';
+import { right, validate, unwrapOr } from 'holo-fn/either';
 
 const validateAge = (age: number) =>
   pipe(
@@ -426,6 +426,8 @@ console.log(validateAge(15)); // 0 (fails validation)
 **Common use cases:**
 
 ```ts
+import { right, tryCatch, validate } from 'holo-fn/either';
+
 // Validate email format
 const validateEmail = (email: string) =>
   pipe(
@@ -435,24 +437,31 @@ const validateEmail = (email: string) =>
     validate((s: string) => s.includes('.'), 'Invalid domain')
   );
 
+console.log(validateEmail('test@example.com').unwrapOr('Invalid email'));
+
 // Parse and validate numbers
 const parsePositive = (input: string) =>
   pipe(
-    tryCatch(() => parseInt(input, 10), () => 'Invalid number'),
+    tryCatch(
+      () => parseInt(input, 10),
+      () => 'Invalid number'
+    ),
     validate((n: number) => !isNaN(n), 'Not a number'),
     validate((n: number) => n > 0, 'Must be positive')
   );
+
+console.log(parsePositive('42').unwrapOr(0));
 
 // Validate with structured errors
 type ValidationError = { code: string; message: string };
 const validateUser = (age: number) =>
   pipe(
     right<ValidationError, number>(age),
-    validate(
-      (x: number) => x >= 18,
-      { code: 'AGE_ERROR', message: 'Must be 18+' }
-    )
+    validate((x: number) => x >= 18, { code: 'AGE_ERROR', message: 'Must be 18+' })
   );
+
+console.log(validateUser(20));
+console.log(validateUser(15));
 ```
 
 ---
