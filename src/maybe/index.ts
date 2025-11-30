@@ -132,5 +132,19 @@ export const equals =
     return maybe.equals(other);
   };
 
+export const all = <T>(maybes: Maybe<T>[]): Maybe<T[]> => {
+  const values: T[] = [];
+
+  for (const maybe of maybes) {
+    if (maybe.isNothing()) {
+      return new Nothing<T[]>();
+    }
+
+    values.push(maybe.extract());
+  }
+
+  return new Just(values);
+};
+
 export const just = <T>(value: T): Maybe<T> => new Just(value);
 export const nothing = <T = never>() => new Nothing<T>();

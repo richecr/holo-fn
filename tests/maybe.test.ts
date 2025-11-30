@@ -1,6 +1,19 @@
 import { describe, expect, it } from 'bun:test';
 import { pipe } from 'rambda';
-import { Just, Nothing, chain, equals, filter, fromNullable, just, map, match, nothing, unwrapOr } from '../src/maybe';
+import {
+  Just,
+  Nothing,
+  all,
+  chain,
+  equals,
+  filter,
+  fromNullable,
+  just,
+  map,
+  match,
+  nothing,
+  unwrapOr,
+} from '../src/maybe';
 
 describe('Maybe', () => {
   it('Just.isJust() should return true', () => {
@@ -272,5 +285,30 @@ describe('Maybe - Curried Helpers', () => {
     const nothing = new Nothing<number>();
     const result = nothing.extract();
     expect(result).toBeNil();
+  });
+
+  it('all should return Just with all values when all are Just', () => {
+    const maybes = [just(1), just(2), just(3)];
+    const result = all(maybes);
+    expect(result.isJust()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([1, 2, 3]);
+  });
+
+  it('all should return Nothing when any is Nothing', () => {
+    const maybes = [just(1), nothing<number>(), just(3)];
+    const result = all(maybes);
+    expect(result.isNothing()).toBe(true);
+  });
+
+  it('all should return Just with empty array for empty input', () => {
+    const result = all<number>([]);
+    expect(result.isJust()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([]);
+  });
+
+  it('all should work with different types', () => {
+    const maybes = [just('Alice'), just('Bob'), just('Carol')];
+    const result = all(maybes);
+    expect(result.unwrapOr([])).toEqual(['Alice', 'Bob', 'Carol']);
   });
 });

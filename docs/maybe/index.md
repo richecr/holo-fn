@@ -315,3 +315,25 @@ console.log(result); // true
 
 ---
 
+### `all`
+
+Combines an array of `Maybe` values into a single `Maybe` containing an array. Returns `Just` with all values if all are `Just`, or `Nothing` if any is `Nothing`.
+
+```ts
+import { all, just, nothing } from 'holo-fn/maybe';
+
+// All success case
+const result1 = all([just(1), just(2), just(3)]);
+console.log(result1.unwrapOr([])); // [1, 2, 3]
+
+// Any failure case
+const result2 = all([just(1), nothing(), just(3)]);
+console.log(result2.isNothing()); // true
+
+// Empty array
+const result3 = all([]);
+console.log(result3.unwrapOr([])); // []
+```
+
+---
+
