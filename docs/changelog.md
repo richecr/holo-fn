@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[1.1.0]](https://github.com/richecr/holo-fn/releases/tag/v1.1.0) - 2025-11-30
+
+### Added
+- **`filter` method for `Maybe`**: Validates values with a predicate, converting `Just` to `Nothing` when the predicate fails.
+  - Added `filter(predicate: (value: T) => boolean): Maybe<T>` method to `Maybe` interface.
+  - Added curried `filter` function for use with `pipe`.
+  - Example:
+  ```ts
+  just(25).filter(x => x >= 18).unwrapOr(0); // 25
+  just(15).filter(x => x >= 18).unwrapOr(0); // 0
+  ```
+
+- **`validate` method for `Result` and `Either`**: Validates values with custom error messages.
+  - Added `validate(predicate: (value: T) => boolean, error: E): Result<T, E>` to `Result`.
+  - Added `validate(predicate: (value: R) => boolean, leftValue: L): Either<L, R>` to `Either`.
+  - Added curried `validate` functions for use with `pipe`.
+  - Example:
+  ```ts
+  ok(25).validate(x => x >= 18, 'Must be 18+').unwrapOr(0); // 25
+  ok(15).validate(x => x >= 18, 'Must be 18+').isErr(); // true
+  ```
+
+---
+
 ## [[1.0.0]](https://github.com/richecr/holo-fn/releases/tag/v1.0.0) - 2025-06-25
 
 ### Added
