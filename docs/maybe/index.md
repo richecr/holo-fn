@@ -40,6 +40,22 @@ const result2 = new Nothing<number>().chain((n) => new Just(n * 2));
 console.log(result2.unwrapOr(0)); // 0
 ```
 
+### `filter(fn: (value: T) => boolean): Maybe<T>`
+Filters the `Just` value based on a predicate. If the predicate returns `true`, keeps the value. If it returns `false`, converts to `Nothing`. Does nothing for `Nothing`.
+
+```ts
+import { Just, Nothing } from "holo-fn/maybe";
+
+const result1 = new Just(25).filter((n) => n >= 18);
+console.log(result1.unwrapOr(0)); // 25
+
+const result2 = new Just(15).filter((n) => n >= 18);
+console.log(result2.unwrapOr(0)); // 0
+
+const result3 = new Nothing<number>().filter((n) => n >= 18);
+console.log(result3.unwrapOr(0)); // 0
+```
+
 ### `unwrapOr(defaultValue: T): T`
 Returns the value of `Just`, or the default value for `Nothing`.
 
@@ -243,6 +259,56 @@ const result = pipe(
 );
 
 console.log(result); // true
+```
+
+---
+
+### `filter`
+
+Curried version of `filter` for `Maybe`. This allows filtering values in a functional pipeline based on a predicate.
+
+```ts
+import { filter, just, pipe } from 'holo-fn/maybe';
+
+const result = pipe(
+  just(25),
+  filter((x) => x >= 18),
+  filter((x) => x <= 100),
+  (res) => res.unwrapOr(0)
+);
+
+console.log(result); // 25
+```
+
+**Common use cases:**
+
+```ts
+// Validate age
+const validateAge = (age: number) =>
+  pipe(
+    just(age),
+    filter((x) => x >= 0),
+    filter((x) => x <= 150),
+    filter((x) => x >= 18)
+  );
+
+// Validate email format
+const validateEmail = (email: string) =>
+  pipe(
+    just(email),
+    filter((s) => s.length > 0),
+    filter((s) => s.includes('@')),
+    filter((s) => s.split('@')[1].includes('.'))
+  );
+
+// Parse positive integers
+const parsePositive = (input: string) =>
+  pipe(
+    just(input),
+    map((s) => parseInt(s, 10)),
+    filter((n) => !isNaN(n)),
+    filter((n) => n > 0)
+  );
 ```
 
 ---
