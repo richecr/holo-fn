@@ -14,6 +14,7 @@ import {
   Ok,
   ok,
   unwrapOr,
+  validate,
 } from '../src/result';
 
 describe('Result', () => {
@@ -45,6 +46,31 @@ describe('Result', () => {
   it('Err.chain should skip function and stay Err', () => {
     const result = new Err<number, string>('bad').chain((x) => new Ok(x + 1));
     expect(result.unwrapOr(123)).toBe(123);
+  });
+
+  it('Ok.validate should keep value when predicate returns true', () => {
+    const result = new Ok(25).validate((x) => x >= 18, 'Must be 18+');
+    expect(result.isOk()).toBe(true);
+    expect(result.unwrapOr(0)).toBe(25);
+  });
+
+  it('Ok.validate should convert to Err when predicate returns false', () => {
+    const result = new Ok(15).validate((x) => x >= 18, 'Must be 18+');
+    expect(result.isErr()).toBe(true);
+    expect(result.match({ ok: (_) => '', err: (e) => e })).toBe('Must be 18+');
+  });
+
+  it('Ok.validate should support chaining multiple validations', () => {
+    const validateAge = (age: number) =>
+      ok<number, string>(age)
+        .validate((x) => x >= 0, 'Age cannot be negative')
+        .validate((x) => x <= 150, 'Age too high')
+        .validate((x) => x >= 18, 'Must be 18+');
+
+    expect(validateAge(25).unwrapOr(0)).toBe(25);
+    expect(validateAge(15).match({ ok: (_) => '', err: (e) => e })).toBe('Must be 18+');
+    expect(validateAge(-5).match({ ok: (_) => '', err: (e) => e })).toBe('Age cannot be negative');
+    expect(validateAge(200).match({ ok: (_) => '', err: (e) => e })).toBe('Age too high');
   });
 
   it('Ok.unwrapOr should return value', () => {
@@ -262,6 +288,26 @@ describe('Result - Curried Helpers', () => {
       unwrapOr(0)
     );
     expect(result).toBe(0);
+  });
+
+  it('curried validate should work with pipe', () => {
+    const result = pipe(
+      ok<number, string>(42),
+      validate((x) => x > 0, 'Must be positive'),
+      validate((x) => x % 2 === 0, 'Must be even'),
+      unwrapOr(0)
+    );
+    expect(result).toBe(42);
+  });
+
+  it('curried validate should return Err when validation fails in pipe', () => {
+    const result = pipe(
+      ok<number, string>(41),
+      validate((x) => x > 0, 'Must be positive'),
+      validate((x) => x % 2 === 0, 'Must be even'),
+      match({ ok: (_) => 'ok', err: (e) => e })
+    );
+    expect(result).toBe('Must be even');
   });
 
   it('should unwrapOr with default value using curried unwrapOr', () => {

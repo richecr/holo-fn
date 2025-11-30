@@ -57,6 +57,22 @@ const result2 = new Err<number, string>("Error")
 console.log(result2); // 0
 ```
 
+### `validate(predicate: (value: T) => boolean, error: E): Result<T, E>`
+Validates the `Ok` value based on a predicate. If the predicate returns `true`, keeps the value. If it returns `false`, converts to `Err` with the provided error. Does nothing for `Err`.
+
+```ts
+import { Ok, Err } from "holo-fn/result";
+
+const result1 = new Ok(25).validate((n) => n >= 18, 'Must be 18+');
+console.log(result1.unwrapOr(0)); // 25
+
+const result2 = new Ok(15).validate((n) => n >= 18, 'Must be 18+');
+console.log(result2.isErr()); // true
+
+const result3 = new Err<number, string>('Already failed').validate((n) => n >= 18, 'Must be 18+');
+console.log(result3.isErr()); // true (keeps original error)
+```
+
 ### `unwrapOr(defaultValue: T): T`
 Returns the value of `Ok`, or the default value for `Err`.
 
@@ -273,6 +289,69 @@ const result = pipe(
 );
 
 console.log(result); // 15
+```
+
+---
+
+### `validate`
+
+Curried version of `validate` for `Result`. This allows filtering/validating values in a functional pipeline with custom error messages.
+
+```ts
+import { ok, validate, unwrapOr } from 'holo-fn/result';
+
+const validateAge = (age: number) =>
+  pipe(
+    ok<number, string>(age),
+    validate((x) => x >= 0, 'Age cannot be negative'),
+    validate((x) => x <= 150, 'Age too high'),
+    validate((x) => x >= 18, 'Must be 18+'),
+    unwrapOr(0)
+  );
+
+console.log(validateAge(25)); // 25
+console.log(validateAge(15)); // 0 (fails validation)
+```
+
+**Common use cases:**
+
+```ts
+// Validate email format
+const validateEmail = (email: string) =>
+  pipe(
+    ok<string, string>(email),
+    validate((s) => s.length > 0, 'Email is required'),
+    validate((s) => s.includes('@'), 'Must contain @'),
+    validate((s) => s.includes('.'), 'Invalid domain')
+  );
+
+console.log(validateEmail('test@example.com').unwrapOr('Invalid'));
+
+// Parse and validate numbers
+const parsePositive = (input: string) =>
+  pipe(
+    fromThrowable(
+      () => parseInt(input, 10),
+      () => 'Invalid number'
+    ),
+    validate((n) => !isNaN(n), 'Not a number'),
+    validate((n) => n > 0, 'Must be positive')
+  );
+
+console.log(parsePositive('42').unwrapOr(0)); // 42
+console.log(parsePositive('-5').unwrapOr(0));
+
+// Validate objects
+type User = { name: string; age: number };
+const validateUser = (user: User) =>
+  pipe(
+    ok<User, string>(user),
+    validate((u) => u.name.length > 0, 'Name required'),
+    validate((u) => u.age >= 18, 'Must be adult')
+  );
+
+console.log(validateUser({ name: 'Alice', age: 30 }).unwrapOr({ name: '', age: 0 }));
+console.log(validateUser({ name: '', age: 16 }).unwrapOr({ name: '', age: 0 }));
 ```
 
 ---
