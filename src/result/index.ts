@@ -175,5 +175,24 @@ export const equals =
     return result.equals(other);
   };
 
+export const all = <T, E>(results: Result<T, E>[]): Result<T[], E[]> => {
+  const values: T[] = [];
+  const errors: E[] = [];
+
+  for (const result of results) {
+    if (result.isErr()) {
+      errors.push(result.extract() as E);
+    } else {
+      values.push(result.extract() as T);
+    }
+  }
+
+  if (errors.length > 0) {
+    return new Err<T[], E[]>(errors);
+  }
+
+  return new Ok<T[], E[]>(values);
+};
+
 export const ok = <T, E>(value: T): Result<T, E> => new Ok(value);
 export const err = <T, E>(error: E): Result<T, E> => new Err(error);

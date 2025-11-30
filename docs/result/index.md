@@ -416,3 +416,31 @@ console.log(result2); // false
 ```
 
 ---
+
+### `all`
+
+Combines an array of `Result` values into a single `Result`. Returns `Ok` with all values if all are `Ok`, or `Err` with all errors if any are `Err`.
+
+```ts
+import { all, ok, err } from 'holo-fn/result';
+
+// All success case
+const result1 = all([ok(1), ok(2), ok(3)]);
+console.log(result1.unwrapOr([])); // [1, 2, 3]
+
+// Collecting errors
+const result2 = all([err('Name required'), err('Email invalid'), ok(25)]);
+console.log(
+  result2.match({
+    ok: (v) => v,
+    err: (e) => e,
+  })
+); // ['Name required', 'Email invalid']
+
+// Empty array
+const result3 = all([]);
+console.log(result3.unwrapOr([])); // []
+```
+
+---
+

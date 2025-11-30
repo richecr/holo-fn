@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 import { pipe } from 'rambda';
 import {
+  all,
   chain,
   equals,
   Err,
@@ -360,5 +361,35 @@ describe('Result - Curried Helpers', () => {
   it('should not equals with another Err using curried equals', () => {
     const result = pipe(new Err('Error'), equals(new Err('Different Error')));
     expect(result).toBe(false);
+  });
+
+  it('all should return Ok with all values when all are Ok', () => {
+    const results = [ok<number, string>(1), ok<number, string>(2), ok<number, string>(3)];
+    const result = all(results);
+    expect(result.isOk()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([1, 2, 3]);
+  });
+
+  it('all should return Err with all errors when any are Err', () => {
+    const results = [ok<number, string>(1), err<number, string>('error1'), err<number, string>('error2')];
+    const result = all(results);
+    expect(result.isErr()).toBe(true);
+    expect(result.match({ ok: (_) => [], err: (e) => e })).toEqual(['error1', 'error2']);
+  });
+
+  it('all should return Ok with empty array for empty input', () => {
+    const result = all<number, string>([]);
+    expect(result.isOk()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([]);
+  });
+
+  it('all should collect all errors from multiple Err', () => {
+    const results = [
+      err<number, string>('Name required'),
+      err<number, string>('Email invalid'),
+      err<number, string>('Age too low'),
+    ];
+    const result = all(results);
+    expect(result.match({ ok: (_) => [], err: (e) => e })).toEqual(['Name required', 'Email invalid', 'Age too low']);
   });
 });
