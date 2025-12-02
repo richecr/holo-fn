@@ -736,6 +736,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        all
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1245,6 +1256,17 @@
     <span class="md-ellipsis">
       
         equals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        all
       
     </span>
   </a>
@@ -2004,6 +2026,45 @@
 <span class="p">);</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span><span class="w"> </span><span class="c1">// true</span>
+</code></pre></div></td></tr></table></div>
+<hr />
+<h3 id="all"><code>all</code></h3>
+<p>Combines an array of <code>Either</code> values into a single <code>Either</code>. Returns <code>Right</code> with all values if all are <code>Right</code>, or <code>Left</code> with all errors if any are <code>Left</code>.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">all</span><span class="p">,</span><span class="w"> </span><span class="nx">right</span><span class="p">,</span><span class="w"> </span><span class="nx">left</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/either&#39;</span><span class="p">;</span>
+
+<span class="c1">// All success case</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">all</span><span class="p">([</span><span class="nx">right</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">right</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span><span class="w"> </span><span class="nx">right</span><span class="p">(</span><span class="mf">3</span><span class="p">)]);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result1</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">([]));</span><span class="w"> </span><span class="c1">// [1, 2, 3]</span>
+
+<span class="c1">// Collecting errors</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">all</span><span class="p">([</span><span class="nx">left</span><span class="p">(</span><span class="s1">&#39;Name required&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">left</span><span class="p">(</span><span class="s1">&#39;Email invalid&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">right</span><span class="p">(</span><span class="mf">25</span><span class="p">)]);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+<span class="w">  </span><span class="nx">result2</span><span class="p">.</span><span class="nx">match</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">left</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">e</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">right</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">v</span><span class="p">,</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">);</span><span class="w"> </span><span class="c1">// [&#39;Name required&#39;, &#39;Email invalid&#39;]</span>
+
+<span class="c1">// Empty array</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">result3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">all</span><span class="p">([]);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result3</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">([]));</span><span class="w"> </span><span class="c1">// []</span>
 </code></pre></div></td></tr></table></div>
 <hr />
 
