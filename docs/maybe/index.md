@@ -214,7 +214,7 @@ console.log(result); // 20
 Curried version of `filter` for `Maybe`. This allows filtering values in a functional pipeline based on a predicate.
 
 ```ts
-import { filter, just, pipe } from 'holo-fn/maybe';
+import { filter, just } from 'holo-fn/maybe';
 
 const result = pipe(
   just(25),
