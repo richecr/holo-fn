@@ -527,11 +527,9 @@ Combines an array of `Either` values into a single `Either`. Returns `Right` wit
 ```ts
 import { all, right, left } from 'holo-fn/either';
 
-// All success case
 const result1 = all([right(1), right(2), right(3)]);
 console.log(result1.unwrapOr([])); // [1, 2, 3]
 
-// Collecting errors
 const result2 = all([left('Name required'), left('Email invalid'), right(25)]);
 console.log(
   result2.match({
@@ -543,6 +541,31 @@ console.log(
 // Empty array
 const result3 = all([]);
 console.log(result3.unwrapOr([])); // []
+```
+
+---
+
+### `sequence`
+
+Combines an array of `Either` values into a single `Either`, stopping at the first error (fail-fast). Returns `Right` with all values if all are `Right`, or `Left` with the first error encountered.
+
+Unlike `all` which collects all errors, `sequence` returns immediately when it finds the first `Left`.
+
+```ts
+import { sequence, right, left } from 'holo-fn/either';
+
+const result1 = sequence([right(1), right(2), right(3)]);
+console.log(result1.unwrapOr([])); // [1, 2, 3]
+
+const result2 = sequence([
+  right(1),
+  left('First error'),
+  left('Second error')
+]);
+console.log(result2.match({
+  left: (e) => e,
+  right: (v) => v
+})); // 'First error' (not an array!)
 ```
 
 ---

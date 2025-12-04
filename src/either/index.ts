@@ -188,5 +188,19 @@ export const all = <L, R>(eithers: Either<L, R>[]): Either<L[], R[]> => {
   return new Right<L[], R[]>(values);
 };
 
+export const sequence = <L, R>(eithers: Either<L, R>[]): Either<L, R[]> => {
+  const values: R[] = [];
+
+  for (const either of eithers) {
+    if (either.isLeft()) {
+      return new Left<L, R[]>(either.extract() as L);
+    }
+
+    values.push(either.extract() as R);
+  }
+
+  return new Right<L, R[]>(values);
+};
+
 export const left = <L, R = never>(value: L): Either<L, R> => new Left(value);
 export const right = <L, R>(value: R): Either<L, R> => new Right(value);

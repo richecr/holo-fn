@@ -13,6 +13,7 @@ import {
   match,
   Right,
   right,
+  sequence,
   tryCatch,
   unwrapOr,
   validate,
@@ -426,5 +427,35 @@ describe('Either - Curried Helpers', () => {
       'Email invalid',
       'Age too low',
     ]);
+  });
+
+  it('sequence should return Right with all values when all are Right', () => {
+    const eithers = [right<string, number>(1), right<string, number>(2), right<string, number>(3)];
+    const result = sequence(eithers);
+    expect(result.isRight()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([1, 2, 3]);
+  });
+
+  it('sequence should return first Left when any is Left (fail-fast)', () => {
+    const eithers = [right<string, number>(1), left<string, number>('error1'), left<string, number>('error2')];
+    const result = sequence(eithers);
+    expect(result.isLeft()).toBe(true);
+    expect(result.match({ left: (e) => e, right: (_) => '' })).toBe('error1');
+  });
+
+  it('sequence should return Right with empty array for empty input', () => {
+    const result = sequence<string, number>([]);
+    expect(result.isRight()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([]);
+  });
+
+  it('sequence should stop at first error unlike all', () => {
+    const eithers = [
+      left<string, number>('First error'),
+      left<string, number>('Second error'),
+      right<string, number>(1),
+    ];
+    const result = sequence(eithers);
+    expect(result.match({ left: (e) => e, right: (_) => '' })).toBe('First error');
   });
 });

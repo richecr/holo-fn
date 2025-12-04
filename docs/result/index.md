@@ -424,11 +424,9 @@ Combines an array of `Result` values into a single `Result`. Returns `Ok` with a
 ```ts
 import { all, ok, err } from 'holo-fn/result';
 
-// All success case
 const result1 = all([ok(1), ok(2), ok(3)]);
 console.log(result1.unwrapOr([])); // [1, 2, 3]
 
-// Collecting errors
 const result2 = all([err('Name required'), err('Email invalid'), ok(25)]);
 console.log(
   result2.match({
@@ -437,9 +435,33 @@ console.log(
   })
 ); // ['Name required', 'Email invalid']
 
-// Empty array
 const result3 = all([]);
 console.log(result3.unwrapOr([])); // []
+```
+
+---
+
+### `sequence`
+
+Combines an array of `Result` values into a single `Result`, stopping at the first error (fail-fast). Returns `Ok` with all values if all are `Ok`, or `Err` with the first error encountered.
+
+Unlike `all` which collects all errors, `sequence` returns immediately when it finds the first `Err`.
+
+```ts
+import { sequence, ok, err } from 'holo-fn/result';
+
+const result1 = sequence([ok(1), ok(2), ok(3)]);
+console.log(result1.unwrapOr([])); // [1, 2, 3]
+
+const result2 = sequence([
+  ok(1),
+  err('First error'),
+  err('Second error')
+]);
+console.log(result2.match({
+  ok: (v) => v,
+  err: (e) => e
+})); // 'First error' (not an array!)
 ```
 
 ---

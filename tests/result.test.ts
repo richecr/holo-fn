@@ -14,6 +14,7 @@ import {
   match,
   Ok,
   ok,
+  sequence,
   unwrapOr,
   validate,
 } from '../src/result';
@@ -391,5 +392,31 @@ describe('Result - Curried Helpers', () => {
     ];
     const result = all(results);
     expect(result.match({ ok: (_) => [], err: (e) => e })).toEqual(['Name required', 'Email invalid', 'Age too low']);
+  });
+
+  it('sequence should return Ok with all values when all are Ok', () => {
+    const results = [ok<number, string>(1), ok<number, string>(2), ok<number, string>(3)];
+    const result = sequence(results);
+    expect(result.isOk()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([1, 2, 3]);
+  });
+
+  it('sequence should return first Err when any is Err (fail-fast)', () => {
+    const results = [ok<number, string>(1), err<number, string>('error1'), err<number, string>('error2')];
+    const result = sequence(results);
+    expect(result.isErr()).toBe(true);
+    expect(result.match({ ok: (_) => '', err: (e) => e })).toBe('error1');
+  });
+
+  it('sequence should return Ok with empty array for empty input', () => {
+    const result = sequence<number, string>([]);
+    expect(result.isOk()).toBe(true);
+    expect(result.unwrapOr([])).toEqual([]);
+  });
+
+  it('sequence should stop at first error unlike all', () => {
+    const results = [err<number, string>('First error'), err<number, string>('Second error'), ok<number, string>(1)];
+    const result = sequence(results);
+    expect(result.match({ ok: (_) => '', err: (e) => e })).toBe('First error');
   });
 });

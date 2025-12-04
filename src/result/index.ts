@@ -194,5 +194,19 @@ export const all = <T, E>(results: Result<T, E>[]): Result<T[], E[]> => {
   return new Ok<T[], E[]>(values);
 };
 
+export const sequence = <T, E>(results: Result<T, E>[]): Result<T[], E> => {
+  const values: T[] = [];
+
+  for (const result of results) {
+    if (result.isErr()) {
+      return new Err<T[], E>(result.extract() as E);
+    }
+
+    values.push(result.extract() as T);
+  }
+
+  return new Ok<T[], E>(values);
+};
+
 export const ok = <T, E>(value: T): Result<T, E> => new Ok(value);
 export const err = <T, E>(error: E): Result<T, E> => new Err(error);
