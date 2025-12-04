@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [Unreleased]
+
+### Added
+- **`all` combinator for `Maybe`, `Result`, and `Either`**: Combines an array of monads into a single monad containing an array of values.
+  - `Maybe`: Returns `Just` with all values if all are `Just`, or `Nothing` if any is `Nothing`.
+  - `Result`/`Either`: Collects **all** errors if any fail.
+  - Example:
+  ```ts
+  all([just(1), just(2), just(3)]).unwrapOr([]); // [1, 2, 3]
+  all([ok(1), err('e1'), err('e2')]); // Err(['e1', 'e2'])
+  ```
+
+- **`sequence` combinator for `Result` and `Either`**: Combines an array of monads with fail-fast behavior.
+  - Stops at the **first** error instead of collecting all errors.
+  - Returns single error type instead of array.
+  - Example:
+  ```ts
+  sequence([ok(1), err('e1'), err('e2')]); // Err('e1') - stops at first!
+  // vs all: Err(['e1', 'e2']) - collects all
+  ```
+
+---
+
 ## [[1.1.0]](https://github.com/richecr/holo-fn/releases/tag/v1.1.0) - 2025-11-30
 
 ### Added
