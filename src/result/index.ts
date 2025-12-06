@@ -208,5 +208,19 @@ export const sequence = <T, E>(results: Result<T, E>[]): Result<T[], E> => {
   return new Ok<T[], E>(values);
 };
 
+export const partition = <T, E>(results: Result<T, E>[]): { oks: T[]; errs: E[] } => {
+  return results.reduce(
+    (acc, result) => {
+      if (result.isErr()) {
+        acc.errs.push(result.extract() as E);
+      } else {
+        acc.oks.push(result.extract() as T);
+      }
+      return acc;
+    },
+    { oks: [] as T[], errs: [] as E[] }
+  );
+};
+
 export const ok = <T, E>(value: T): Result<T, E> => new Ok(value);
 export const err = <T, E>(error: E): Result<T, E> => new Err(error);

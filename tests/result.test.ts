@@ -14,6 +14,7 @@ import {
   match,
   Ok,
   ok,
+  partition,
   sequence,
   unwrapOr,
   validate,
@@ -418,5 +419,38 @@ describe('Result - Curried Helpers', () => {
     const results = [err<number, string>('First error'), err<number, string>('Second error'), ok<number, string>(1)];
     const result = sequence(results);
     expect(result.match({ ok: (_) => '', err: (e) => e })).toBe('First error');
+  });
+
+  it('partition should separate oks and errs', () => {
+    const results = [
+      ok<number, string>(1),
+      err<number, string>('error1'),
+      ok<number, string>(2),
+      err<number, string>('error2'),
+      ok<number, string>(3),
+    ];
+    const { oks, errs } = partition(results);
+    expect(oks).toEqual([1, 2, 3]);
+    expect(errs).toEqual(['error1', 'error2']);
+  });
+
+  it('partition should return all oks when no errors', () => {
+    const results = [ok<number, string>(1), ok<number, string>(2), ok<number, string>(3)];
+    const { oks, errs } = partition(results);
+    expect(oks).toEqual([1, 2, 3]);
+    expect(errs).toEqual([]);
+  });
+
+  it('partition should return all errs when all fail', () => {
+    const results = [err<number, string>('e1'), err<number, string>('e2'), err<number, string>('e3')];
+    const { oks, errs } = partition(results);
+    expect(oks).toEqual([]);
+    expect(errs).toEqual(['e1', 'e2', 'e3']);
+  });
+
+  it('partition should return empty arrays for empty input', () => {
+    const { oks, errs } = partition<number, string>([]);
+    expect(oks).toEqual([]);
+    expect(errs).toEqual([]);
   });
 });

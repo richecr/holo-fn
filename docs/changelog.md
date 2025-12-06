@@ -24,7 +24,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Example:
   ```ts
   sequence([ok(1), err('e1'), err('e2')]); // Err('e1') - stops at first!
-  // vs all: Err(['e1', 'e2']) - collects all
+  ```
+
+- **`partition` function for `Result` and `Either`**: Separates an array of monads into successes and failures.
+  - Returns a plain object with two arrays (not a monad).
+  - Always processes all items.
+  - Example:
+  ```ts
+  partition([ok(1), err('e1'), ok(2), err('e2')]);
+  // { oks: [1, 2], errs: ['e1', 'e2'] }
   ```
 
 ---

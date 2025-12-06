@@ -11,6 +11,7 @@ import {
   map,
   mapLeft,
   match,
+  partition,
   Right,
   right,
   sequence,
@@ -457,5 +458,38 @@ describe('Either - Curried Helpers', () => {
     ];
     const result = sequence(eithers);
     expect(result.match({ left: (e) => e, right: (_) => '' })).toBe('First error');
+  });
+
+  it('partition should separate lefts and rights', () => {
+    const eithers = [
+      right<string, number>(1),
+      left<string, number>('error1'),
+      right<string, number>(2),
+      left<string, number>('error2'),
+      right<string, number>(3),
+    ];
+    const { lefts, rights } = partition(eithers);
+    expect(rights).toEqual([1, 2, 3]);
+    expect(lefts).toEqual(['error1', 'error2']);
+  });
+
+  it('partition should return all rights when no lefts', () => {
+    const eithers = [right<string, number>(1), right<string, number>(2), right<string, number>(3)];
+    const { lefts, rights } = partition(eithers);
+    expect(rights).toEqual([1, 2, 3]);
+    expect(lefts).toEqual([]);
+  });
+
+  it('partition should return all lefts when all fail', () => {
+    const eithers = [left<string, number>('e1'), left<string, number>('e2'), left<string, number>('e3')];
+    const { lefts, rights } = partition(eithers);
+    expect(lefts).toEqual(['e1', 'e2', 'e3']);
+    expect(rights).toEqual([]);
+  });
+
+  it('partition should return empty arrays for empty input', () => {
+    const { lefts, rights } = partition<string, number>([]);
+    expect(lefts).toEqual([]);
+    expect(rights).toEqual([]);
   });
 });

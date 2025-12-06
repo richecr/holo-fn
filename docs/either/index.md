@@ -570,3 +570,32 @@ console.log(result2.match({
 
 ---
 
+### `partition`
+
+Separates an array of `Either` values into two groups: `lefts` and `rights`. Always processes all items and returns both arrays.
+
+Unlike `all` and `sequence` which return an `Either`, `partition` returns a plain object with two arrays.
+
+```ts
+import { partition, left, right } from 'holo-fn/either';
+
+const eithers = [
+  right<string, number>(1),
+  left('error1'),
+  right<string, number>(2),
+  left('error2'),
+  right<string, number>(3),
+];
+
+const { lefts, rights } = partition(eithers);
+console.log(rights); // [1, 2, 3]
+console.log(lefts); // ['error1', 'error2']
+
+const { lefts: errors, rights: values } = partition(eithers);
+console.log(`✓ ${values.length} succeeded`);
+console.log(`✗ ${errors.length} failed`);
+errors.forEach((err) => console.error(err));
+```
+
+---
+

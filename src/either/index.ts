@@ -202,5 +202,19 @@ export const sequence = <L, R>(eithers: Either<L, R>[]): Either<L, R[]> => {
   return new Right<L, R[]>(values);
 };
 
+export const partition = <L, R>(eithers: Either<L, R>[]): { lefts: L[]; rights: R[] } => {
+  return eithers.reduce(
+    (acc, either) => {
+      if (either.isLeft()) {
+        acc.lefts.push(either.extract() as L);
+      } else {
+        acc.rights.push(either.extract() as R);
+      }
+      return acc;
+    },
+    { lefts: [] as L[], rights: [] as R[] }
+  );
+};
+
 export const left = <L, R = never>(value: L): Either<L, R> => new Left(value);
 export const right = <L, R>(value: R): Either<L, R> => new Right(value);

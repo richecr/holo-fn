@@ -466,3 +466,32 @@ console.log(result2.match({
 
 ---
 
+### `partition`
+
+Separates an array of `Result` values into two groups: successes (`oks`) and failures (`errs`). Always processes all items and returns both arrays.
+
+Unlike `all` and `sequence` which return a `Result`, `partition` returns a plain object with two arrays.
+
+```ts
+import { partition, ok, err } from 'holo-fn/result';
+
+const results = [
+  ok<number, string>(1),
+  err<number, string>('error1'),
+  ok<number, string>(2),
+  err<number, string>('error2'),
+  ok<number, string>(3),
+];
+
+const { oks, errs } = partition(results);
+console.log(oks); // [1, 2, 3]
+console.log(errs); // ['error1', 'error2']
+
+const { oks: succeeded, errs: failed } = partition(results);
+console.log(`✓ ${succeeded.length} succeeded`);
+console.log(`✗ ${failed.length} failed`);
+failed.forEach((err) => console.error(err));
+```
+
+---
+
