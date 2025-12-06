@@ -132,19 +132,23 @@ export const equals =
     return maybe.equals(other);
   };
 
-export const all = <T>(maybes: Maybe<T>[]): Maybe<T[]> => {
-  const values: T[] = [];
+type UnwrapMaybeArray<T extends Maybe<unknown>[]> = {
+  [K in keyof T]: T[K] extends Maybe<infer V> ? V : never;
+};
+
+export function all<T extends Maybe<unknown>[]>(maybes: [...T]): Maybe<UnwrapMaybeArray<T>> {
+  const values: UnwrapMaybeArray<T>[number][] = [];
 
   for (const maybe of maybes) {
     if (maybe.isNothing()) {
-      return new Nothing<T[]>();
+      return new Nothing() as Maybe<UnwrapMaybeArray<T>>;
     }
 
-    values.push(maybe.extract());
+    values.push(maybe.extract() as UnwrapMaybeArray<T>[number]);
   }
 
-  return new Just(values);
-};
+  return new Just(values) as Maybe<UnwrapMaybeArray<T>>;
+}
 
 export const just = <T>(value: T): Maybe<T> => new Just(value);
 export const nothing = <T = never>() => new Nothing<T>();

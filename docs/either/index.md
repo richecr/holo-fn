@@ -599,3 +599,97 @@ errors.forEach((err) => console.error(err));
 
 ---
 
+## Common Patterns
+
+### Discriminated union errors
+
+```ts
+import { pipe } from 'rambda';
+import { left, match, type Either } from 'holo-fn/either';
+
+type User = {
+  name: string;
+  email: string;
+};
+
+type ValidationError =
+  | { type: 'INVALID_EMAIL'; email: string }
+  | { type: 'TOO_SHORT'; minLength: number }
+  | { type: 'REQUIRED'; field: string };
+
+const result: Either<ValidationError, User> = left({
+  type: 'INVALID_EMAIL',
+  email: 'bad@email',
+});
+
+const message = pipe(
+  result,
+  match({
+    left: (err) => {
+      switch (err.type) {
+        case 'INVALID_EMAIL':
+          return `Invalid email: ${err.email}`;
+        case 'TOO_SHORT':
+          return `Must be at least ${err.minLength} characters`;
+        case 'REQUIRED':
+          return `Field ${err.field} is required`;
+      }
+    },
+    right: (user) => `Success: ${user.name}`,
+  })
+);
+```
+
+### Batch operations with error tracking
+
+```ts
+import { pipe } from 'rambda';
+import { all, left, match, right } from 'holo-fn/either';
+
+type AddressData = {
+  street: string;
+  city: string;
+  zip: string;
+};
+
+type UserData = {
+  email: string;
+  age: number;
+  address: AddressData;
+};
+
+const validateEmail = (email: string) => (email.includes('@') ? right(email) : left('Invalid email'));
+
+const validateAge = (age: number) => (age >= 18 ? right(age) : left('Must be 18+'));
+
+const validateAddress = (address: AddressData) => {
+  if (!address.street || !address.city || !address.zip) {
+    return left('Incomplete address');
+  }
+  return right(address);
+};
+
+const validateForm = (data: UserData) =>
+  pipe(
+    all([validateEmail(data.email), validateAge(data.age), validateAddress(data.address)]),
+    match({
+      left: (err) => `Validation failed: ${err}`,
+      right: ([email, age, address]) =>
+        `Validation succeeded: ${email}, ${age}, ${address.street}, ${address.city}, ${address.zip}`,
+    })
+  );
+
+console.log(
+  validateForm({
+    email: 'user@example.com',
+    age: 25,
+    address: {
+      street: '123 Main St',
+      city: 'Anytown',
+      zip: '12345',
+    },
+  })
+);
+```
+
+---

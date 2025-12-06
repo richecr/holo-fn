@@ -169,52 +169,66 @@ export const equals =
     return either.equals(other);
   };
 
-export const all = <L, R>(eithers: Either<L, R>[]): Either<L[], R[]> => {
-  const values: R[] = [];
-  const errors: L[] = [];
+type UnwrapEitherArray<T extends Either<unknown, unknown>[]> = {
+  [K in keyof T]: T[K] extends Either<unknown, infer R> ? R : never;
+};
+
+type UnwrapLeftArray<T extends Either<unknown, unknown>[]> = {
+  [K in keyof T]: T[K] extends Either<infer L, unknown> ? L : never;
+}[number];
+
+export function all<T extends Either<unknown, unknown>[]>(
+  eithers: [...T]
+): Either<UnwrapLeftArray<T>[], UnwrapEitherArray<T>> {
+  const values: UnwrapEitherArray<T>[number][] = [];
+  const errors: UnwrapLeftArray<T>[] = [];
 
   for (const either of eithers) {
     if (either.isLeft()) {
-      errors.push(either.extract() as L);
+      errors.push(either.extract() as UnwrapLeftArray<T>);
     } else {
-      values.push(either.extract() as R);
+      values.push(either.extract() as UnwrapEitherArray<T>[number]);
     }
   }
 
   if (errors.length > 0) {
-    return new Left<L[], R[]>(errors);
+    return new Left(errors) as Either<UnwrapLeftArray<T>[], UnwrapEitherArray<T>>;
   }
 
-  return new Right<L[], R[]>(values);
-};
+  return new Right(values) as Either<UnwrapLeftArray<T>[], UnwrapEitherArray<T>>;
+}
 
-export const sequence = <L, R>(eithers: Either<L, R>[]): Either<L, R[]> => {
-  const values: R[] = [];
+export function sequence<T extends Either<unknown, unknown>[]>(
+  eithers: [...T]
+): Either<UnwrapLeftArray<T>, UnwrapEitherArray<T>> {
+  const values: UnwrapEitherArray<T>[number][] = [];
 
   for (const either of eithers) {
     if (either.isLeft()) {
-      return new Left<L, R[]>(either.extract() as L);
+      return new Left(either.extract() as UnwrapLeftArray<T>) as Either<UnwrapLeftArray<T>, UnwrapEitherArray<T>>;
     }
 
-    values.push(either.extract() as R);
+    values.push(either.extract() as UnwrapEitherArray<T>[number]);
   }
 
-  return new Right<L, R[]>(values);
-};
+  return new Right(values) as Either<UnwrapLeftArray<T>, UnwrapEitherArray<T>>;
+}
 
-export const partition = <L, R>(eithers: Either<L, R>[]): { lefts: L[]; rights: R[] } => {
+export function partition<T extends Either<unknown, unknown>[]>(
+  eithers: [...T]
+): { lefts: UnwrapLeftArray<T>[]; rights: UnwrapEitherArray<T> } {
   return eithers.reduce(
     (acc, either) => {
       if (either.isLeft()) {
-        acc.lefts.push(either.extract() as L);
+        acc.lefts.push(either.extract() as UnwrapLeftArray<T>);
       } else {
-        acc.rights.push(either.extract() as R);
+        acc.rights.push(either.extract() as UnwrapEitherArray<T>[number]);
       }
       return acc;
     },
-    { lefts: [] as L[], rights: [] as R[] }
-  );
-};
+    { lefts: [] as UnwrapLeftArray<T>[], rights: [] as UnwrapEitherArray<T>[number][] }
+  ) as { lefts: UnwrapLeftArray<T>[]; rights: UnwrapEitherArray<T> };
+}
 
 export const left = <L, R = never>(value: L): Either<L, R> => new Left(value);
 export const right = <L, R>(value: R): Either<L, R> => new Right(value);

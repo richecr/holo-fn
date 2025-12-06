@@ -411,17 +411,13 @@ describe('Either - Curried Helpers', () => {
   });
 
   it('all should return Right with empty array for empty input', () => {
-    const result = all<string, number>([]);
+    const result = all([]);
     expect(result.isRight()).toBe(true);
     expect(result.unwrapOr([])).toEqual([]);
   });
 
   it('all should collect all errors from multiple Left', () => {
-    const eithers = [
-      left<string, number>('Name required'),
-      left<string, number>('Email invalid'),
-      left<string, number>('Age too low'),
-    ];
+    const eithers = [left('Name required'), left('Email invalid'), left('Age too low')];
     const result = all(eithers);
     expect(result.match({ left: (e) => e, right: (_) => [] })).toEqual([
       'Name required',
@@ -445,7 +441,7 @@ describe('Either - Curried Helpers', () => {
   });
 
   it('sequence should return Right with empty array for empty input', () => {
-    const result = sequence<string, number>([]);
+    const result = sequence([]);
     expect(result.isRight()).toBe(true);
     expect(result.unwrapOr([])).toEqual([]);
   });
@@ -474,21 +470,21 @@ describe('Either - Curried Helpers', () => {
   });
 
   it('partition should return all rights when no lefts', () => {
-    const eithers = [right<string, number>(1), right<string, number>(2), right<string, number>(3)];
+    const eithers = [right(1), right(2), right(3)];
     const { lefts, rights } = partition(eithers);
     expect(rights).toEqual([1, 2, 3]);
     expect(lefts).toEqual([]);
   });
 
   it('partition should return all lefts when all fail', () => {
-    const eithers = [left<string, number>('e1'), left<string, number>('e2'), left<string, number>('e3')];
+    const eithers = [left('e1'), left('e2'), left('e3')];
     const { lefts, rights } = partition(eithers);
     expect(lefts).toEqual(['e1', 'e2', 'e3']);
     expect(rights).toEqual([]);
   });
 
   it('partition should return empty arrays for empty input', () => {
-    const { lefts, rights } = partition<string, number>([]);
+    const { lefts, rights } = partition([]);
     expect(lefts).toEqual([]);
     expect(rights).toEqual([]);
   });

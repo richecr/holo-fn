@@ -175,52 +175,66 @@ export const equals =
     return result.equals(other);
   };
 
-export const all = <T, E>(results: Result<T, E>[]): Result<T[], E[]> => {
-  const values: T[] = [];
-  const errors: E[] = [];
+type UnwrapResultArray<T extends Result<unknown, unknown>[]> = {
+  [K in keyof T]: T[K] extends Result<infer V, unknown> ? V : never;
+};
+
+type UnwrapErrorArray<T extends Result<unknown, unknown>[]> = {
+  [K in keyof T]: T[K] extends Result<unknown, infer E> ? E : never;
+}[number];
+
+export function all<T extends Result<unknown, unknown>[]>(
+  results: [...T]
+): Result<UnwrapResultArray<T>, UnwrapErrorArray<T>[]> {
+  const values: UnwrapResultArray<T>[number][] = [];
+  const errors: UnwrapErrorArray<T>[] = [];
 
   for (const result of results) {
     if (result.isErr()) {
-      errors.push(result.extract() as E);
+      errors.push(result.extract() as UnwrapErrorArray<T>);
     } else {
-      values.push(result.extract() as T);
+      values.push(result.extract() as UnwrapResultArray<T>[number]);
     }
   }
 
   if (errors.length > 0) {
-    return new Err<T[], E[]>(errors);
+    return new Err(errors) as Result<UnwrapResultArray<T>, UnwrapErrorArray<T>[]>;
   }
 
-  return new Ok<T[], E[]>(values);
-};
+  return new Ok(values) as Result<UnwrapResultArray<T>, UnwrapErrorArray<T>[]>;
+}
 
-export const sequence = <T, E>(results: Result<T, E>[]): Result<T[], E> => {
-  const values: T[] = [];
+export function sequence<T extends Result<unknown, unknown>[]>(
+  results: [...T]
+): Result<UnwrapResultArray<T>, UnwrapErrorArray<T>> {
+  const values: UnwrapResultArray<T>[number][] = [];
 
   for (const result of results) {
     if (result.isErr()) {
-      return new Err<T[], E>(result.extract() as E);
+      return new Err(result.extract() as UnwrapErrorArray<T>) as Result<UnwrapResultArray<T>, UnwrapErrorArray<T>>;
     }
 
-    values.push(result.extract() as T);
+    values.push(result.extract() as UnwrapResultArray<T>[number]);
   }
 
-  return new Ok<T[], E>(values);
-};
+  return new Ok(values) as Result<UnwrapResultArray<T>, UnwrapErrorArray<T>>;
+}
 
-export const partition = <T, E>(results: Result<T, E>[]): { oks: T[]; errs: E[] } => {
+export function partition<T extends Result<unknown, unknown>[]>(
+  results: [...T]
+): { oks: UnwrapResultArray<T>; errs: UnwrapErrorArray<T>[] } {
   return results.reduce(
     (acc, result) => {
       if (result.isErr()) {
-        acc.errs.push(result.extract() as E);
+        acc.errs.push(result.extract() as UnwrapErrorArray<T>);
       } else {
-        acc.oks.push(result.extract() as T);
+        acc.oks.push(result.extract() as UnwrapResultArray<T>[number]);
       }
       return acc;
     },
-    { oks: [] as T[], errs: [] as E[] }
-  );
-};
+    { oks: [] as UnwrapResultArray<T>[number][], errs: [] as UnwrapErrorArray<T>[] }
+  ) as { oks: UnwrapResultArray<T>; errs: UnwrapErrorArray<T>[] };
+}
 
 export const ok = <T, E>(value: T): Result<T, E> => new Ok(value);
 export const err = <T, E>(error: E): Result<T, E> => new Err(error);

@@ -380,7 +380,7 @@ describe('Result - Curried Helpers', () => {
   });
 
   it('all should return Ok with empty array for empty input', () => {
-    const result = all<number, string>([]);
+    const result = all([]);
     expect(result.isOk()).toBe(true);
     expect(result.unwrapOr([])).toEqual([]);
   });
@@ -410,7 +410,7 @@ describe('Result - Curried Helpers', () => {
   });
 
   it('sequence should return Ok with empty array for empty input', () => {
-    const result = sequence<number, string>([]);
+    const result = sequence([]);
     expect(result.isOk()).toBe(true);
     expect(result.unwrapOr([])).toEqual([]);
   });
@@ -449,7 +449,7 @@ describe('Result - Curried Helpers', () => {
   });
 
   it('partition should return empty arrays for empty input', () => {
-    const { oks, errs } = partition<number, string>([]);
+    const { oks, errs } = partition([]);
     expect(oks).toEqual([]);
     expect(errs).toEqual([]);
   });

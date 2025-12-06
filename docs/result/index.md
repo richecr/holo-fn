@@ -495,3 +495,59 @@ failed.forEach((err) => console.error(err));
 
 ---
 
+## Common Patterns
+
+### Error handling with specific error types
+
+```ts
+import { pipe } from 'rambda';
+import { err, match, type Result } from 'holo-fn/result';
+
+type ApiError = 'NOT_FOUND' | 'UNAUTHORIZED' | 'SERVER_ERROR';
+
+type User = {
+  id: number;
+  name: string;
+};
+
+const result: Result<User, ApiError> = err('NOT_FOUND');
+
+const message = pipe(
+  result,
+  match({
+    ok: (user) => `Welcome ${user.name}`,
+    err: (e) => {
+      switch (e) {
+        case 'NOT_FOUND':
+          return 'Resource not found';
+        case 'UNAUTHORIZED':
+          return 'Access denied';
+        case 'SERVER_ERROR':
+          return 'Server error occurred';
+      }
+    },
+  })
+);
+
+console.log(message);
+```
+
+### Validation pipelines
+
+```ts
+import { pipe } from 'rambda';
+import { map, ok, validate } from 'holo-fn/result';
+
+const validateAge = (age: number) =>
+  pipe(
+    ok<number, string>(age),
+    validate((n) => n >= 0, 'Age must be positive'),
+    validate((n) => n <= 150, 'Age must be realistic'),
+    validate((n) => n >= 18, 'Must be 18 or older'),
+    map((n) => ({ age: n, isAdult: true }))
+  );
+
+console.log(validateAge(25));
+```
+
+---

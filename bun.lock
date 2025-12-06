@@ -11,7 +11,7 @@
         "eslint": "^9.27.0",
         "eslint-plugin-prettier": "^5.4.0",
         "eslint-plugin-security": "^3.0.1",
-        "rambda": "^10.2.0",
+        "rambda": "^10.3.4",
         "typescript-eslint": "^8.32.1",
       },
       "peerDependencies": {
@@ -248,7 +248,7 @@
 
     "queue-microtask": ["queue-microtask@1.2.3", "", {}, "sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A=="],
 
-    "rambda": ["rambda@10.2.0", "", {}, "sha512-+ucs+OgkatwV3MNfV7GO55xVQ8xTHRN1sca7qp6+6lZYmNXw3h+IW9aIjzb4cpoT4dJVHxoJqzEbLCOS3i6CJQ=="],
+    "rambda": ["rambda@10.3.4", "", {}, "sha512-FbqeXxuxV/T1QHbIlh4YSvZ+MbDoaWgbKq0AfxeM+7tAcp2eqWN6jog2Fh2lz1jDmoVSqkiXhtdXGsaWAYYmow=="],
 
     "regexp-tree": ["regexp-tree@0.1.27", "", { "bin": { "regexp-tree": "bin/regexp-tree" } }, "sha512-iETxpjK6YoRWJG5o6hXLwvjYAoW+FEZn9os0PD/b6AP6xQwsa/Y7lCVgIixBbUPMfhu+i2LtdeAqVTgGlQarfA=="],
 

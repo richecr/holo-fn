@@ -337,3 +337,72 @@ console.log(result3.unwrapOr([])); // []
 
 ---
 
+## Common Patterns
+
+### Combining multiple Maybes
+
+When you need to work with multiple `Maybe` values:
+
+```ts
+import { pipe } from 'rambda';
+import { all, just, match } from 'holo-fn/maybe';
+
+const name = just('Test User');
+const age = just(25);
+const email = just('testuser@example.com');
+
+const user = pipe(
+  all([name, age, email]),
+  match({
+    just: ([n, a, e]) => ({ name: n, age: a, email: e }),
+    nothing: () => null,
+  })
+);
+
+console.log(user);
+// Output: { name: 'Test User', age: 25, email: 'testuser@example.com' }
+
+```
+
+### Conditional logic with predicates
+
+```ts
+import { pipe } from 'rambda';
+import { just, match } from 'holo-fn/maybe';
+
+const value = just(42);
+
+const category = pipe(
+  value,
+  match({
+    just: (v) => {
+      if (v > 100) return 'big';
+      if (v > 50) return 'medium';
+      return 'small';
+    },
+    nothing: () => 'unknown',
+  })
+);
+
+console.log(`The number is categorized as: ${category}`);
+```
+
+### Chaining operations with early exit
+
+```ts
+import { pipe } from 'rambda';
+import { chain, filter, fromNullable, map } from 'holo-fn/maybe';
+
+const user: { email?: string } | null = { email: 'testuser@example.com' };
+
+const result = pipe(
+  fromNullable(user),
+  chain((u) => fromNullable(u.email)),
+  filter((email) => email.includes('@')),
+  map((email) => email.toLowerCase())
+);
+
+console.log(result); // Just('testuser@example.com')
+```
+
+---
