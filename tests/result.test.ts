@@ -3,8 +3,8 @@ import { pipe } from "rambda";
 import {
 	all,
 	chain,
-	equals,
 	Err,
+	equals,
 	err,
 	fromAsync,
 	fromPromise,

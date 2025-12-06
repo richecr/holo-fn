@@ -1,64 +1,64 @@
 {
-  "name": "holo-fn",
-  "version": "1.1.0",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/richecr/holo-fn"
-  },
-  "author": {
-    "name": "Rich Ramalho",
-    "email": "richecr1799@gmail.com",
-    "url": "http://richecr.dev.br"
-  },
-  "scripts": {
-    "build": "bun run build.ts",
-    "lint": "eslint",
-    "test": "bun test",
-    "coverage:html": "genhtml --output-directory coverage-html coverage/lcov.info"
-  },
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./maybe": {
-      "import": "./dist/maybe/index.js",
-      "types": "./dist/maybe/index.d.ts"
-    },
-    "./either": {
-      "import": "./dist/either/index.js",
-      "types": "./dist/either/index.d.ts"
-    },
-    "./result": {
-      "import": "./dist/result/index.js",
-      "types": "./dist/result/index.d.ts"
-    }
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.3.8",
-    "@types/bun": "latest",
-    "bun-plugin-dts": "^0.3.0",
-    "rambda": "^10.3.4"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
-  "keywords": [
-    "holo-fn",
-    "functional",
-    "utils",
-    "utilities",
-    "toolkit",
-    "fp",
-    "bun"
-  ],
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ]
+	"name": "holo-fn",
+	"version": "1.1.0",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/richecr/holo-fn"
+	},
+	"author": {
+		"name": "Rich Ramalho",
+		"email": "richecr1799@gmail.com",
+		"url": "http://richecr.dev.br"
+	},
+	"scripts": {
+		"build": "bun run build.ts",
+		"lint": "biome check",
+		"test": "bun test",
+		"coverage:html": "genhtml --output-directory coverage-html coverage/lcov.info"
+	},
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./maybe": {
+			"import": "./dist/maybe/index.js",
+			"types": "./dist/maybe/index.d.ts"
+		},
+		"./either": {
+			"import": "./dist/either/index.js",
+			"types": "./dist/either/index.d.ts"
+		},
+		"./result": {
+			"import": "./dist/result/index.js",
+			"types": "./dist/result/index.d.ts"
+		}
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.8",
+		"@types/bun": "latest",
+		"bun-plugin-dts": "^0.3.0",
+		"rambda": "^10.3.4"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"keywords": [
+		"holo-fn",
+		"functional",
+		"utils",
+		"utilities",
+		"toolkit",
+		"fp",
+		"bun"
+	],
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	]
 }

@@ -47,9 +47,7 @@
 	},
 	"overrides": [
 		{
-			"includes": [
-				"**/*.{js,mjs,cjs,ts}"
-			],
+			"includes": ["**/*.{js,mjs,cjs,ts}"],
 			"linter": {
 				"rules": {
 					"complexity": {
@@ -117,14 +115,10 @@
 			}
 		},
 		{
-			"includes": [
-				"**/*.{js,mjs,cjs,ts}"
-			]
+			"includes": ["**/*.{js,mjs,cjs,ts}"]
 		},
 		{
-			"includes": [
-				"**/*.{js,mjs,cjs,ts}"
-			],
+			"includes": ["**/*.{js,mjs,cjs,ts}"],
 			"javascript": {
 				"globals": [
 					"onanimationend",
@@ -229,12 +223,7 @@
 			}
 		},
 		{
-			"includes": [
-				"**/*.ts",
-				"**/*.tsx",
-				"**/*.mts",
-				"**/*.cts"
-			],
+			"includes": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
 			"linter": {
 				"rules": {
 					"complexity": {
