@@ -12,15 +12,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **`all` combinator for `Maybe`, `Result`, and `Either`**: Combines an array of monads into a single monad containing an array of values.
   - `Maybe`: Returns `Just` with all values if all are `Just`, or `Nothing` if any is `Nothing`.
   - `Result`/`Either`: Collects **all** errors if any fail.
+  - **Heterogeneous tuple support**: Preserves different types in arrays using advanced TypeScript type inference.
   - Example:
   ```ts
   all([just(1), just(2), just(3)]).unwrapOr([]); // [1, 2, 3]
   all([ok(1), err('e1'), err('e2')]); // Err(['e1', 'e2'])
+  all([just(42), just("hello"), just(true)]); // Just<[number, string, boolean]>
   ```
 
 - **`sequence` combinator for `Result` and `Either`**: Combines an array of monads with fail-fast behavior.
   - Stops at the **first** error instead of collecting all errors.
   - Returns single error type instead of array.
+  - **Heterogeneous tuple support**: Preserves different types in arrays.
   - Example:
   ```ts
   sequence([ok(1), err('e1'), err('e2')]); // Err('e1') - stops at first!
@@ -29,11 +32,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **`partition` function for `Result` and `Either`**: Separates an array of monads into successes and failures.
   - Returns a plain object with two arrays (not a monad).
   - Always processes all items.
+  - **Heterogeneous tuple support**: Preserves different types in returned arrays.
   - Example:
   ```ts
   partition([ok(1), err('e1'), ok(2), err('e2')]);
   // { oks: [1, 2], errs: ['e1', 'e2'] }
   ```
+
+- **Common Patterns documentation**: Added comprehensive documentation section with practical recipes for:
+  - Validation pipelines with multiple checks
+  - Form validation with error collection
+  - Concurrent operations handling
+  - Async error handling patterns
+  - Data transformation pipelines
 
 ---
 
