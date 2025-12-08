@@ -3,3 +3,5 @@ import * as M from "./maybe";
 import * as R from "./result";
 
 export { E, M, R };
+
+export { tap } from "./utils/tap";
