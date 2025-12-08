@@ -1227,12 +1227,13 @@
 <h2 id="120-2025-12-08"><a href="https://github.com/richecr/holo-fn/releases/tag/v1.2.0">1.2.0</a> - 2025-12-08</h2>
 <h3 id="added">Added</h3>
 <ul>
-<li><strong><code>tap</code> helper function</strong>: Executes side-effects in functional pipelines without altering data flow.</li>
+<li>
+<p><strong><code>tap</code> helper function</strong>: Executes side-effects in functional pipelines without altering data flow.</p>
+<ul>
 <li>Generic utility that works with any type (monads, primitives, objects, arrays).</li>
 <li>Useful for debugging, logging, metrics, and error tracking.</li>
-<li>
-<p>Example:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<li>Example:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
@@ -1241,16 +1242,16 @@
 <span class="w">  </span><span class="nx">tap</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Value:&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">)),</span>
 <span class="w">  </span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">)</span>
 <span class="p">);</span>
-</code></pre></div></td></tr></table></div></p>
+</code></pre></div></td></tr></table></div></li>
+</ul>
 </li>
 <li>
 <p><strong><code>inspect</code> helper function</strong>: Logs values with optional labels for debugging.</p>
-</li>
+<ul>
 <li>Specialized version of <code>tap</code> that automatically uses <code>console.log</code>.</li>
 <li>Convenient for quick debugging with optional label prefixes.</li>
-<li>
-<p>Example:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<li>Example:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
@@ -1261,102 +1262,117 @@
 <span class="w">  </span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2</span><span class="p">),</span>
 <span class="w">  </span><span class="nx">inspect</span><span class="p">(</span><span class="s1">&#39;Final result&#39;</span><span class="p">)</span>
 <span class="p">);</span>
-</code></pre></div></td></tr></table></div></p>
+</code></pre></div></td></tr></table></div></li>
+</ul>
 </li>
 <li>
 <p><strong><code>all</code> combinator for <code>Maybe</code>, <code>Result</code>, and <code>Either</code></strong>: Combines an array of monads into a single monad containing an array of values.</p>
-</li>
+<ul>
 <li><code>Maybe</code>: Returns <code>Just</code> with all values if all are <code>Just</code>, or <code>Nothing</code> if any is <code>Nothing</code>.</li>
 <li><code>Result</code>/<code>Either</code>: Collects <strong>all</strong> errors if any fail.</li>
 <li><strong>Heterogeneous tuple support</strong>: Preserves different types in arrays using advanced TypeScript type inference.</li>
-<li>
-<p>Example:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<li>Example:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nx">all</span><span class="p">([</span><span class="nx">just</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">just</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span><span class="w"> </span><span class="nx">just</span><span class="p">(</span><span class="mf">3</span><span class="p">)]).</span><span class="nx">unwrapOr</span><span class="p">([]);</span><span class="w"> </span><span class="c1">// [1, 2, 3]</span>
 <span class="nx">all</span><span class="p">([</span><span class="nx">ok</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;e1&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;e2&#39;</span><span class="p">)]);</span><span class="w"> </span><span class="c1">// Err([&#39;e1&#39;, &#39;e2&#39;])</span>
 <span class="nx">all</span><span class="p">([</span><span class="nx">just</span><span class="p">(</span><span class="mf">42</span><span class="p">),</span><span class="w"> </span><span class="nx">just</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">),</span><span class="w"> </span><span class="nx">just</span><span class="p">(</span><span class="kc">true</span><span class="p">)]);</span><span class="w"> </span><span class="c1">// Just&lt;[number, string, boolean]&gt;</span>
-</code></pre></div></td></tr></table></div></p>
+</code></pre></div></td></tr></table></div></li>
+</ul>
 </li>
 <li>
 <p><strong><code>sequence</code> combinator for <code>Result</code> and <code>Either</code></strong>: Combines an array of monads with fail-fast behavior.</p>
-</li>
+<ul>
 <li>Stops at the <strong>first</strong> error instead of collecting all errors.</li>
 <li>Returns single error type instead of array.</li>
 <li><strong>Heterogeneous tuple support</strong>: Preserves different types in arrays.</li>
-<li>
-<p>Example:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nx">sequence</span><span class="p">([</span><span class="nx">ok</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;e1&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;e2&#39;</span><span class="p">)]);</span><span class="w"> </span><span class="c1">// Err(&#39;e1&#39;) - stops at first!</span>
-</code></pre></div></td></tr></table></div></p>
+<li>Example:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nx">sequence</span><span class="p">([</span><span class="nx">ok</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;e1&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;e2&#39;</span><span class="p">)]);</span><span class="w"> </span><span class="c1">// Err(&#39;e1&#39;) - stops at first!</span>
+</code></pre></div></td></tr></table></div></li>
+</ul>
 </li>
 <li>
 <p><strong><code>partition</code> function for <code>Result</code> and <code>Either</code></strong>: Separates an array of monads into successes and failures.</p>
-</li>
+<ul>
 <li>Returns a plain object with two arrays (not a monad).</li>
 <li>Always processes all items.</li>
 <li><strong>Heterogeneous tuple support</strong>: Preserves different types in returned arrays.</li>
-<li>
-<p>Example:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<li>Example:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nx">partition</span><span class="p">([</span><span class="nx">ok</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;e1&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;e2&#39;</span><span class="p">)]);</span>
 <span class="c1">// { oks: [1, 2], errs: [&#39;e1&#39;, &#39;e2&#39;] }</span>
-</code></pre></div></td></tr></table></div></p>
+</code></pre></div></td></tr></table></div></li>
+</ul>
 </li>
 <li>
 <p><strong>Common Patterns documentation</strong>: Added comprehensive documentation section with practical recipes for:</p>
-</li>
+<ul>
 <li>Validation pipelines with multiple checks</li>
 <li>Form validation with error collection</li>
 <li>Concurrent operations handling</li>
 <li>Async error handling patterns</li>
 <li>Data transformation pipelines</li>
 </ul>
+</li>
+</ul>
 <hr />
 <h2 id="110-2025-11-30"><a href="https://github.com/richecr/holo-fn/releases/tag/v1.1.0">[1.1.0]</a> - 2025-11-30</h2>
 <h3 id="added_1">Added</h3>
 <ul>
-<li><strong><code>filter</code> method for <code>Maybe</code></strong>: Validates values with a predicate, converting <code>Just</code> to <code>Nothing</code> when the predicate fails.</li>
+<li>
+<p><strong><code>filter</code> method for <code>Maybe</code></strong>: Validates values with a predicate, converting <code>Just</code> to <code>Nothing</code> when the predicate fails.</p>
+<ul>
 <li>Added <code>filter(predicate: (value: T) =&gt; boolean): Maybe&lt;T&gt;</code> method to <code>Maybe</code> interface.</li>
 <li>Added curried <code>filter</code> function for use with <code>pipe</code>.</li>
-<li>
-<p>Example:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<li>Example:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nx">just</span><span class="p">(</span><span class="mf">25</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">18</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// 25</span>
 <span class="nx">just</span><span class="p">(</span><span class="mf">15</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">18</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// 0</span>
-</code></pre></div></td></tr></table></div></p>
+</code></pre></div></td></tr></table></div></li>
+</ul>
 </li>
 <li>
 <p><strong><code>validate</code> method for <code>Result</code> and <code>Either</code></strong>: Validates values with custom error messages.</p>
-</li>
+<ul>
 <li>Added <code>validate(predicate: (value: T) =&gt; boolean, error: E): Result&lt;T, E&gt;</code> to <code>Result</code>.</li>
 <li>Added <code>validate(predicate: (value: R) =&gt; boolean, leftValue: L): Either&lt;L, R&gt;</code> to <code>Either</code>.</li>
 <li>Added curried <code>validate</code> functions for use with <code>pipe</code>.</li>
 <li>Example:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nx">ok</span><span class="p">(</span><span class="mf">25</span><span class="p">).</span><span class="nx">validate</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">18</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Must be 18+&#39;</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// 25</span>
 <span class="nx">ok</span><span class="p">(</span><span class="mf">15</span><span class="p">).</span><span class="nx">validate</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">18</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Must be 18+&#39;</span><span class="p">).</span><span class="nx">isErr</span><span class="p">();</span><span class="w"> </span><span class="c1">// true</span>
 </code></pre></div></td></tr></table></div></li>
+</ul>
+</li>
 </ul>
 <hr />
 <h2 id="100-2025-06-25"><a href="https://github.com/richecr/holo-fn/releases/tag/v1.0.0">[1.0.0]</a> - 2025-06-25</h2>
 <h3 id="added_2">Added</h3>
 <ul>
 <li>First stable release of <code>holo-fn</code> with core monads: <code>Maybe</code>, <code>Either</code>, and <code>Result</code>.</li>
-<li><code>Maybe</code> monad:</li>
+<li><code>Maybe</code> monad:<ul>
 <li><code>Just</code>, <code>Nothing</code>, and helper functions like <code>fromNullable</code>.</li>
 <li>Added methods like <code>map</code>, <code>chain</code>, <code>unwrapOr</code>, <code>match</code>, and <code>equals</code>.</li>
-<li><code>Either</code> monad:</li>
+</ul>
+</li>
+<li><code>Either</code> monad:<ul>
 <li><code>Left</code>, 'Right', and helper functions like <code>tryCatch</code>, <code>fromPromise</code>, <code>fromAsync</code>.</li>
 <li>Added methods like <code>map</code>, <code>chain</code>, <code>unwrapOr</code>, <code>match</code>, and <code>equals</code>.</li>
-<li><code>Result</code> monad:</li>
+</ul>
+</li>
+<li><code>Result</code> monad:<ul>
 <li><code>Ok</code>, <code>Err</code>, and helper functions like <code>fromThrowable</code>, <code>fromPromise</code>, <code>fromAsync</code>.</li>
 <li>Added methods like <code>map</code>, <code>chain</code>, <code>unwrapOr</code>, <code>match</code>, and <code>equals</code>.</li>
-<li>Introduced <code>curried functions</code> for <code>map</code>, <code>chain</code>, <code>unwrapOr</code>, and <code>match</code> for each monad:</li>
+</ul>
+</li>
+<li>Introduced <code>curried functions</code> for <code>map</code>, <code>chain</code>, <code>unwrapOr</code>, and <code>match</code> for each monad:<ul>
 <li><code>map</code>, <code>chain</code>, <code>unwrapOr</code>, and <code>match</code> for <code>Either</code>, <code>Maybe</code> and <code>Result</code>.</li>
-<li><code>Export restructuring</code>:</li>
+</ul>
+</li>
+<li><code>Export restructuring</code>:<ul>
 <li>Now, monads are imported from their specific files, instead of a global import.</li>
 <li>Example:
-  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">M</span><span class="p">,</span><span class="w"> </span><span class="nx">E</span><span class="p">,</span><span class="w"> </span><span class="nx">R</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;holo-fn&quot;</span><span class="p">;</span>
@@ -1365,11 +1381,15 @@
 <span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">fromThrowable</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div></li>
 </ul>
+</li>
+</ul>
 <h3 id="changed">Changed</h3>
 <ul>
 <li><code>Migration to Bun</code>: The library is now compatible with <code>Bun</code> runtime, offering better performance and faster execution.</li>
-<li>Reorganized the imports for better modularization and performance.</li>
+<li>Reorganized the imports for better modularization and performance.<ul>
 <li>Now, to use specific monads and functions, you must import from their respective files.</li>
+</ul>
+</li>
 </ul>
 <h3 id="fixed">Fixed</h3>
 <ul>
@@ -1380,7 +1400,7 @@
 <h2 id="030-2025-05-10"><a href="https://github.com/richecr/holo-fn/releases/tag/v0.3.0">[0.3.0]</a> - 2025-05-10</h2>
 <h3 id="added_3">Added</h3>
 <ul>
-<li>New helpers functions:</li>
+<li>New helpers functions:<ul>
 <li>Maybe:<ul>
 <li>just(value: T): Maybe<T>: Creates a <code>Just</code> value representing the presence of a value.</li>
 <li>nothing<T = never>(): Maybe<T>: Creates a <code>Nothing</code> value representing the absence of a value.</li>
@@ -1397,15 +1417,19 @@
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 <hr />
 <h2 id="020-2025-04-26"><a href="https://github.com/richecr/holo-fn/releases/tag/v0.2.0">[0.2.0]</a> - 2025-04-26</h2>
 <h3 id="added_4">Added</h3>
 <ul>
 <li>Introduced the <code>equals</code> method for <strong>Maybe</strong>, <strong>Either</strong>, and <strong>Result</strong> types to compare instances of these types based on their internal values.</li>
-<li>Added <strong>curried functions</strong> for <code>equals</code> to allow for easier composition and usage:</li>
+<li>Added <strong>curried functions</strong> for <code>equals</code> to allow for easier composition and usage:<ul>
 <li><code>equalsM</code> for <strong>Maybe</strong>.</li>
 <li><code>equalsE</code> for <strong>Either</strong>.</li>
 <li><code>equalsR</code> for <strong>Result</strong>.</li>
+</ul>
+</li>
 <li>New helper functions for easy comparison between monadic values.</li>
 </ul>
 <h3 id="changed_1">Changed</h3>
@@ -1421,10 +1445,12 @@
 <li><code>Maybe</code> monad: <code>Just</code>, <code>Nothing</code>, and helper functions like <code>fromNullable</code>.</li>
 <li><code>Either</code> monad: <code>Left</code>, <code>Right</code>, <code>tryCatch</code>, <code>fromPromise</code>, <code>fromAsync</code>.</li>
 <li><code>Result</code> monad: <code>Ok</code>, <code>Err</code>, <code>fromThrowable</code>, <code>fromPromise</code>, <code>fromAsync</code>.</li>
-<li>Added <strong>curried handlers</strong> for <code>map</code>, <code>chain</code>, <code>unwrapOr</code>, and <code>match</code> for better composition and functional pipelines:</li>
+<li>Added <strong>curried handlers</strong> for <code>map</code>, <code>chain</code>, <code>unwrapOr</code>, and <code>match</code> for better composition and functional pipelines:<ul>
 <li><code>mapE</code>, <code>chainE</code>, <code>unwrapOrE</code>, and <code>matchE</code> for <code>Either</code>.</li>
 <li><code>mapM</code>, <code>chainM</code>, <code>unwrapOrM</code>, and <code>matchM</code> for <code>Maybe</code>.</li>
 <li><code>mapR</code>, <code>chainR</code>, <code>unwrapOrR</code>, and <code>matchR</code> for <code>Result</code>.</li>
+</ul>
+</li>
 </ul>
 <hr />
 
