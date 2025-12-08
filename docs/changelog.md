@@ -6,9 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [Unreleased]
+## [1.2.0](https://github.com/richecr/holo-fn/releases/tag/v1.2.0) - 2025-12-08
 
 ### Added
+- **`tap` helper function**: Executes side-effects in functional pipelines without altering data flow.
+  - Generic utility that works with any type (monads, primitives, objects, arrays).
+  - Useful for debugging, logging, metrics, and error tracking.
+  - Example:
+  ```ts
+  pipe(
+    just(42),
+    tap(x => console.log('Value:', x)),
+    map(x => x * 2)
+  );
+  ```
+
+- **`inspect` helper function**: Logs values with optional labels for debugging.
+  - Specialized version of `tap` that automatically uses `console.log`.
+  - Convenient for quick debugging with optional label prefixes.
+  - Example:
+  ```ts
+  pipe(
+    just(42),
+    inspect('After init'),  // Logs: "After init: Just(42)"
+    map(x => x * 2),
+    inspect('Final result')
+  );
+  ```
+
 - **`all` combinator for `Maybe`, `Result`, and `Either`**: Combines an array of monads into a single monad containing an array of values.
   - `Maybe`: Returns `Just` with all values if all are `Just`, or `Nothing` if any is `Nothing`.
   - `Result`/`Either`: Collects **all** errors if any fail.
