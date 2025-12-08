@@ -32,6 +32,7 @@ import { fromThrowable } from 'holo-fn/result'
 ### Helpers
 
 - [tap](./helpers/tap.md) - Execute side-effects in pipelines without altering data flow
+- [inspect](./helpers/inspect.md) - Debug logging with optional labels
 
 ### 📚 Comparison between Maybe, Either, and Result
 

@@ -66,5 +66,6 @@ nav:
     - Overview: "result/index.md"
   - Helpers:
     - tap: "helpers/tap.md"
+    - inspect: "helpers/inspect.md"
   - Changelog: "changelog.md"
 

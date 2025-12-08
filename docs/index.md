@@ -20,6 +20,7 @@ Below you will find detailed explanations, examples, and usage instructions to h
     - [Result](./result/index.md)
     - [Helpers](#helpers)
         - [tap](./helpers/tap.md) - Side-effects in pipelines
+        - [inspect](./helpers/inspect.md) - Debug logging with labels
 - [Contributing](./getting_started.md#contributing)
 - [Changelog](./getting_started.md#changelog)
 

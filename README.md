@@ -14,7 +14,7 @@
 ## ✨ Features
 
 - ✅ Functional types: `Maybe`, `Either`, `Result`
-- 🛠️ Helpers: `tap` for side-effects
+- 🛠️ Helpers: `tap`, `inspect` for debugging
 - ⚙️ Pipe-friendly (Rambda/Ramda compatible)
 - 🔒 Immutable by default
 - 🧪 100% test coverage

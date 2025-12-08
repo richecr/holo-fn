@@ -4,4 +4,5 @@ import * as R from "./result";
 
 export { E, M, R };
 
+export { inspect } from "./utils/inspect";
 export { tap } from "./utils/tap";
