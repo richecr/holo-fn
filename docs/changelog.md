@@ -10,66 +10,66 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - **`tap` helper function**: Executes side-effects in functional pipelines without altering data flow.
-  - Generic utility that works with any type (monads, primitives, objects, arrays).
-  - Useful for debugging, logging, metrics, and error tracking.
-  - Example:
-  ```ts
-  pipe(
-    just(42),
-    tap(x => console.log('Value:', x)),
-    map(x => x * 2)
-  );
-  ```
+    - Generic utility that works with any type (monads, primitives, objects, arrays).
+    - Useful for debugging, logging, metrics, and error tracking.
+    - Example:
+    ```ts
+    pipe(
+      just(42),
+      tap(x => console.log('Value:', x)),
+      map(x => x * 2)
+    );
+    ```
 
 - **`inspect` helper function**: Logs values with optional labels for debugging.
-  - Specialized version of `tap` that automatically uses `console.log`.
-  - Convenient for quick debugging with optional label prefixes.
-  - Example:
-  ```ts
-  pipe(
-    just(42),
-    inspect('After init'),  // Logs: "After init: Just(42)"
-    map(x => x * 2),
-    inspect('Final result')
-  );
-  ```
+    - Specialized version of `tap` that automatically uses `console.log`.
+    - Convenient for quick debugging with optional label prefixes.
+    - Example:
+    ```ts
+    pipe(
+      just(42),
+      inspect('After init'),  // Logs: "After init: Just(42)"
+      map(x => x * 2),
+      inspect('Final result')
+    );
+    ```
 
 - **`all` combinator for `Maybe`, `Result`, and `Either`**: Combines an array of monads into a single monad containing an array of values.
-  - `Maybe`: Returns `Just` with all values if all are `Just`, or `Nothing` if any is `Nothing`.
-  - `Result`/`Either`: Collects **all** errors if any fail.
-  - **Heterogeneous tuple support**: Preserves different types in arrays using advanced TypeScript type inference.
-  - Example:
-  ```ts
-  all([just(1), just(2), just(3)]).unwrapOr([]); // [1, 2, 3]
-  all([ok(1), err('e1'), err('e2')]); // Err(['e1', 'e2'])
-  all([just(42), just("hello"), just(true)]); // Just<[number, string, boolean]>
-  ```
+    - `Maybe`: Returns `Just` with all values if all are `Just`, or `Nothing` if any is `Nothing`.
+    - `Result`/`Either`: Collects **all** errors if any fail.
+    - **Heterogeneous tuple support**: Preserves different types in arrays using advanced TypeScript type inference.
+    - Example:
+    ```ts
+    all([just(1), just(2), just(3)]).unwrapOr([]); // [1, 2, 3]
+    all([ok(1), err('e1'), err('e2')]); // Err(['e1', 'e2'])
+    all([just(42), just("hello"), just(true)]); // Just<[number, string, boolean]>
+    ```
 
 - **`sequence` combinator for `Result` and `Either`**: Combines an array of monads with fail-fast behavior.
-  - Stops at the **first** error instead of collecting all errors.
-  - Returns single error type instead of array.
-  - **Heterogeneous tuple support**: Preserves different types in arrays.
-  - Example:
-  ```ts
-  sequence([ok(1), err('e1'), err('e2')]); // Err('e1') - stops at first!
-  ```
+    - Stops at the **first** error instead of collecting all errors.
+    - Returns single error type instead of array.
+    - **Heterogeneous tuple support**: Preserves different types in arrays.
+    - Example:
+    ```ts
+    sequence([ok(1), err('e1'), err('e2')]); // Err('e1') - stops at first!
+    ```
 
 - **`partition` function for `Result` and `Either`**: Separates an array of monads into successes and failures.
-  - Returns a plain object with two arrays (not a monad).
-  - Always processes all items.
-  - **Heterogeneous tuple support**: Preserves different types in returned arrays.
-  - Example:
-  ```ts
-  partition([ok(1), err('e1'), ok(2), err('e2')]);
-  // { oks: [1, 2], errs: ['e1', 'e2'] }
-  ```
+    - Returns a plain object with two arrays (not a monad).
+    - Always processes all items.
+    - **Heterogeneous tuple support**: Preserves different types in returned arrays.
+    - Example:
+    ```ts
+    partition([ok(1), err('e1'), ok(2), err('e2')]);
+    // { oks: [1, 2], errs: ['e1', 'e2'] }
+    ```
 
 - **Common Patterns documentation**: Added comprehensive documentation section with practical recipes for:
-  - Validation pipelines with multiple checks
-  - Form validation with error collection
-  - Concurrent operations handling
-  - Async error handling patterns
-  - Data transformation pipelines
+    - Validation pipelines with multiple checks
+    - Form validation with error collection
+    - Concurrent operations handling
+    - Async error handling patterns
+    - Data transformation pipelines
 
 ---
 
@@ -77,23 +77,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - **`filter` method for `Maybe`**: Validates values with a predicate, converting `Just` to `Nothing` when the predicate fails.
-  - Added `filter(predicate: (value: T) => boolean): Maybe<T>` method to `Maybe` interface.
-  - Added curried `filter` function for use with `pipe`.
-  - Example:
-  ```ts
-  just(25).filter(x => x >= 18).unwrapOr(0); // 25
-  just(15).filter(x => x >= 18).unwrapOr(0); // 0
-  ```
+    - Added `filter(predicate: (value: T) => boolean): Maybe<T>` method to `Maybe` interface.
+    - Added curried `filter` function for use with `pipe`.
+    - Example:
+    ```ts
+    just(25).filter(x => x >= 18).unwrapOr(0); // 25
+    just(15).filter(x => x >= 18).unwrapOr(0); // 0
+    ```
 
 - **`validate` method for `Result` and `Either`**: Validates values with custom error messages.
-  - Added `validate(predicate: (value: T) => boolean, error: E): Result<T, E>` to `Result`.
-  - Added `validate(predicate: (value: R) => boolean, leftValue: L): Either<L, R>` to `Either`.
-  - Added curried `validate` functions for use with `pipe`.
-  - Example:
-  ```ts
-  ok(25).validate(x => x >= 18, 'Must be 18+').unwrapOr(0); // 25
-  ok(15).validate(x => x >= 18, 'Must be 18+').isErr(); // true
-  ```
+    - Added `validate(predicate: (value: T) => boolean, error: E): Result<T, E>` to `Result`.
+    - Added `validate(predicate: (value: R) => boolean, leftValue: L): Either<L, R>` to `Either`.
+    - Added curried `validate` functions for use with `pipe`.
+    - Example:
+    ```ts
+    ok(25).validate(x => x >= 18, 'Must be 18+').unwrapOr(0); // 25
+    ok(15).validate(x => x >= 18, 'Must be 18+').isErr(); // true
+    ```
 
 ---
 
@@ -102,30 +102,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - First stable release of `holo-fn` with core monads: `Maybe`, `Either`, and `Result`.
 - `Maybe` monad:
-  - `Just`, `Nothing`, and helper functions like `fromNullable`.
-  - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
+    - `Just`, `Nothing`, and helper functions like `fromNullable`.
+    - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
 - `Either` monad:
-  - `Left`, 'Right', and helper functions like `tryCatch`, `fromPromise`, `fromAsync`.
-  - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
+    - `Left`, 'Right', and helper functions like `tryCatch`, `fromPromise`, `fromAsync`.
+    - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
 - `Result` monad:
-  - `Ok`, `Err`, and helper functions like `fromThrowable`, `fromPromise`, `fromAsync`.
-  - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
+    - `Ok`, `Err`, and helper functions like `fromThrowable`, `fromPromise`, `fromAsync`.
+    - Added methods like `map`, `chain`, `unwrapOr`, `match`, and `equals`.
 - Introduced `curried functions` for `map`, `chain`, `unwrapOr`, and `match` for each monad:
-  - `map`, `chain`, `unwrapOr`, and `match` for `Either`, `Maybe` and `Result`.
+    - `map`, `chain`, `unwrapOr`, and `match` for `Either`, `Maybe` and `Result`.
 - `Export restructuring`:
-  - Now, monads are imported from their specific files, instead of a global import.
-  - Example:
-  ```ts
-  import { M, E, R } from "holo-fn";
-  import { fromNullable } from 'holo-fn/maybe';
-  import { tryCatch } from 'holo-fn/either';
-  import { fromThrowable } from 'holo-fn/result';
-  ```
+    - Now, monads are imported from their specific files, instead of a global import.
+    - Example:
+    ```ts
+    import { M, E, R } from "holo-fn";
+    import { fromNullable } from 'holo-fn/maybe';
+    import { tryCatch } from 'holo-fn/either';
+    import { fromThrowable } from 'holo-fn/result';
+    ```
 
 ### Changed
 - `Migration to Bun`: The library is now compatible with `Bun` runtime, offering better performance and faster execution.
 - Reorganized the imports for better modularization and performance.
-  - Now, to use specific monads and functions, you must import from their respective files.
+    - Now, to use specific monads and functions, you must import from their respective files.
 
 ### Fixed
 - Fixed `bug` related to circular imports.
@@ -137,15 +137,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - New helpers functions:
-  - Maybe:
-    - just(value: T): Maybe<T>: Creates a `Just` value representing the presence of a value.
-    - nothing<T = never>(): Maybe<T>: Creates a `Nothing` value representing the absence of a value.
-  - Either:
-    - left<L, R = never>(value: L): Either<L, R>: Creates a `Left` value representing a failure or error.
-    - right<L, R>(value: R): Either<L, R>: Creates a `Right` value representing a success.
-  - Result:
-    - ok<T, E>(value: T): Result<T, E>: Creates an `Ok` value representing the success of an operation with a value.
-    - err<T, E>(error: E): Result<T, E>: Creates an `Err` value representing a failure of an operation with an error.
+    - Maybe:
+        - just(value: T): Maybe<T>: Creates a `Just` value representing the presence of a value.
+        - nothing<T = never>(): Maybe<T>: Creates a `Nothing` value representing the absence of a value.
+    - Either:
+        - left<L, R = never>(value: L): Either<L, R>: Creates a `Left` value representing a failure or error.
+        - right<L, R>(value: R): Either<L, R>: Creates a `Right` value representing a success.
+    - Result:
+        - ok<T, E>(value: T): Result<T, E>: Creates an `Ok` value representing the success of an operation with a value.
+        - err<T, E>(error: E): Result<T, E>: Creates an `Err` value representing a failure of an operation with an error.
 
 ---
 
@@ -154,9 +154,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Introduced the `equals` method for **Maybe**, **Either**, and **Result** types to compare instances of these types based on their internal values.
 - Added **curried functions** for `equals` to allow for easier composition and usage:
-  - `equalsM` for **Maybe**.
-  - `equalsE` for **Either**.
-  - `equalsR` for **Result**.
+    - `equalsM` for **Maybe**.
+    - `equalsE` for **Either**.
+    - `equalsR` for **Result**.
 - New helper functions for easy comparison between monadic values.
 
 ### Changed
@@ -173,8 +173,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - `Either` monad: `Left`, `Right`, `tryCatch`, `fromPromise`, `fromAsync`.
 - `Result` monad: `Ok`, `Err`, `fromThrowable`, `fromPromise`, `fromAsync`.
 - Added **curried handlers** for `map`, `chain`, `unwrapOr`, and `match` for better composition and functional pipelines:
-  - `mapE`, `chainE`, `unwrapOrE`, and `matchE` for `Either`.
-  - `mapM`, `chainM`, `unwrapOrM`, and `matchM` for `Maybe`.
-  - `mapR`, `chainR`, `unwrapOrR`, and `matchR` for `Result`.
+    - `mapE`, `chainE`, `unwrapOrE`, and `matchE` for `Either`.
+    - `mapM`, `chainM`, `unwrapOrM`, and `matchM` for `Maybe`.
+    - `mapR`, `chainR`, `unwrapOrR`, and `matchR` for `Result`.
   
 ---
