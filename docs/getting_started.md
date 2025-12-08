@@ -23,9 +23,15 @@ import { fromThrowable } from 'holo-fn/result'
 
 ## 📦 API Reference
 
-- [Maybe](./maybe/index.md)
-- [Either](./either/index.md)
-- [Result](./result/index.md)
+### Core Monads
+
+- [Maybe](./maybe/index.md) - Optional values
+- [Either](./either/index.md) - Success or failure with values
+- [Result](./result/index.md) - Result with error handling
+
+### Helpers
+
+- [tap](./helpers/tap.md) - Execute side-effects in pipelines without altering data flow
 
 ### 📚 Comparison between Maybe, Either, and Result
 

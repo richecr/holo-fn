@@ -14,6 +14,7 @@
 ## ✨ Features
 
 - ✅ Functional types: `Maybe`, `Either`, `Result`
+- 🛠️ Helpers: `tap` for side-effects
 - ⚙️ Pipe-friendly (Rambda/Ramda compatible)
 - 🔒 Immutable by default
 - 🧪 100% test coverage
@@ -71,6 +72,24 @@ console.log(parsePrice('123.45')) // 123.45
 console.log(parsePrice('0')) // 0
 console.log(parsePrice('-123.45')) // 0
 console.log(parsePrice('abc')) // 0
+```
+
+### Debug pipelines with tap
+
+```ts
+import { tap } from 'holo-fn';
+import { just, map } from 'holo-fn/maybe';
+
+const result = pipe(
+  just(10),
+  tap(x => console.log('Initial:', x.unwrapOr(0))),
+  map(x => x * 2),
+  tap(x => console.log('After double:', x.unwrapOr(0))),
+  map(x => x + 5)
+);
+// Logs: "Initial: 10"
+// Logs: "After double: 20"
+// Returns: Just(25)
 ```
 
 ---

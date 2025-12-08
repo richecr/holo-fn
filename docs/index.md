@@ -18,6 +18,8 @@ Below you will find detailed explanations, examples, and usage instructions to h
     - [Maybe](./maybe/index.md)
     - [Either](./either/index.md)
     - [Result](./result/index.md)
+    - [Helpers](#helpers)
+        - [tap](./helpers/tap.md) - Side-effects in pipelines
 - [Contributing](./getting_started.md#contributing)
 - [Changelog](./getting_started.md#changelog)
 
