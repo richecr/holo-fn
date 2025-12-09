@@ -1947,7 +1947,13 @@
 <span class="normal">33</span>
 <span class="normal">34</span>
 <span class="normal">35</span>
-<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// Validate email format</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">fromThrowable</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="p">,</span><span class="w"> </span><span class="nx">validate</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;holo-fn/result&quot;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">pipe</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;remeda&quot;</span><span class="p">;</span>
+
+<span class="c1">// Validate email format</span>
 <span class="kd">const</span><span class="w"> </span><span class="nx">validateEmail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span>
 <span class="w">  </span><span class="nx">pipe</span><span class="p">(</span>
 <span class="w">    </span><span class="nx">ok</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">email</span><span class="p">),</span>
@@ -1956,7 +1962,7 @@
 <span class="w">    </span><span class="nx">validate</span><span class="p">((</span><span class="nx">s</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;Invalid domain&#39;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">);</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">validateEmail</span><span class="p">(</span><span class="s1">&#39;test@example.com&#39;</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="s1">&#39;Invalid&#39;</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">validateEmail</span><span class="p">(</span><span class="s1">&#39;testexample.com&#39;</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="s1">&#39;Invalid&#39;</span><span class="p">));</span>
 
 <span class="c1">// Parse and validate numbers</span>
 <span class="kd">const</span><span class="w"> </span><span class="nx">parsePositive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">input</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span>
@@ -1970,7 +1976,7 @@
 <span class="w">  </span><span class="p">);</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">parsePositive</span><span class="p">(</span><span class="s1">&#39;42&#39;</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 42</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">parsePositive</span><span class="p">(</span><span class="s1">&#39;-5&#39;</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">parsePositive</span><span class="p">(</span><span class="s1">&#39;-5&#39;</span><span class="p">).</span><span class="nx">unwrapOr</span><span class="p">(</span><span class="mf">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 0</span>
 
 <span class="c1">// Validate objects</span>
 <span class="kr">type</span><span class="w"> </span><span class="nx">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="nx">age</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="p">};</span>
@@ -2045,7 +2051,9 @@
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
-<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">equals</span><span class="p">,</span><span class="w"> </span><span class="nx">Ok</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">equals</span><span class="p">,</span><span class="w"> </span><span class="nx">Ok</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">pipe</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;remeda&#39;</span><span class="p">;</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">pipe</span><span class="p">(</span>
 <span class="w">  </span><span class="ow">new</span><span class="w"> </span><span class="nx">Ok</span><span class="p">(</span><span class="mf">10</span><span class="p">),</span>
@@ -2078,9 +2086,11 @@
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
-<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">all</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Result</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">all</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
 
-<span class="kd">const</span><span class="w"> </span><span class="nx">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">all</span><span class="p">([</span><span class="nx">ok</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">3</span><span class="p">)]);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">result1</span><span class="o">:</span><span class="w"> </span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">number</span><span class="p">[],</span><span class="w"> </span><span class="nx">unknown</span><span class="p">[]</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">all</span><span class="p">([</span><span class="nx">ok</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">3</span><span class="p">)]);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result1</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">([]));</span><span class="w"> </span><span class="c1">// [1, 2, 3]</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">all</span><span class="p">([</span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;Name required&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">err</span><span class="p">(</span><span class="s1">&#39;Email invalid&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">25</span><span class="p">)]);</span>
@@ -2111,9 +2121,11 @@
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">sequence</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Result</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="p">,</span><span class="w"> </span><span class="nx">sequence</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
 
-<span class="kd">const</span><span class="w"> </span><span class="nx">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sequence</span><span class="p">([</span><span class="nx">ok</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">3</span><span class="p">)]);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">result1</span><span class="o">:</span><span class="w"> </span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">number</span><span class="p">[],</span><span class="w"> </span><span class="nx">unknown</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sequence</span><span class="p">([</span><span class="nx">ok</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span><span class="w"> </span><span class="nx">ok</span><span class="p">(</span><span class="mf">3</span><span class="p">)]);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result1</span><span class="p">.</span><span class="nx">unwrapOr</span><span class="p">([]));</span><span class="w"> </span><span class="c1">// [1, 2, 3]</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sequence</span><span class="p">([</span>
@@ -2124,7 +2136,7 @@
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result2</span><span class="p">.</span><span class="nx">match</span><span class="p">({</span>
 <span class="w">  </span><span class="nx">ok</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">v</span><span class="p">,</span>
 <span class="w">  </span><span class="nx">err</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">e</span>
-<span class="p">}));</span><span class="w"> </span><span class="c1">// &#39;First error&#39; (not an array!)</span>
+<span class="p">}));</span><span class="w"> </span><span class="c1">// &#39;First error&#39;</span>
 </code></pre></div></td></tr></table></div>
 <hr />
 <h3 id="partition"><code>partition</code></h3>
@@ -2147,7 +2159,7 @@
 <span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
-<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">partition</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="p">,</span><span class="w"> </span><span class="nx">partition</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;holo-fn/result&#39;</span><span class="p">;</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">  </span><span class="nx">ok</span><span class="o">&lt;</span><span class="kt">number</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span>
