@@ -118,6 +118,7 @@ console.log(result2); // "No value"
 Compares the values inside `this` and the other, returns `true` if both are `Nothing` or if the values are equal.
 
 ```ts
+import type { Maybe } from "holo-fn";
 import { Just, Nothing } from "holo-fn/maybe";
 
 const result1 = new Just("value").chain(v => new Just(v + " modified"));
@@ -125,7 +126,7 @@ const result1 = new Just("value").chain(v => new Just(v + " modified"));
 console.log(result1.equals(new Just("value"))); // false
 console.log(result1.equals(new Just("value modified"))); // true
 
-const result2 = new Just("value").chain(v => new Nothing());
+const result2: Maybe<string> = new Just("value").chain(v => new Nothing());
 console.log(result2.equals(new Nothing())); // true
 console.log(result2.equals(new Just("value"))); // false
 ```
@@ -320,10 +321,10 @@ console.log(result); // true
 Combines an array of `Maybe` values into a single `Maybe` containing an array. Returns `Just` with all values if all are `Just`, or `Nothing` if any is `Nothing`.
 
 ```ts
-import { all, just, nothing } from 'holo-fn/maybe';
+import { all, just, nothing, type Maybe } from 'holo-fn/maybe';
 
 // All success case
-const result1 = all([just(1), just(2), just(3)]);
+const result1: Maybe<number[]> = all([just(1), just(2), just(3)]);
 console.log(result1.unwrapOr([])); // [1, 2, 3]
 
 // Any failure case
@@ -344,8 +345,9 @@ console.log(result3.unwrapOr([])); // []
 When you need to work with multiple `Maybe` values:
 
 ```ts
-import { pipe } from 'rambda';
+
 import { all, just, match } from 'holo-fn/maybe';
+import { pipe } from 'rambda';
 
 const name = just('Test User');
 const age = just(25);
@@ -361,14 +363,13 @@ const user = pipe(
 
 console.log(user);
 // Output: { name: 'Test User', age: 25, email: 'testuser@example.com' }
-
 ```
 
 ### Conditional logic with predicates
 
 ```ts
-import { pipe } from 'rambda';
 import { just, match } from 'holo-fn/maybe';
+import { pipe } from 'rambda';
 
 const value = just(42);
 
@@ -390,8 +391,8 @@ console.log(`The number is categorized as: ${category}`);
 ### Chaining operations with early exit
 
 ```ts
-import { pipe } from 'rambda';
 import { chain, filter, fromNullable, map } from 'holo-fn/maybe';
+import { pipe } from 'rambda';
 
 const user: { email?: string } | null = { email: 'testuser@example.com' };
 

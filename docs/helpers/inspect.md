@@ -39,8 +39,9 @@ pipe(
 ### Without Label
 
 ```typescript
-import { ok } from 'holo-fn/result';
 import { inspect } from 'holo-fn';
+import { map, ok } from 'holo-fn/result';
+import { pipe } from 'rambda';
 
 pipe(
   ok({ id: 1, name: 'Alice' }),
@@ -52,9 +53,9 @@ pipe(
 ### Debugging Pipelines
 
 ```typescript
-import { pipe } from 'rambda';
-import { just, map } from 'holo-fn/maybe';
 import { inspect } from 'holo-fn';
+import { just, map } from 'holo-fn/maybe';
+import { pipe } from 'rambda';
 
 const result = pipe(
   just(10),
@@ -69,8 +70,8 @@ const result = pipe(
 ### With Arrays
 
 ```typescript
-import { pipe } from 'rambda';
 import { inspect } from 'holo-fn';
+import { pipe } from 'rambda';
 
 pipe(
   [1, 2, 3, 4],
@@ -85,8 +86,8 @@ pipe(
 ### With Plain Objects
 
 ```typescript
-import { pipe } from 'rambda';
 import { inspect } from 'holo-fn';
+import { pipe } from 'rambda';
 
 const user = pipe(
   { id: 1, name: 'Alice', age: 30 },
@@ -101,9 +102,9 @@ const user = pipe(
 ### Debugging Complex Transformations
 
 ```typescript
-import { pipe } from 'rambda';
-import { fromNullable, map, chain } from 'holo-fn/maybe';
 import { inspect } from 'holo-fn';
+import { chain, fromNullable, map } from 'holo-fn/maybe';
+import { pipe } from 'rambda';
 
 const getUserEmail = (userId: number) =>
   pipe(
@@ -120,9 +121,9 @@ const getUserEmail = (userId: number) =>
 ### Finding Where Transformations Fail
 
 ```typescript
-import { pipe } from 'rambda';
-import { fromThrowable } from 'holo-fn/result';
 import { inspect } from 'holo-fn';
+import { fromThrowable, map } from 'holo-fn/result';
+import { pipe } from 'rambda';
 
 const parseAndValidate = (input: string) =>
   pipe(
@@ -138,9 +139,9 @@ const parseAndValidate = (input: string) =>
 ### Monitoring Data Flow
 
 ```typescript
-import { pipe } from 'rambda';
-import { all } from 'holo-fn/maybe';
 import { inspect } from 'holo-fn';
+import { all, map } from 'holo-fn/maybe';
+import { pipe } from 'rambda';
 
 const results = pipe(
   [

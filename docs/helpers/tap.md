@@ -28,7 +28,8 @@ A function that:
 ### With Maybe
 
 ```typescript
-import { just, map, tap } from "holo-fn";
+import { tap } from "holo-fn";
+import { just, map } from "holo-fn/maybe";
 import { pipe } from "rambda";
 
 const result = pipe(
@@ -45,7 +46,8 @@ const result = pipe(
 ### With Result
 
 ```typescript
-import { ok, map, tap } from "holo-fn";
+import { tap } from "holo-fn";
+import { map, ok } from "holo-fn/result";
 import { pipe } from "rambda";
 
 const result = pipe(
@@ -62,7 +64,8 @@ const result = pipe(
 ### With Either
 
 ```typescript
-import { right, map, tap } from "holo-fn";
+import { tap } from "holo-fn";
+import { map, right } from "holo-fn/either";
 import { pipe } from "rambda";
 
 const result = pipe(
@@ -234,7 +237,7 @@ TypeScript correctly infers the type through `tap`:
 const result: Maybe<number> = pipe(
   just(42),
   tap(x => console.log(x)), // x: Maybe<number>
-  map(x => x * 2)            // Type: Maybe<number>
+  map(x => x * 2)           // Type: Maybe<number>
 );
 
 // Works with union types

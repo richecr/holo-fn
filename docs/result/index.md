@@ -316,6 +316,9 @@ console.log(validateAge(15)); // 0 (fails validation)
 **Common use cases:**
 
 ```ts
+import { fromThrowable, ok, validate } from "holo-fn/result";
+import { pipe } from "remeda";
+
 // Validate email format
 const validateEmail = (email: string) =>
   pipe(
@@ -325,7 +328,7 @@ const validateEmail = (email: string) =>
     validate((s) => s.includes('.'), 'Invalid domain')
   );
 
-console.log(validateEmail('test@example.com').unwrapOr('Invalid'));
+console.log(validateEmail('testexample.com').unwrapOr('Invalid'));
 
 // Parse and validate numbers
 const parsePositive = (input: string) =>
@@ -339,7 +342,7 @@ const parsePositive = (input: string) =>
   );
 
 console.log(parsePositive('42').unwrapOr(0)); // 42
-console.log(parsePositive('-5').unwrapOr(0));
+console.log(parsePositive('-5').unwrapOr(0)); // 0
 
 // Validate objects
 type User = { name: string; age: number };
@@ -399,6 +402,7 @@ Curried version of `equals` for `Result`. Compares `this` to another `Result`, r
 
 ```ts
 import { equals, Ok } from 'holo-fn/result';
+import { pipe } from 'remeda';
 
 const result1 = pipe(
   new Ok(10),
@@ -422,9 +426,10 @@ console.log(result2); // false
 Combines an array of `Result` values into a single `Result`. Returns `Ok` with all values if all are `Ok`, or `Err` with all errors if any are `Err`.
 
 ```ts
-import { all, ok, err } from 'holo-fn/result';
+import type { Result } from 'holo-fn';
+import { all, err, ok } from 'holo-fn/result';
 
-const result1 = all([ok(1), ok(2), ok(3)]);
+const result1: Result<number[], unknown[]> = all([ok(1), ok(2), ok(3)]);
 console.log(result1.unwrapOr([])); // [1, 2, 3]
 
 const result2 = all([err('Name required'), err('Email invalid'), ok(25)]);
@@ -448,9 +453,10 @@ Combines an array of `Result` values into a single `Result`, stopping at the fir
 Unlike `all` which collects all errors, `sequence` returns immediately when it finds the first `Err`.
 
 ```ts
-import { sequence, ok, err } from 'holo-fn/result';
+import type { Result } from 'holo-fn';
+import { err, ok, sequence } from 'holo-fn/result';
 
-const result1 = sequence([ok(1), ok(2), ok(3)]);
+const result1: Result<number[], unknown> = sequence([ok(1), ok(2), ok(3)]);
 console.log(result1.unwrapOr([])); // [1, 2, 3]
 
 const result2 = sequence([
@@ -461,7 +467,7 @@ const result2 = sequence([
 console.log(result2.match({
   ok: (v) => v,
   err: (e) => e
-})); // 'First error' (not an array!)
+})); // 'First error'
 ```
 
 ---
@@ -473,7 +479,7 @@ Separates an array of `Result` values into two groups: successes (`oks`) and fai
 Unlike `all` and `sequence` which return a `Result`, `partition` returns a plain object with two arrays.
 
 ```ts
-import { partition, ok, err } from 'holo-fn/result';
+import { err, ok, partition } from 'holo-fn/result';
 
 const results = [
   ok<number, string>(1),

@@ -226,7 +226,7 @@ console.log(result2); // 0
 Compares `this` to another `Either`, returns `false` if the values inside are different.
 
 ```ts
-import { Either, Left, Right } from "holo-fn/either";
+import { type Either, Left, Right } from "holo-fn/either";
 
 const calculate = (a: number, b: number): Either<string, number> => {
   if (b === 0) {
@@ -247,7 +247,6 @@ const result2 = calculate(10, 2)
   .map(n => n + 1);
 
 console.log(result2.equals(new Right(0))); // false
-
 ```
 
 ## Helpers
@@ -509,6 +508,7 @@ Curried version of `equals` for `Either`. Compares `this` to another `Either`, r
 
 ```ts
 import { equals, Right } from 'holo-fn/either';
+import { pipe } from 'remeda';
 
 const result = pipe(
   new Right(10),
@@ -525,9 +525,9 @@ console.log(result); // true
 Combines an array of `Either` values into a single `Either`. Returns `Right` with all values if all are `Right`, or `Left` with all errors if any are `Left`.
 
 ```ts
-import { all, right, left } from 'holo-fn/either';
+import { all, left, right, type Either } from 'holo-fn/either';
 
-const result1 = all([right(1), right(2), right(3)]);
+const result1: Either<unknown, number[]> = all([right(1), right(2), right(3)]);
 console.log(result1.unwrapOr([])); // [1, 2, 3]
 
 const result2 = all([left('Name required'), left('Email invalid'), right(25)]);
@@ -552,9 +552,9 @@ Combines an array of `Either` values into a single `Either`, stopping at the fir
 Unlike `all` which collects all errors, `sequence` returns immediately when it finds the first `Left`.
 
 ```ts
-import { sequence, right, left } from 'holo-fn/either';
+import { left, right, sequence, type Either } from 'holo-fn/either';
 
-const result1 = sequence([right(1), right(2), right(3)]);
+const result1: Either<unknown, number[]> = sequence([right(1), right(2), right(3)]);
 console.log(result1.unwrapOr([])); // [1, 2, 3]
 
 const result2 = sequence([
@@ -577,7 +577,7 @@ Separates an array of `Either` values into two groups: `lefts` and `rights`. Alw
 Unlike `all` and `sequence` which return an `Either`, `partition` returns a plain object with two arrays.
 
 ```ts
-import { partition, left, right } from 'holo-fn/either';
+import { left, partition, right } from 'holo-fn/either';
 
 const eithers = [
   right<string, number>(1),
@@ -604,8 +604,8 @@ errors.forEach((err) => console.error(err));
 ### Discriminated union errors
 
 ```ts
-import { pipe } from 'rambda';
 import { left, match, type Either } from 'holo-fn/either';
+import { pipe } from 'rambda';
 
 type User = {
   name: string;
@@ -643,8 +643,8 @@ const message = pipe(
 ### Batch operations with error tracking
 
 ```ts
-import { pipe } from 'rambda';
 import { all, left, match, right } from 'holo-fn/either';
+import { pipe } from 'rambda';
 
 type AddressData = {
   street: string;
