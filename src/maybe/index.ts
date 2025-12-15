@@ -311,35 +311,41 @@ type UnwrapMaybeArray<T extends Maybe<unknown>[]> = {
 	[K in keyof T]: T[K] extends Maybe<infer V> ? V : never;
 };
 
+type ExtractMaybeValue<T> = T extends Maybe<infer V> ? V : never;
+
 /**
  * Combines multiple Maybe values into a single Maybe containing an array.
  * Returns Nothing if any Maybe is Nothing, otherwise returns Just with all values.
- * Supports heterogeneous tuple types.
+ * For homogeneous arrays, returns T[] instead of tuples. For mixed types, preserves tuple types.
  *
  * @param maybes - Array of Maybe values
  * @returns Just with array of all values, or Nothing if any is Nothing
  *
  * @example
  * ```ts
- * all([just(1), just(2), just(3)]); // Just([1, 2, 3])
+ * all([just(1), just(2), just(3)]); // Just<number[]>
  * all([just(1), nothing(), just(3)]); // Nothing
  * all([just(42), just("hello"), just(true)]); // Just<[number, string, boolean]>
  * ```
  */
+export function all<T extends Maybe<V>, V = ExtractMaybeValue<T>>(
+	maybes: T[],
+): Maybe<V[]>;
 export function all<T extends Maybe<unknown>[]>(
 	maybes: [...T],
-): Maybe<UnwrapMaybeArray<T>> {
-	const values: UnwrapMaybeArray<T>[number][] = [];
+): Maybe<UnwrapMaybeArray<T>>;
+export function all<T extends Maybe<unknown>[]>(maybes: T): Maybe<unknown> {
+	const values: unknown[] = [];
 
 	for (const maybe of maybes) {
 		if (maybe.isNothing()) {
-			return new Nothing() as Maybe<UnwrapMaybeArray<T>>;
+			return new Nothing();
 		}
 
-		values.push(maybe.extract() as UnwrapMaybeArray<T>[number]);
+		values.push(maybe.extract());
 	}
 
-	return new Just(values) as Maybe<UnwrapMaybeArray<T>>;
+	return new Just(values);
 }
 
 /**

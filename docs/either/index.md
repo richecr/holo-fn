@@ -524,11 +524,13 @@ console.log(result); // true
 
 Combines an array of `Either` values into a single `Either`. Returns `Right` with all values if all are `Right`, or `Left` with all errors if any are `Left`.
 
+**Smart Type Inference**: For homogeneous arrays (same type), returns `Either<L[], R[]>`. For mixed types, preserves tuple types.
+
 ```ts
 import { all, left, right, type Either } from 'holo-fn/either';
 
-const result1: Either<unknown, number[]> = all([right(1), right(2), right(3)]);
-console.log(result1.unwrapOr([])); // [1, 2, 3]
+const result1 = all([right(1), right(2), right(3)]);
+console.log(result1.unwrapOr([]));
 
 const result2 = all([left('Name required'), left('Email invalid'), right(25)]);
 console.log(
@@ -538,9 +540,10 @@ console.log(
   })
 ); // ['Name required', 'Email invalid']
 
-// Empty array
-const result3 = all([]);
-console.log(result3.unwrapOr([])); // []
+const result3 = all([right(42), right("hello"), right(true)]);
+
+const result4 = all([]);
+console.log(result4.unwrapOr([]));
 ```
 
 ---
@@ -551,11 +554,13 @@ Combines an array of `Either` values into a single `Either`, stopping at the fir
 
 Unlike `all` which collects all errors, `sequence` returns immediately when it finds the first `Left`.
 
+**Smart Type Inference**: For homogeneous arrays (same type), returns `Either<L, R[]>`. For mixed types, preserves tuple types.
+
 ```ts
 import { left, right, sequence, type Either } from 'holo-fn/either';
 
-const result1: Either<unknown, number[]> = sequence([right(1), right(2), right(3)]);
-console.log(result1.unwrapOr([])); // [1, 2, 3]
+const result1 = sequence([right(1), right(2), right(3)]);
+console.log(result1.unwrapOr([]));
 
 const result2 = sequence([
   right(1),
@@ -565,7 +570,9 @@ const result2 = sequence([
 console.log(result2.match({
   left: (e) => e,
   right: (v) => v
-})); // 'First error' (not an array!)
+}));
+
+const result3 = sequence([right(42), right("hello")]);
 ```
 
 ---
@@ -575,6 +582,8 @@ console.log(result2.match({
 Separates an array of `Either` values into two groups: `lefts` and `rights`. Always processes all items and returns both arrays.
 
 Unlike `all` and `sequence` which return an `Either`, `partition` returns a plain object with two arrays.
+
+**Smart Type Inference**: For homogeneous arrays (same type), returns `{ lefts: L[], rights: R[] }`. For mixed types, preserves tuple types.
 
 ```ts
 import { left, partition, right } from 'holo-fn/either';
@@ -588,8 +597,8 @@ const eithers = [
 ];
 
 const { lefts, rights } = partition(eithers);
-console.log(rights); // [1, 2, 3]
-console.log(lefts); // ['error1', 'error2']
+console.log(rights);
+console.log(lefts);
 
 const { lefts: errors, rights: values } = partition(eithers);
 console.log(`✓ ${values.length} succeeded`);

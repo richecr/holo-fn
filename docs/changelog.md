@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [Unreleased]
+
+### Added
+- **Smart type inference for combinators**: `all`, `sequence`, and `partition` now return `T[]` for homogeneous arrays and preserve tuple types for mixed types.
+    - Before: `all([ok(1), ok(2), ok(3)])` returned `Result<[number, number, number], ...>` (tuple)
+    - After: `all([ok(1), ok(2), ok(3)])` returns `Result<number[], ...>` (array)
+    - Heterogeneous arrays still preserve tuple types: `all([ok(42), ok("hi")])` → `Result<[number, string], ...>`
+    - Applies to `all`, `sequence` (Result/Either), and `partition` (Result/Either)
+    - Makes `unwrapOr([])` work naturally without type errors
+
+### Changed
+- **Improved `unwrapOr` flexibility**: Now accepts default values of different (but compatible) types.
+    - Example: `all([ok(1), ok(2)]).unwrapOr([])` now works without type errors.
+    - Before: Required exact tuple type like `[0, 0]`.
+    - After: Accepts any compatible type like `[]` for arrays.
+
+---
+
 ## [1.2.0](https://github.com/richecr/holo-fn/releases/tag/v1.2.0) - 2025-12-08
 
 ### Added

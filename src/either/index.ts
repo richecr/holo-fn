@@ -428,99 +428,119 @@ type UnwrapLeftArray<T extends Either<unknown, unknown>[]> = {
 	[K in keyof T]: T[K] extends Either<infer L, unknown> ? L : never;
 }[number];
 
+type ExtractEitherRight<T> = T extends Either<unknown, infer R> ? R : never;
+type ExtractEitherLeft<T> = T extends Either<infer L, unknown> ? L : never;
+
 /**
  * Combines multiple Either values, collecting all Left values.
- * Supports heterogeneous tuple types.
+ * For homogeneous arrays, returns R[] instead of tuples. For mixed types, preserves tuple types.
  *
  * @example
  * ```ts
- * all([right(1), right(2), right(3)]); // Right([1, 2, 3])
+ * all([right(1), right(2), right(3)]); // Right<number[]>
  * all([right(1), left("e1"), left("e2")]); // Left(["e1", "e2"])
+ * all([right(42), right("hello")]); // Right<[number, string]>
  * ```
  */
+export function all<
+	T extends Either<L, R>,
+	L = ExtractEitherLeft<T>,
+	R = ExtractEitherRight<T>,
+>(eithers: T[]): Either<L[], R[]>;
 export function all<T extends Either<unknown, unknown>[]>(
 	eithers: [...T],
-): Either<UnwrapLeftArray<T>[], UnwrapEitherArray<T>> {
-	const values: UnwrapEitherArray<T>[number][] = [];
-	const errors: UnwrapLeftArray<T>[] = [];
+): Either<UnwrapLeftArray<T>[], UnwrapEitherArray<T>>;
+export function all<T extends Either<unknown, unknown>[]>(
+	eithers: T,
+): Either<unknown, unknown> {
+	const values: unknown[] = [];
+	const errors: unknown[] = [];
 
 	for (const either of eithers) {
 		if (either.isLeft()) {
-			errors.push(either.extract() as UnwrapLeftArray<T>);
+			errors.push(either.extract());
 		} else {
-			values.push(either.extract() as UnwrapEitherArray<T>[number]);
+			values.push(either.extract());
 		}
 	}
 
 	if (errors.length > 0) {
-		return new Left(errors) as Either<
-			UnwrapLeftArray<T>[],
-			UnwrapEitherArray<T>
-		>;
+		return new Left(errors);
 	}
 
-	return new Right(values) as Either<
-		UnwrapLeftArray<T>[],
-		UnwrapEitherArray<T>
-	>;
+	return new Right(values);
 }
 
 /**
  * Combines multiple Either values with fail-fast behavior.
- * Supports heterogeneous tuple types.
+ * For homogeneous arrays, returns R[] instead of tuples. For mixed types, preserves tuple types.
  *
  * @example
  * ```ts
- * sequence([right(1), right(2), right(3)]); // Right([1, 2, 3])
+ * sequence([right(1), right(2), right(3)]); // Right<number[]>
  * sequence([right(1), left("e1"), left("e2")]); // Left("e1") - stops at first
+ * sequence([right(42), right("hello")]); // Right<[number, string]>
  * ```
  */
+export function sequence<
+	T extends Either<L, R>,
+	L = ExtractEitherLeft<T>,
+	R = ExtractEitherRight<T>,
+>(eithers: T[]): Either<L, R[]>;
 export function sequence<T extends Either<unknown, unknown>[]>(
 	eithers: [...T],
-): Either<UnwrapLeftArray<T>, UnwrapEitherArray<T>> {
-	const values: UnwrapEitherArray<T>[number][] = [];
+): Either<UnwrapLeftArray<T>, UnwrapEitherArray<T>>;
+export function sequence<T extends Either<unknown, unknown>[]>(
+	eithers: T,
+): Either<unknown, unknown> {
+	const values: unknown[] = [];
 
 	for (const either of eithers) {
 		if (either.isLeft()) {
-			return new Left(either.extract() as UnwrapLeftArray<T>) as Either<
-				UnwrapLeftArray<T>,
-				UnwrapEitherArray<T>
-			>;
+			return new Left(either.extract());
 		}
 
-		values.push(either.extract() as UnwrapEitherArray<T>[number]);
+		values.push(either.extract());
 	}
 
-	return new Right(values) as Either<UnwrapLeftArray<T>, UnwrapEitherArray<T>>;
+	return new Right(values);
 }
 
 /**
  * Separates an array of Eithers into Left and Right values.
- * Supports heterogeneous tuple types.
+ * For homogeneous arrays, returns R[] instead of tuples. For mixed types, preserves tuple types.
  *
  * @example
  * ```ts
  * partition([right(1), left("e1"), right(2)]);
- * // { lefts: ["e1"], rights: [1, 2] }
+ * // { lefts: string[], rights: number[] } (not tuples!)
  * ```
  */
+export function partition<
+	T extends Either<L, R>,
+	L = ExtractEitherLeft<T>,
+	R = ExtractEitherRight<T>,
+>(eithers: T[]): { lefts: L[]; rights: R[] };
 export function partition<T extends Either<unknown, unknown>[]>(
 	eithers: [...T],
-): { lefts: UnwrapLeftArray<T>[]; rights: UnwrapEitherArray<T> } {
+): { lefts: UnwrapLeftArray<T>[]; rights: UnwrapEitherArray<T> };
+export function partition<T extends Either<unknown, unknown>[]>(
+	eithers: T,
+): { lefts: unknown[]; rights: unknown[] } {
 	return eithers.reduce(
 		(acc, either) => {
 			if (either.isLeft()) {
-				acc.lefts.push(either.extract() as UnwrapLeftArray<T>);
+				acc.lefts.push(either.extract());
 			} else {
-				acc.rights.push(either.extract() as UnwrapEitherArray<T>[number]);
+				acc.rights.push(either.extract());
 			}
 			return acc;
 		},
 		{
-			lefts: [] as UnwrapLeftArray<T>[],
-			rights: [] as UnwrapEitherArray<T>[number][],
+			lefts: [] as unknown[],
+			rights: [] as unknown[],
 		},
-	) as { lefts: UnwrapLeftArray<T>[]; rights: UnwrapEitherArray<T> };
+	);
 }
 
 /**

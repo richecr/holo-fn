@@ -320,20 +320,21 @@ console.log(result); // true
 
 Combines an array of `Maybe` values into a single `Maybe` containing an array. Returns `Just` with all values if all are `Just`, or `Nothing` if any is `Nothing`.
 
+**Smart Type Inference**: For homogeneous arrays (same type), returns `Maybe<T[]>`. For mixed types, preserves tuple types like `Maybe<[number, string, boolean]>`.
+
 ```ts
 import { all, just, nothing, type Maybe } from 'holo-fn/maybe';
 
-// All success case
-const result1: Maybe<number[]> = all([just(1), just(2), just(3)]);
-console.log(result1.unwrapOr([])); // [1, 2, 3]
+const result1 = all([just(1), just(2), just(3)]);
+console.log(result1.unwrapOr([]));
 
-// Any failure case
 const result2 = all([just(1), nothing(), just(3)]);
-console.log(result2.isNothing()); // true
+console.log(result2.isNothing());
 
-// Empty array
-const result3 = all([]);
-console.log(result3.unwrapOr([])); // []
+const result3 = all([just(42), just("hello"), just(true)]);
+
+const result4 = all([]);
+console.log(result4.unwrapOr([]));
 ```
 
 ---

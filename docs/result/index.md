@@ -425,12 +425,14 @@ console.log(result2); // false
 
 Combines an array of `Result` values into a single `Result`. Returns `Ok` with all values if all are `Ok`, or `Err` with all errors if any are `Err`.
 
+**Smart Type Inference**: For homogeneous arrays (same type), returns `T[]`. For mixed types, preserves tuple types like `[number, string, boolean]`.
+
 ```ts
 import type { Result } from 'holo-fn';
 import { all, err, ok } from 'holo-fn/result';
 
-const result1: Result<number[], unknown[]> = all([ok(1), ok(2), ok(3)]);
-console.log(result1.unwrapOr([])); // [1, 2, 3]
+const result1 = all([ok(1), ok(2), ok(3)]);
+console.log(result1.unwrapOr([]));
 
 const result2 = all([err('Name required'), err('Email invalid'), ok(25)]);
 console.log(
@@ -438,10 +440,12 @@ console.log(
     ok: (v) => v,
     err: (e) => e,
   })
-); // ['Name required', 'Email invalid']
+);
 
-const result3 = all([]);
-console.log(result3.unwrapOr([])); // []
+const result3 = all([ok(42), ok("hello"), ok(true)]);
+
+const result4 = all([]);
+console.log(result4.unwrapOr([]));
 ```
 
 ---
@@ -452,12 +456,14 @@ Combines an array of `Result` values into a single `Result`, stopping at the fir
 
 Unlike `all` which collects all errors, `sequence` returns immediately when it finds the first `Err`.
 
+**Smart Type Inference**: For homogeneous arrays (same type), returns `T[]`. For mixed types, preserves tuple types.
+
 ```ts
 import type { Result } from 'holo-fn';
 import { err, ok, sequence } from 'holo-fn/result';
 
-const result1: Result<number[], unknown> = sequence([ok(1), ok(2), ok(3)]);
-console.log(result1.unwrapOr([])); // [1, 2, 3]
+const result1 = sequence([ok(1), ok(2), ok(3)]);
+console.log(result1.unwrapOr([]));
 
 const result2 = sequence([
   ok(1),
@@ -467,7 +473,9 @@ const result2 = sequence([
 console.log(result2.match({
   ok: (v) => v,
   err: (e) => e
-})); // 'First error'
+}));
+
+const result3 = sequence([ok(42), ok("hello")]);
 ```
 
 ---
@@ -477,6 +485,8 @@ console.log(result2.match({
 Separates an array of `Result` values into two groups: successes (`oks`) and failures (`errs`). Always processes all items and returns both arrays.
 
 Unlike `all` and `sequence` which return a `Result`, `partition` returns a plain object with two arrays.
+
+**Smart Type Inference**: For homogeneous arrays (same type), returns `{ oks: T[], errs: E[] }`. For mixed types, preserves tuple types.
 
 ```ts
 import { err, ok, partition } from 'holo-fn/result';
@@ -490,8 +500,8 @@ const results = [
 ];
 
 const { oks, errs } = partition(results);
-console.log(oks); // [1, 2, 3]
-console.log(errs); // ['error1', 'error2']
+console.log(oks);
+console.log(errs);
 
 const { oks: succeeded, errs: failed } = partition(results);
 console.log(`✓ ${succeeded.length} succeeded`);

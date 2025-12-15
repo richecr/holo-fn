@@ -397,82 +397,95 @@ type UnwrapErrorArray<T extends Result<unknown, unknown>[]> = {
 	[K in keyof T]: T[K] extends Result<unknown, infer E> ? E : never;
 }[number];
 
+type ExtractResultValue<T> = T extends Result<infer V, unknown> ? V : never;
+
 /**
  * Combines multiple Result values, collecting all errors.
  * Returns Ok with array of values if all succeed, or Err with array of all errors.
- * Supports heterogeneous tuple types.
+ * For homogeneous arrays, returns T[] instead of tuples. For mixed types, preserves tuple types.
  *
  * @param results - Array of Result values
  * @returns Ok with all values, or Err with all errors
  *
  * @example
  * ```ts
- * all([ok(1), ok(2), ok(3)]); // Ok([1, 2, 3])
+ * all([ok(1), ok(2), ok(3)]); // Ok<number[]>
  * all([ok(1), err("e1"), err("e2")]); // Err(["e1", "e2"])
- * all([ok(42), ok("hello"), ok(true)]); // Ok<[number, string, boolean], ...>
+ * all([ok(42), ok("hello"), ok(true)]); // Ok<[number, string, boolean]>
  * ```
  */
+export function all<
+	T extends Result<V, E>,
+	V = ExtractResultValue<T>,
+	E = unknown,
+>(results: T[]): Result<V[], E[]>;
 export function all<T extends Result<unknown, unknown>[]>(
 	results: [...T],
-): Result<UnwrapResultArray<T>, UnwrapErrorArray<T>[]> {
-	const values: UnwrapResultArray<T>[number][] = [];
-	const errors: UnwrapErrorArray<T>[] = [];
+): Result<UnwrapResultArray<T>, UnwrapErrorArray<T>[]>;
+export function all<T extends Result<unknown, unknown>[]>(
+	results: T,
+): Result<unknown, unknown> {
+	const values: unknown[] = [];
+	const errors: unknown[] = [];
 
 	for (const result of results) {
 		if (result.isErr()) {
-			errors.push(result.extract() as UnwrapErrorArray<T>);
+			errors.push(result.extract());
 		} else {
-			values.push(result.extract() as UnwrapResultArray<T>[number]);
+			values.push(result.extract());
 		}
 	}
 
 	if (errors.length > 0) {
-		return new Err(errors) as Result<
-			UnwrapResultArray<T>,
-			UnwrapErrorArray<T>[]
-		>;
+		return new Err(errors);
 	}
 
-	return new Ok(values) as Result<UnwrapResultArray<T>, UnwrapErrorArray<T>[]>;
+	return new Ok(values);
 }
 
 /**
  * Combines multiple Result values with fail-fast behavior.
  * Returns Ok with array of values if all succeed, or the first Err encountered.
- * Supports heterogeneous tuple types.
+ * For homogeneous arrays, returns T[] instead of tuples. For mixed types, preserves tuple types.
  *
  * @param results - Array of Result values
  * @returns Ok with all values, or first Err
  *
  * @example
  * ```ts
- * sequence([ok(1), ok(2), ok(3)]); // Ok([1, 2, 3])
+ * sequence([ok(1), ok(2), ok(3)]); // Ok<number[]>
  * sequence([ok(1), err("e1"), err("e2")]); // Err("e1") - stops at first error
+ * sequence([ok(42), ok("hello")]); // Ok<[number, string]>
  * ```
  */
+export function sequence<
+	T extends Result<V, E>,
+	V = ExtractResultValue<T>,
+	E = unknown,
+>(results: T[]): Result<V[], E>;
 export function sequence<T extends Result<unknown, unknown>[]>(
 	results: [...T],
-): Result<UnwrapResultArray<T>, UnwrapErrorArray<T>> {
-	const values: UnwrapResultArray<T>[number][] = [];
+): Result<UnwrapResultArray<T>, UnwrapErrorArray<T>>;
+export function sequence<T extends Result<unknown, unknown>[]>(
+	results: T,
+): Result<unknown, unknown> {
+	const values: unknown[] = [];
 
 	for (const result of results) {
 		if (result.isErr()) {
-			return new Err(result.extract() as UnwrapErrorArray<T>) as Result<
-				UnwrapResultArray<T>,
-				UnwrapErrorArray<T>
-			>;
+			return new Err(result.extract());
 		}
 
-		values.push(result.extract() as UnwrapResultArray<T>[number]);
+		values.push(result.extract());
 	}
 
-	return new Ok(values) as Result<UnwrapResultArray<T>, UnwrapErrorArray<T>>;
+	return new Ok(values);
 }
 
 /**
  * Separates an array of Results into successful values and errors.
  * Always processes all items.
- * Supports heterogeneous tuple types.
+ * For homogeneous arrays, returns T[] instead of tuples. For mixed types, preserves tuple types.
  *
  * @param results - Array of Result values
  * @returns Object with oks and errs arrays
@@ -480,26 +493,34 @@ export function sequence<T extends Result<unknown, unknown>[]>(
  * @example
  * ```ts
  * partition([ok(1), err("e1"), ok(2), err("e2")]);
- * // { oks: [1, 2], errs: ["e1", "e2"] }
+ * // { oks: number[], errs: string[] }
  * ```
  */
+export function partition<
+	T extends Result<V, E>,
+	V = ExtractResultValue<T>,
+	E = unknown,
+>(results: T[]): { oks: V[]; errs: E[] };
 export function partition<T extends Result<unknown, unknown>[]>(
 	results: [...T],
-): { oks: UnwrapResultArray<T>; errs: UnwrapErrorArray<T>[] } {
+): { oks: UnwrapResultArray<T>; errs: UnwrapErrorArray<T>[] };
+export function partition<T extends Result<unknown, unknown>[]>(
+	results: T,
+): { oks: unknown[]; errs: unknown[] } {
 	return results.reduce(
 		(acc, result) => {
 			if (result.isErr()) {
-				acc.errs.push(result.extract() as UnwrapErrorArray<T>);
+				acc.errs.push(result.extract());
 			} else {
-				acc.oks.push(result.extract() as UnwrapResultArray<T>[number]);
+				acc.oks.push(result.extract());
 			}
 			return acc;
 		},
 		{
-			oks: [] as UnwrapResultArray<T>[number][],
-			errs: [] as UnwrapErrorArray<T>[],
+			oks: [] as unknown[],
+			errs: [] as unknown[],
 		},
-	) as { oks: UnwrapResultArray<T>; errs: UnwrapErrorArray<T>[] };
+	);
 }
 
 /**
